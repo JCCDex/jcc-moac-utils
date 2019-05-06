@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- 11
+- 10
+- 9
+- 8
+- 7
+after_success:
+- npm run coveralls
+addons:
+  chrome: stable
+before_script:
+- export DISPLAY=:99.0
+- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
+  &
+- sh -e /etc/init.d/xvfb start
+env:
+  global:
+  - secure: nkxJP8gCIWz2yTQzKXucoJXA1n612kxPIFPg4WK/pDvqvCoMV+G1xrzQR/Rk9y9Ce37oI+JngDoJCeIuxr7Vlh4/EdQnuxC80AdLwMFcfa0nOUfIVH7o8RcLwXixglEJsCfJbsgFWV4DYq0aUgQ83sLAhAQigTAOuC8tur+LojS6LIy0ZoYmJbMexbejReoTTCXxSIoKdpIuaI6lRQ5Wo9dtBhOZv5HV30oThmV5x+hZMwqKSK5O5iHegU5WKHYR+KbnQZqBLZjWtqIXtyjzNKFEIf/X1afRqM+8hlekMyhYNQjNCq6+mtMcgHcYRiv1VQl6HFw5j/zOkCLGYKWog+bdIFDWd+AYbp/BL3FSjeblTC+RTUo/Wj782Wms8KGT9i8MCvfCNLxvqOrjZDrM/gTs+j5OcgpuI4re48DooYhUjPs1NpKnaI4ppffZ/pfmvlIRiHBWPn+GG4mrYqcpEeCsjutgVEKcnGD0HphgjPxUwuYyCXUwPcgl4Xmq9ZDGXINer8Fsmn3ack3aK9lAWhY44ZKoeFxM9N8SiJjuGzEwQHCCEOYCxyTLUFVqNJ4VxUTXDKHYhLAx8ZAl4tSjBTyUGGcB5d0cL+7/xXXEhuAwDd0fV4RR8nby3zCtok70LArffm9DprKZN/Tf2FG28Q/i8oRDsYXrY+wcAvwGpHI=
