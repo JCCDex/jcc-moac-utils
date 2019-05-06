@@ -18,9 +18,48 @@
  * SOFTWARE.
  * @author https://github.com/jccdex
  */
+import Chain3 from "chain3";
 
-const _chain3 = null;
+ /**
+  * 网络ID 定义
+  */
+enum NETWORK  {
+    MAINNET = 99,
+    TESTNET = 101
+  }
 
+class MoacUtils {
+  private _chain3: any;
+  private _network: number;
+
+  /**
+   * 构造函数
+   * @param options url:主机位置, mainnet: true/false
+   */
+  constructor(options: any) {
+    const _opts = options || {};
+    if (!_opts.url) {
+        throw Error("moac node url need!");
+    }
+    this._chain3 = new Chain3(new Chain3.providers.HttpProvider(_opts.url));
+    this._network = _opts.mainnet ? NETWORK.MAINNET : NETWORK.TESTNET;
+  }
+  public close () {
+    this._chain3.setProvider(null);
+    this._chain3 = null;
+  }
+//   public getBalance(address: string){
+//     console.log(address);
+//     return new Promise();
+//     // return await this._chain3.mc.getBalance(address);
+//   }
+  public getInstance() {
+      return this._chain3;
+  }
+  public getChainId() {
+      return this._network;
+  }
+}
 export {
-    _chain3
+    MoacUtils
 };
