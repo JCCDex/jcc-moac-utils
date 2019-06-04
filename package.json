@@ -2,8 +2,8 @@
   "name": "jcc-moac-utils",
   "version": "0.1.0",
   "description": "Toolkit of crossing chain from MOAC chain to SWTC chain",
-  "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "deploy": "./publish.sh",
