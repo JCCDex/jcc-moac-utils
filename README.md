@@ -14,7 +14,7 @@ Toolkit of crossing chain from [MOAC chain](https://www.moac.io/)  to [SWTC chai
 
 Transfer token automatically from [MOAC](https://www.moac.io/) chain to [SWTC](http://swtc.top/index.html#/) chain. Support moac and erc20 tokens.
 
-e.g. you transfer 1 `moac` to [Moac Fingate](http://explorer.moac.io/addr/0x66c9b619215db959ec137ede6b96f3fa6fd35a8a) from your moac address, If success the contract will automatically transfer 0.999 `jmoac` (if the transaction fee is 0.001 `moac`) to your swtc address from [Jingtum Fingate](https://swtcscan.jccdex.cn/#/wallet/?wallet=jG9ntUTuBKqDURPUqbGYZRuRDVzPY6bpxL) in a few minutes.
+e.g. you transfer 1 `moac` to [Moac Fingate](http://explorer.moac.io/addr/0x66c9b619215db959ec137ede6b96f3fa6fd35a8a) from your moac address, If success the contract will automatically transfer 1 `jmoac` to your swtc address from [Jingtum Fingate](https://swtcscan.jccdex.cn/#/wallet/?wallet=jG9ntUTuBKqDURPUqbGYZRuRDVzPY6bpxL) in a few minutes.
 
 ## Support token list of erc20
 
