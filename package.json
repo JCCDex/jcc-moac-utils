@@ -12,7 +12,8 @@
     "test:node": "tsc && nyc --reporter=html --reporter=text mocha --timeout=3000 test/*.spec.js",
     "test:browser": "tsc && karma start karma.conf.js",
     "tslint": "tslint --project tsconfig.json --config tslint.json",
-    "watch:tslint": "gulp dev"
+    "watch:tslint": "gulp dev",
+    "compile": "./compile.sh"
   },
   "author": "JCCDex",
   "license": "MIT",
@@ -45,6 +46,7 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000",
+    "uglifyjs-webpack-plugin": "^2.1.3",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.1.0",
     "webpack-cli": "^3.3.0"
