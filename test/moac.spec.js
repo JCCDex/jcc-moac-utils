@@ -73,6 +73,15 @@ describe('test moac', function() {
     })
   })
 
+  describe('test create wallet', function() {
+
+    it('test create', function() {
+      let wallet = Moac.createWallet();
+      let valid = Moac.isValidSecret(wallet.secret);
+      expect(valid).to.equal(true);
+    })
+  })
+
   describe("test initChain3", function() {
     let inst;
     beforeEach(() => {

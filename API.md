@@ -75,6 +75,18 @@
 */
 ```
 
+### createWallet
+
+```javascript
+/**
+ * create moac wallet
+ *
+ * @static
+ * @returns {any} return wallet, format is {address:'0x..', secret: '0x...'}
+ * @memberof Moac
+ */
+```
+
 ### prefix0x
 
 ```javascript

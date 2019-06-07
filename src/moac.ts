@@ -154,6 +154,18 @@ export default class Moac {
     }
 
     /**
+     * create moac wallet
+     *
+     * @static
+     * @returns {any} return wallet, format is {address:'0x..', secret: '0x...'}
+     * @memberof Moac
+     */
+    public static createWallet(): any {
+        // TODO: need interface of wallet
+        return moacWallet.createWallet();
+    }
+
+    /**
      * prefix `0x` before the given moac address if it's not start with `0x`
      *
      * @protected
