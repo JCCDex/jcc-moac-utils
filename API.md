@@ -121,6 +121,16 @@
 */
 ```
 
+### getChain3
+
+```javascript
+/**
+ * get instance of chain3
+ *
+ * @memberof Moac
+ */
+```
+
 ### getBalance
 
 ```javascript

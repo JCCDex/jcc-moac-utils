@@ -209,6 +209,15 @@ export default class Moac {
     }
 
     /**
+     * get instance of chain3
+     *
+     * @memberof Moac
+     */
+    public getChain3() {
+        return this._chain3;
+    }
+
+    /**
      * request balance of moac
      *
      * @param {string} address moac address
