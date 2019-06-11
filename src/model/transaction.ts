@@ -6,5 +6,8 @@ export interface IMoacTransaction {
     to: string;
     value: string;
     data: string;
-    chainId: number
+    chainId: string;
+    shardingFlag: string;
+    systemContract: string;
+    via: string;
 }

@@ -210,6 +210,24 @@ describe('test moac', function () {
       })
     })
 
+    describe('test signTransaction', function () {
+      let inst;
+      before(() => {
+        inst = new Moac(config.MOCK_NODE, true)
+        inst.initChain3();
+      })
+      afterEach(() => {
+        sandbox.restore();
+      })
+      it('get sign successfully', function () {
+        var signed = inst.signTransaction(config.MOCK_TX, config.MOAC_SECRET);
+        var _chain3 = inst.getChain3();
+        var signed2 = _chain3.signTransaction(config.MOCK_TX, config.MOAC_SECRET);
+        expect(signed).to.equal(signed2);
+        expect(signed).to.equal(config.MOCK_TX_SIGN2);
+      })
+    })
+
     it('get nonce successfully with pending', function (done) {
       let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
@@ -272,7 +290,7 @@ describe('test moac', function () {
       let gasLimit = config.MOCK_GAS_LIMIT;
       let gasPrice = config.MOCK_GAS_PRICE;
       let value = config.MOCK_DEPOSIT_VALUE_STR;
-      let calldata = "0xaa"
+      let calldata = "0xaa";
       let tx = inst.getTx(from, to, nonce, gasLimit, gasPrice, value, calldata);
       let data = Object.assign({}, config.MOCK_TX, {
         data: calldata

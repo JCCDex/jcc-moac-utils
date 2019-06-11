@@ -311,18 +311,21 @@ export default class Moac {
      * @memberof Moac
      */
     public getTx(from: string, to: string, nonce: number, gasLimit: number, gasPrice: string, value: string, calldata: string): IMoacTransaction {
-        if (!calldata) {
+        if (!!!calldata) {
             calldata = "0x00";
         }
         const tx = {
-            chainId: this._network,
+            chainId: '0x' + this._network.toString(16),
             data: calldata,
             from,
             gasLimit: this._chain3.intToHex(gasLimit),
             gasPrice: this._chain3.intToHex(gasPrice),
             nonce: this._chain3.intToHex(nonce),
             to,
-            value: this._chain3.intToHex(this._chain3.toSha(value))
+            value: this._chain3.intToHex(this._chain3.toSha(value)),
+            shardingFlag: "0x0",
+            systemContract: "0x0",
+            via: "0x"
         };
         return tx;
     }
@@ -334,8 +337,8 @@ export default class Moac {
      * @returns {string} signed string
      * @memberof Moac
      */
-    public signTransaction(tx: IMoacTransaction): string {
-        return this._chain3.signTransaction(tx);
+    public signTransaction(tx: IMoacTransaction, secret: string): string {
+        return this._chain3.signTransaction(tx, secret);
     }
 
     /**
