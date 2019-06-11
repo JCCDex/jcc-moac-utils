@@ -2,12 +2,11 @@ const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const pkg = require("./package.json");
 
 const config = {
   entry: "./lib",
   output: {
-    filename: "jcc-moac-utils." + pkg.version + ".js",
+    filename: "jcc-moac-utils.min.js",
     path: path.resolve(__dirname, "./dist"),
     library: "jcc_moac_utils",
     libraryTarget: "umd"
@@ -17,7 +16,8 @@ const config = {
     extensions: [".js", ".ts"],
     alias: {
       "bn.js": path.resolve(__dirname, "node_modules/bn.js"),
-      "bignumber.js": path.resolve(__dirname, "node_modules/bignumber.js")
+      "bignumber.js": path.resolve(__dirname, "node_modules/bignumber.js"),
+      "base-x": path.resolve(__dirname, "node_modules/base-x")
     }
   },
   mode: process.env.MODE === "dev" ? 'development' : "production",
@@ -35,25 +35,28 @@ const config = {
     }]
   },
   plugins: [
-    new DuplicatePackageCheckerPlugin(),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          sequences: true,
-          dead_code: true,
-          drop_console: true,
-          drop_debugger: true,
-          unused: true
-        }
-      },
-      sourceMap: false,
-      parallel: true
-    })
+    new DuplicatePackageCheckerPlugin()
   ]
 };
 
 if (process.env.REPORT === "true") {
   config.plugins.push(new BundleAnalyzerPlugin())
+}
+
+if (process.env.MODE !== "dev") {
+  config.plugins.push(new UglifyJsPlugin({
+    uglifyOptions: {
+      compress: {
+        sequences: true,
+        dead_code: true,
+        drop_console: true,
+        drop_debugger: true,
+        unused: true
+      }
+    },
+    sourceMap: false,
+    parallel: true
+  }));
 }
 
 module.exports = config;

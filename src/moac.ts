@@ -2,6 +2,7 @@
 
 import chain3 = require("chain3");
 import * as moacWallet from "jcc_wallet/lib/moac";
+import { IWalletModel } from "jcc_wallet/lib/model";
 import { IMoacTransaction } from "./model/transaction";
 
 /**
@@ -157,11 +158,10 @@ export default class Moac {
      * create moac wallet
      *
      * @static
-     * @returns {any} return wallet, format is {address:'0x..', secret: '0x...'}
+     * @returns {IWalletModel}
      * @memberof Moac
      */
-    public static createWallet(): any {
-        // TODO: need interface of wallet
+    public static createWallet(): IWalletModel {
         return moacWallet.createWallet();
     }
 
@@ -311,20 +311,20 @@ export default class Moac {
      * @memberof Moac
      */
     public getTx(from: string, to: string, nonce: number, gasLimit: number, gasPrice: string, value: string, calldata: string): IMoacTransaction {
-        if (!!!calldata) {
+        if (!calldata) {
             calldata = "0x00";
         }
         const tx = {
-            chainId: '0x' + this._network.toString(16),
+            chainId: "0x" + this._network.toString(16),
             data: calldata,
             from,
             gasLimit: this._chain3.intToHex(gasLimit),
             gasPrice: this._chain3.intToHex(gasPrice),
             nonce: this._chain3.intToHex(nonce),
-            to,
-            value: this._chain3.intToHex(this._chain3.toSha(value)),
             shardingFlag: "0x0",
             systemContract: "0x0",
+            to,
+            value: this._chain3.intToHex(this._chain3.toSha(value)),
             via: "0x"
         };
         return tx;
