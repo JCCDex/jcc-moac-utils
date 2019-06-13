@@ -221,15 +221,16 @@ export default class Moac {
      * request balance of moac
      *
      * @param {string} address moac address
-     * @returns {Promise<string>} resolve '' if request failed, it is 18-digit decimal, convert it into number will lose      * @memberof Moac
+     * @returns {Promise<string>} resolve '0' if request failed, it is 18-digit decimal, convert it into number will lose
+     * @memberof Moac
      */
-    public async getBalance(address: string): Promise<number> {
-        let balance: number;
+    public async getBalance(address: string): Promise<string> {
+        let balance: string;
         try {
             const bnBalance = await this._chain3.mc.getBalance(address);
             balance = this._chain3.fromSha(bnBalance).toFormat(18);
         } catch (error) {
-            balance = 0;
+            balance = "0";
         }
         return balance;
     }
@@ -287,7 +288,7 @@ export default class Moac {
         return new Promise((resolve) => {
             this._chain3.mc.getGasPrice((err: Error, data: number) => {
                 if (err) {
-                    data = 20000000000;
+                    data = this._minGasPrice;
                 }
                 if (limit && data < limit) {
                     data = limit;

@@ -78,16 +78,16 @@ class Erc20Fingate extends MoacFingate {
      * request balance of erc20 token
      *
      * @param {string} address moac address
-     * @returns {Promise<number>} resolve 0 if request failed
+     * @returns {Promise<string>} resolve 0 if request failed
      * @memberof Erc20Fingate
      */
-    public async balanceOf(address: string): Promise<number> {
-        let balance: number;
+    public async balanceOf(address: string): Promise<string> {
+        let balance: string;
         try {
             const bnBalance = await this._erc20ContractInstance.balanceOf(address);
-            balance = parseFloat(bnBalance.dividedBy(10 ** this._erc20ContractInstance.decimals()).toString(10));
+            balance = bnBalance.dividedBy(10 ** this._erc20ContractInstance.decimals()).toString(10);
         } catch (error) {
-            balance = 0;
+            balance = "0";
         }
         return balance;
     }

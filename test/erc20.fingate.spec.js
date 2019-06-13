@@ -95,14 +95,14 @@ describe('test MoacFingate', function() {
       let args = stub.getCall(0).args;
       expect(args.length).to.equal(1);
       expect(args[0]).to.equal(config.MOAC_ADDRESS);
-      expect(balance).to.equal(10);
+      expect(balance).to.equal('10');
     })
 
     it('get balance in error', async function() {
       let stub = sandbox.stub(inst._erc20ContractInstance, "balanceOf");
       stub.rejects(new Error('address is invalid'));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
-      expect(balance).to.equal(0);
+      expect(balance).to.equal('0');
     })
   })
 

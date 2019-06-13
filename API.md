@@ -138,7 +138,7 @@
  * request balance of moac
  *
  * @param {string} address moac address
- * @returns {Promise<string>} resolve '' if request failed, it is 18-digit decimal, convert it into number will lose precision
+ * @returns {Promise<string>} resolve '0' if request failed, it is 18-digit decimal, convert it into number will lose precision
  * @memberof Moac
 */
 ```
@@ -356,7 +356,7 @@
  * request balance of erc20 token
  *
  * @param {string} address moac address
- * @returns {Promise<number>} resolve 0 if request failed
+ * @returns {Promise<string>} resolve '0' if request failed
  * @memberof Erc20Fingate
 */
 ```
