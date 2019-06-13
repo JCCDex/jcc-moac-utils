@@ -34,7 +34,7 @@ npm i jcc-moac-utils
 
 ```javascript
 // demo
-import { MoacFingate, Erc20Fingate } from "jcc-moac-utils";
+import { MoacFingate, ERC20Fingate } from "jcc-moac-utils";
 
 // Moac node
 const node = 'https://moac1ma17f1.jccdex.cn';
@@ -84,7 +84,7 @@ try {
     // CKM contract address
     const ckmContractAddress = "0x4d206d18fd036423aa74815511904a2a40e25fb1";
 
-    const inst = new Erc20Fingate(node, production);
+    const inst = new ERC20Fingate(node, production);
 
     inst.initErc20Contract(scAddress, ckmContractAddress);
 
