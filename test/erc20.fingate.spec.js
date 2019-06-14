@@ -5,10 +5,10 @@ const sinon = require('sinon');
 const sandbox = sinon.createSandbox();
 const BigNumber = require('bignumber.js');
 const config = require("./config");
-describe('test MoacFingate', function() {
+describe('test ERC20Fingate', function () {
 
-  describe("test constructor", function() {
-    it("create successfully", function() {
+  describe("test constructor", function () {
+    it("create successfully", function () {
       let inst = new ERC20Fingate(config.MOCK_NODE, true)
       inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS);
       expect(inst._fingateAddress).to.equal(config.MOAC_SMART_CONTRACT_ADDRESS);
@@ -20,7 +20,7 @@ describe('test MoacFingate', function() {
     })
   })
 
-  describe('test initErc20Contract', function() {
+  describe('test initErc20Contract', function () {
     let inst
     before(() => {
       inst = new ERC20Fingate(config.MOCK_NODE, true);
@@ -30,7 +30,7 @@ describe('test MoacFingate', function() {
       inst.close();
     });
 
-    it("instance of erc20 contract had been not initialied", function() {
+    it("instance of erc20 contract had been not initialied", function () {
       inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS);
       let instance = inst._erc20ContractInstance;
       expect(instance).to.not.null;
@@ -40,7 +40,7 @@ describe('test MoacFingate', function() {
       expect(inst._erc20ContractInstance).to.not.deep.equal(instance);
     })
 
-    it("instance of erc20 contract had been initialied", function() {
+    it("instance of erc20 contract had been initialied", function () {
       inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS);
       let instance = inst._erc20ContractInstance;
       expect(instance).to.not.null;
@@ -49,23 +49,23 @@ describe('test MoacFingate', function() {
       expect(inst._erc20ContractInstance).to.deep.equal(instance);
     })
 
-    it("if the address of moac fingate is invalid", function() {
+    it("if the address of moac fingate is invalid", function () {
       expect(() => inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS.substring(1), config.SNRC_CONTRACT_ADDRESS)).throw(`${config.MOAC_SMART_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
-    it("if the address of erc20 contract is invalid", function() {
+    it("if the address of erc20 contract is invalid", function () {
       expect(() => inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS.substring(1))).throw(`${config.SNRC_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
-    it('throws error if init error', function() {
+    it('throws error if init error', function () {
       let stub = sandbox.stub(inst, "contract");
       stub.throws(new Error("create moac fingate instance in error"));
       expect(() => inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS)).throw("create moac fingate instance in error");
     })
   })
 
-  describe("test close", function() {
-    it("close", function() {
+  describe("test close", function () {
+    it("close", function () {
       let inst = new ERC20Fingate(config.MOCK_NODE, true)
       inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS);
       inst.close();
@@ -75,7 +75,7 @@ describe('test MoacFingate', function() {
     })
   })
 
-  describe('test getBalance', function() {
+  describe('test getBalance', function () {
     let inst;
     before(() => {
       inst = new ERC20Fingate(config.MOCK_NODE, true)
@@ -86,7 +86,7 @@ describe('test MoacFingate', function() {
       sandbox.restore();
     })
 
-    it('get balance successfully', async function() {
+    it('get balance successfully', async function () {
       let stub = sandbox.stub(inst._erc20ContractInstance, "balanceOf");
       stub.resolves(new BigNumber(1e19));
       let s = sandbox.stub(inst._erc20ContractInstance, "decimals");
@@ -98,7 +98,7 @@ describe('test MoacFingate', function() {
       expect(balance).to.equal('10');
     })
 
-    it('get balance in error', async function() {
+    it('get balance in error', async function () {
       let stub = sandbox.stub(inst._erc20ContractInstance, "balanceOf");
       stub.rejects(new Error('address is invalid'));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
@@ -106,7 +106,7 @@ describe('test MoacFingate', function() {
     })
   })
 
-  describe('test transfer', function() {
+  describe('test transfer', function () {
     let inst;
     before(() => {
       inst = new ERC20Fingate(config.MOCK_NODE, true)
@@ -117,7 +117,7 @@ describe('test MoacFingate', function() {
       sandbox.restore();
     });
 
-    it('transfer successfully', async function() {
+    it('transfer successfully', async function () {
       let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
@@ -140,15 +140,15 @@ describe('test MoacFingate', function() {
       expect(hash).to.equal(config.MOCK_HASH)
     })
 
-    it('amount is invalid', function() {
+    it('amount is invalid', function () {
       expect(() => inst.transfer(0, config.MOAC_SECRET)).throw(`0 is invalid amount.`);
     })
 
-    it('moac secret is invalid', function() {
+    it('moac secret is invalid', function () {
       expect(() => inst.transfer(config.MOCK_DEPOSIT_VALUE, config.MOAC_SECRET.substring(1))).throw(`${config.MOAC_SECRET.substring(1)} is invalid moac secret.`)
     })
 
-    it('deposit in error', function(done) {
+    it('deposit in error', function (done) {
       let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.transfer(config.MOCK_DEPOSIT_VALUE, config.MOAC_SECRET).catch(error => {
@@ -158,9 +158,9 @@ describe('test MoacFingate', function() {
     })
   })
 
-  describe('test depositToken', function() {
+  describe('test depositToken', function () {
     let inst;
-    before(function() {
+    before(function () {
       inst = new ERC20Fingate(config.MOCK_NODE, true)
       inst.initErc20Contract(config.MOAC_SMART_CONTRACT_ADDRESS, config.SNRC_CONTRACT_ADDRESS);
     })
@@ -169,7 +169,7 @@ describe('test MoacFingate', function() {
       sandbox.restore();
     })
 
-    it('deposit successfully', async function() {
+    it('deposit successfully', async function () {
       let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
@@ -186,11 +186,11 @@ describe('test MoacFingate', function() {
       stub.returns("0xaa")
       let spy = sandbox.spy(inst, "sendRawSignedTransaction");
       let hash = await inst.depositToken(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET);
-      expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN);
+      expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN1);
       expect(hash).to.equal(config.MOCK_HASH)
     })
 
-    it('jingtum address is invalid', function() {
+    it('jingtum address is invalid', function () {
       expect(() => inst.depositToken(config.JINGTUM_ADDRESS.substring(1), config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET)).throw(`${config.JINGTUM_ADDRESS.substring(1)} is invalid jingtum address.`);
     })
 
@@ -198,15 +198,15 @@ describe('test MoacFingate', function() {
       expect(() => inst.depositToken(config.JINGTUM_ADDRESS, 0, config.MOCK_HASH, config.MOAC_SECRET)).throw(`0 is invalid amount.`)
     })
 
-    it('hash is invalid', function() {
+    it('hash is invalid', function () {
       expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH.substring(1), config.MOAC_ADDRESS, config.MOAC_SECRET)).throw(`${config.MOCK_HASH.substring(1)} is invalid hash.`)
     })
 
-    it('moac secret is invalid', function() {
+    it('moac secret is invalid', function () {
       expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET.substring(1))).throw(`${config.MOAC_SECRET.substring(1)} is invalid moac secret.`)
     })
 
-    it('deposit in error', function(done) {
+    it('deposit in error', function (done) {
       let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.depositToken(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET).catch(error => {

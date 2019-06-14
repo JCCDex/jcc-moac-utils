@@ -221,7 +221,7 @@ export default class Moac {
      * request balance of moac
      *
      * @param {string} address moac address
-     * @returns {Promise<string>} resolve '0' if request failed, it is 18-digit decimal, convert it into number will lose
+     * @returns {Promise<string>} resolve 0 if request failed, it is 18-digit decimal, convert it into number will lose
      * @memberof Moac
      */
     public async getBalance(address: string): Promise<string> {
