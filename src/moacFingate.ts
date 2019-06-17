@@ -150,12 +150,12 @@ class MoacFingate extends Moac {
         return new Promise(async (resolve, reject) => {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
-                const value = new BigNumber(amount).multipliedBy(10 ** this.moacDecimals);
+                const value = new BigNumber(amount).toString(10);
                 const gasLimit = this.gasLimit;
                 const gasPrice = await this.getGasPrice(this.minGasPrice);
                 const nonce = await this.getNonce(moacAddress);
                 const calldata = this.moacContractInstance.deposit.getData(jtAddress);
-                const rawTx = this.getTx(moacAddress, this.moacContractInstance.address, nonce, gasLimit, gasPrice, value.toString(10), calldata);
+                const rawTx = this.getTx(moacAddress, this.moacContractInstance.address, nonce, gasLimit, gasPrice, value, calldata);
                 const signedTransaction = this._chain3.signTransaction(rawTx, moacSecret);
                 const hash = await this.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
