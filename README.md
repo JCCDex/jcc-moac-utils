@@ -34,7 +34,7 @@ npm i jcc-moac-utils
 
 ```javascript
 // demo
-import { MoacFingate, ERC20Fingate } from "jcc-moac-utils";
+import { Fingate } from "jcc-moac-utils";
 
 // Moac node
 const node = 'https://moac1ma17f1.jccdex.cn';
@@ -59,7 +59,7 @@ const scAddress = '0x66c9b619215db959ec137ede6b96f3fa6fd35a8a';
 
 try {
     // deposit 1 MOAC
-    const inst = new MoacFingate(node, production);
+    const inst = new Fingate(node, production);
     inst.initMoacContract(scAddress);
 
     // Check if has pending order, if has don't call the next deposit api
@@ -84,9 +84,9 @@ try {
     // CKM contract address
     const ckmContractAddress = "0x4d206d18fd036423aa74815511904a2a40e25fb1";
 
-    const inst = new ERC20Fingate(node, production);
+    const inst = new Fingate(node, production);
 
-    inst.initErc20Contract(scAddress, ckmContractAddress);
+    inst.initMoacContract(scAddress);
 
     // Check if has pending order, if has don't call transfer api
     const state = await inst.depositState(moacAddress, ckmContractAddress);
@@ -99,7 +99,7 @@ try {
     const transferHash = await inst.transfer(amount, moacSecret);
 
     // The next step to submit previous transfer hash.
-    const depositHash = await inst.depositToken(swtcAddress, amount, transferHash, moacSecret);
+    const depositHash = await inst.depositToken(swtcAddress, ckmContractAddress, 18, amount, transferHash, moacSecret);
     console.log(depositHash);
 
     // Warning:

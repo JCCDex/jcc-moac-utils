@@ -1,11 +1,9 @@
 import ERC20 from "./erc20";
-import ERC20Fingate from "./erc20Fingate";
+import Fingate from "./fingate";
 import Moac from "./moac";
-import MoacFingate from "./moacFingate";
 
 export {
-    MoacFingate,
+    Fingate,
     Moac,
-    ERC20,
-    ERC20Fingate
+    ERC20
 };
