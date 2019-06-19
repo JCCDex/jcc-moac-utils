@@ -210,31 +210,31 @@ describe('test Fingate', function () {
       stub = sandbox.stub(inst._instance.deposit, "getData");
       stub.returns("0xaa")
       let spy = sandbox.spy(inst, "sendRawSignedTransaction");
-      let hash = await inst.depositToken1(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET);
+      let hash = await inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN1);
       expect(hash).to.equal(config.MOCK_HASH)
     })
 
     it('jingtum address is invalid', function () {
-      expect(() => inst.depositToken1(config.JINGTUM_ADDRESS.substring(1), config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET)).throw(`${config.JINGTUM_ADDRESS.substring(1)} is invalid jingtum address.`);
+      expect(() => inst.depositToken(config.JINGTUM_ADDRESS.substring(1), config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET)).throw(`${config.JINGTUM_ADDRESS.substring(1)} is invalid jingtum address.`);
     })
 
     it('amount is invalid', function done() {
-      expect(() => inst.depositToken1(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, 0, config.MOCK_HASH, config.MOAC_SECRET)).throw(`0 is invalid amount.`)
+      expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, 0, config.MOCK_HASH, config.MOAC_SECRET)).throw(`0 is invalid amount.`)
     })
 
     it('hash is invalid', function () {
-      expect(() => inst.depositToken1(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH.substring(1), config.MOAC_ADDRESS, config.MOAC_SECRET)).throw(`${config.MOCK_HASH.substring(1)} is invalid hash.`)
+      expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH.substring(1), config.MOAC_ADDRESS, config.MOAC_SECRET)).throw(`${config.MOCK_HASH.substring(1)} is invalid hash.`)
     })
 
     it('moac secret is invalid', function () {
-      expect(() => inst.depositToken1(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET.substring(1))).throw(`${config.MOAC_SECRET.substring(1)} is invalid moac secret.`)
+      expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET.substring(1))).throw(`${config.MOAC_SECRET.substring(1)} is invalid moac secret.`)
     })
 
     it('deposit in error', function (done) {
       let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
-      inst.depositToken1(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET).catch(error => {
+      inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET).catch(error => {
         expect(error.message).to.equal('request nonce in error')
         done()
       })
