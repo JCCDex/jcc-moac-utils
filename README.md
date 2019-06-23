@@ -30,6 +30,14 @@ e.g. you transfer 1 `moac` to [Moac Fingate](http://explorer.moac.io/addr/0x66c9
 npm i jcc-moac-utils
 ```
 
+## CDN
+
+`jcc_moac_utils` as a global variable
+
+```javascript
+<script src="https://unpkg.com/jcc-moac-utils/dist/jcc-moac-utils.min.js"></script>
+```
+
 ## Usage
 
 ```javascript
