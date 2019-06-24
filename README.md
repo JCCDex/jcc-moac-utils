@@ -32,7 +32,7 @@ npm i jcc-moac-utils
 
 ## CDN
 
-`jcc_moac_utils` as a global variable
+`jcc_moac_utils` as a global variable.
 
 ```javascript
 <script src="https://unpkg.com/jcc-moac-utils/dist/jcc-moac-utils.min.js"></script>

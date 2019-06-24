@@ -132,18 +132,16 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     @validate
-    public transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: number): Promise<string> {
+    public transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
                 const gasLimit = this.gasLimit;
-                console.log("minGasPrice:", this.minGasPrice);
                 const gasPrice = await this.getGasPrice(this.minGasPrice);
                 const nonce = await this.getNonce(sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
                 const calldata = this._instance.transfer.getData(to, value.toString(10));
                 const tx = this.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                // console.log("erc20 tx:", tx);
                 const signedTransaction = this._chain3.signTransaction(tx, secret);
                 const hash = await this.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
@@ -163,7 +161,7 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     @validate
-    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: number): Promise<string> {
+    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
@@ -207,18 +205,16 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     @validate
-    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: number): Promise<string> {
+    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
                 const gasLimit = this.gasLimit;
-                console.log("minGasPrice:", this.minGasPrice);
                 const gasPrice = await this.getGasPrice(this.minGasPrice);
                 const nonce = await this.getNonce(sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
                 const calldata = this._instance.transferFrom.getData(from, to, value.toString(10));
                 const tx = this.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                // console.log("erc20 tx:", tx);
                 const signedTransaction = this._chain3.signTransaction(tx, secret);
                 const hash = await this.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);

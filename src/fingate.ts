@@ -126,7 +126,7 @@ class Fingate extends Moac {
      * @memberof Fingate
      */
     @validate
-    public deposit(@isValidJingtumAddress jtAddress: string, @isValidAmount amount: number, @isValidMoacSecret moacSecret: string): Promise<string> {
+    public deposit(@isValidJingtumAddress jtAddress: string, @isValidAmount amount: string, @isValidMoacSecret moacSecret: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
@@ -158,7 +158,7 @@ class Fingate extends Moac {
      * @memberof Fingate
      */
     @validate
-    public depositToken(@isValidJingtumAddress jtAddress: string, @isValidMoacAddress tokenAddress: string, decimals: number, @isValidAmount amount: number, @isValidHash hash: string, @isValidMoacSecret moacSecret: string): Promise<string> {
+    public depositToken(@isValidJingtumAddress jtAddress: string, @isValidMoacAddress tokenAddress: string, decimals: number, @isValidAmount amount: string, @isValidHash hash: string, @isValidMoacSecret moacSecret: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
