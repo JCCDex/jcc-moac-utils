@@ -2,7 +2,7 @@
 
 import BigNumber from "bignumber.js";
 import chain3 = require("chain3");
-import moacABI from "./abi/moacABI";
+import fingateABI from "./abi/fingateABI";
 import Moac from "./moac";
 import { isValidAmount, isValidHash, isValidJingtumAddress, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
@@ -10,9 +10,8 @@ import { isValidAmount, isValidHash, isValidJingtumAddress, isValidMoacAddress, 
  * toolkit of moac fingate
  *
  * @class Fingate
- * @extends {Moac}
  */
-class Fingate extends Moac {
+class Fingate {
 
     /**
      * instance of moac contract
@@ -22,6 +21,15 @@ class Fingate extends Moac {
      * @memberof Fingate
      */
     private _instance: chain3.mc.contract;
+
+    /**
+     * instance of moac
+     *
+     * @private
+     * @type {Moac}
+     * @memberof Fingate
+     */
+    private _moac: Moac;
 
     /**
      * address of moac fingate
@@ -34,14 +42,12 @@ class Fingate extends Moac {
 
     /**
      * Creates an instance of Fingate
-     * @param {string} node moac node
-     * @param {boolean} mainnet main net or test net
      * @memberof Fingate
      */
-    constructor(node: string, mainnet: boolean) {
-        super(node, mainnet);
+    constructor() {
         this._instance = null;
         this._address = null;
+        this._moac = null;
     }
 
     /**
@@ -62,12 +68,12 @@ class Fingate extends Moac {
      * @memberof Fingate
      */
     @validate
-    public initMoacContract(@isValidMoacAddress fingateAddress: string) {
+    public initMoacContract(@isValidMoacAddress fingateAddress: string, moac: Moac) {
         try {
-            super.initChain3();
-            if (!super.contractInitialied(this._instance, fingateAddress)) {
+            if (!moac.contractInitialied(this._instance, fingateAddress)) {
                 this._address = fingateAddress;
-                this._instance = this.contract(moacABI).at(this._address);
+                this._moac = moac;
+                this._instance = this._moac.contract(fingateABI).at(this._address);
             }
         } catch (e) {
             throw e;
@@ -80,7 +86,6 @@ class Fingate extends Moac {
      * @memberof Fingate
      */
     public close() {
-        super.clearChain3();
         this._instance = null;
     }
 
@@ -131,13 +136,13 @@ class Fingate extends Moac {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).toString(10);
-                const gasLimit = this.gasLimit;
-                const gasPrice = await this.getGasPrice(this.minGasPrice);
-                const nonce = await this.getNonce(moacAddress);
+                const gasLimit = this._moac.gasLimit;
+                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
+                const nonce = await this._moac.getNonce(moacAddress);
                 const calldata = this.instance.deposit.getData(jtAddress);
-                const rawTx = this.getTx(moacAddress, this.instance.address, nonce, gasLimit, gasPrice, value, calldata);
-                const signedTransaction = this._chain3.signTransaction(rawTx, moacSecret);
-                const hash = await this.sendRawSignedTransaction(signedTransaction);
+                const rawTx = this._moac.getTx(moacAddress, this.instance.address, nonce, gasLimit, gasPrice, value, calldata);
+                const signedTransaction = this._moac.signTransaction(rawTx, moacSecret);
+                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -163,13 +168,13 @@ class Fingate extends Moac {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const gasLimit = this.gasLimit;
-                const gasPrice = await this.getGasPrice(this.minGasPrice);
-                const nonce = await this.getNonce(moacAddress);
+                const gasLimit = this._moac.gasLimit;
+                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
+                const nonce = await this._moac.getNonce(moacAddress);
                 const calldata = this.instance.depositToken.getData(jtAddress, tokenAddress, value.toString(10), hash);
-                const tx = this.getTx(moacAddress, this.instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                const signedTransaction = this._chain3.signTransaction(tx, moacSecret);
-                const txHash = await this.sendRawSignedTransaction(signedTransaction);
+                const tx = this._moac.getTx(moacAddress, this.instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const signedTransaction = this._moac.signTransaction(tx, moacSecret);
+                const txHash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(txHash);
             } catch (error) {
                 return reject(error);

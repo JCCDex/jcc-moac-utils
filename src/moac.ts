@@ -168,13 +168,13 @@ export default class Moac {
     /**
      * prefix `0x` before the given moac address if it's not start with `0x`
      *
-     * @protected
+     * @public
      * @static
      * @param {string} address moac address
      * @returns {string} return itself if the address is empty or start with `0x`
      * @memberof Moac
      */
-    protected static prefix0x(address: string): string {
+    public static prefix0x(address: string): string {
         if (address && !address.startsWith("0x")) {
             address = "0x" + address;
         }
@@ -361,27 +361,62 @@ export default class Moac {
     }
 
     /**
+     * get transaction
+     *
+     * @param {string} hash transaction hash
+     * @returns {any} null or transaction object
+     * @memberof Moac
+     */
+    public getTransaction(hash: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._chain3.mc.getTransaction(hash, (err: Error, data: any) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(data);
+            });
+        });
+    }
+    /**
+     * get transaction receipt
+     *
+     * @param {string} hash transaction hash
+     * @returns {any} null or transaction receipt object
+     * @memberof Moac
+     */
+    public getTransactionReceipt(hash: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._chain3.mc.getTransactionReceipt(hash, (err: Error, data: any) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(data);
+            });
+        });
+    }
+
+    /**
      * get instance of moac or erc20 contract
      *
-     * @protected
+     * @public
      * @param {object} abi definition of moac abi or erc20 abi
      * @returns {chain3.mc.contract} return instance of moac or erc20 contract
      * @memberof Moac
      */
-    protected contract(abi: object): chain3.mc.contract {
+    public contract(abi: object): chain3.mc.contract {
         return this._chain3.mc.contract(abi);
     }
 
     /**
      * check instance of contract if initialied
      *
-     * @protected
+     * @public
      * @param {chain3.mc.contract} contract
      * @param {string} address
      * @returns {boolean}
      * @memberof Moac
      */
-    protected contractInitialied(contract: chain3.mc.contract, address: string): boolean {
+    public contractInitialied(contract: chain3.mc.contract, address: string): boolean {
         return contract && contract.address === address;
     }
 }

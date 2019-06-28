@@ -1,6 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const ERC20 = require('../lib').ERC20;
+const Moac = require('../lib').Moac;
 const sinon = require('sinon');
 const sandbox = sinon.createSandbox();
 const BigNumber = require('bignumber.js');
@@ -9,78 +10,87 @@ describe('test ERC20', function () {
 
   describe("test constructor", function () {
     it("create successfully", function () {
-      let inst = new ERC20(config.MOCK_NODE, true);
-      inst.init(config.MOAC_ERC20_ADDRESS);
-      expect(inst.gasLimit).to.equal(config.MOCK_GAS_LIMIT);
-      inst.gasLimit = config.MOCK_GAS;
-      expect(inst.gasLimit).to.equal(config.MOCK_GAS);
-      inst = new ERC20(config.MOCK_NODE, false)
-      expect(inst._network).to.equal(101);
+      let moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      let inst = new ERC20();
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
+      expect(inst._address).to.equal(config.MOAC_ERC20_ADDRESS);
     })
   })
 
   describe('test init ERC20 Contract', function () {
     let inst
-    before(() => {
-      inst = new ERC20(config.MOCK_NODE, true);
+    let moac
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      inst = new ERC20();
     })
 
     afterEach(() => {
+      moac.clearChain3();
       inst.close();
     });
 
     it("instance of erc20 contract had been not initialied", function () {
-      inst.init(config.MOAC_ERC20_ADDRESS);
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
       let instance = inst._instance;
       expect(instance).to.not.null;
-      inst.init(config.MOAC_SMART_CONTRACT_ADDRESS);
+      inst.init(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       expect(inst._instance).to.not.null;
       expect(inst._instance).to.not.deep.equal(instance);
     })
 
     it("instance of erc20 contract had been initialied", function () {
-      inst.init(config.MOAC_ERC20_ADDRESS);
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
       let instance = inst._instance;
       expect(instance).to.not.null;
-      inst.init(config.MOAC_ERC20_ADDRESS);
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
       expect(inst._instance).to.not.null;
       expect(inst._instance).to.deep.equal(instance);
     })
 
     it("if the address of moac fingate is invalid", function () {
-      expect(() => inst.init(config.MOAC_SMART_CONTRACT_ADDRESS.substring(1), config.MOAC_ERC20_ADDRESS)).throw(`${config.MOAC_SMART_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
+      expect(() => inst.init(config.MOAC_SMART_CONTRACT_ADDRESS.substring(1), moac)).throw(`${config.MOAC_SMART_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
     it("if the address of erc20 contract is invalid", function () {
-      expect(() => inst.init(config.MOAC_ERC20_ADDRESS.substring(1))).throw(`${config.MOAC_ERC20_ADDRESS.substring(1)} is invalid moac address.`)
+      expect(() => inst.init(config.MOAC_ERC20_ADDRESS.substring(1), moac)).throw(`${config.MOAC_ERC20_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
     it('throws error if init error', function () {
-      let stub = sandbox.stub(inst, "contract");
+      let stub = sandbox.stub(moac, "contract");
       stub.throws(new Error("create moac fingate instance in error"));
-      expect(() => inst.init(config.MOAC_ERC20_ADDRESS)).throw("create moac fingate instance in error");
+      expect(() => inst.init(config.MOAC_ERC20_ADDRESS, moac)).throw("create moac fingate instance in error");
     })
   })
 
   describe("test close", function () {
     it("close", function () {
-      let inst = new ERC20(config.MOCK_NODE, true)
-      inst.init(config.MOAC_ERC20_ADDRESS);
+      let moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      let inst = new ERC20()
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
+      moac.clearChain3();
       inst.close();
       expect(inst._instance).to.null;
-      expect(inst._chain3).to.null;
+      expect(moac._chain3).to.null;
     })
   })
 
   describe("ERC20 basic info test", function () {
     let inst;
-    before(() => {
-      inst = new ERC20(config.MOCK_NODE, true)
-      inst.init(config.MOAC_ERC20_ADDRESS);
+    let moac;
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      inst = new ERC20()
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
     })
 
     afterEach(() => {
       sandbox.restore();
+      moac.clearChain3();
       inst.close();
     })
 
@@ -104,9 +114,12 @@ describe('test ERC20', function () {
 
   describe('test balanceOf', function () {
     let inst;
-    before(() => {
-      inst = new ERC20(config.MOCK_NODE, true)
-      inst.init(config.MOAC_ERC20_ADDRESS);
+    let moac;
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      inst = new ERC20()
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -135,9 +148,12 @@ describe('test ERC20', function () {
 
   describe('test transfer', function () {
     let inst;
-    before(() => {
-      inst = new ERC20(config.MOCK_NODE, true)
-      inst.init(config.MOAC_ERC20_ADDRESS);
+    let moac;
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      inst = new ERC20()
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -145,25 +161,25 @@ describe('test ERC20', function () {
     });
 
     it('transfer successfully', async function () {
-      let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
-      stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
-      stub = sandbox.stub(inst._chain3.currentProvider, "sendAsync");
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
       stub.yields(null, {
         jsonrpc: '2.0',
         id: 1536822829875,
         result: {}
       })
-      stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       stub = sandbox.stub(inst._instance.transfer, "getData");
       stub.returns("0xaa")
       stub = sandbox.stub(inst._instance, "decimals");
       stub.returns(18);
-      let spy = sandbox.spy(inst, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOCK_DEPOSIT_VALUE);
-      expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN);
+      expect(spy.calledOnceWith(config.MOCK_ERC20_TX_SIGN)).to.true;
       expect(hash).to.equal(config.MOCK_HASH)
     })
 
@@ -176,7 +192,7 @@ describe('test ERC20', function () {
     })
 
     it('transfer in error', function (done) {
-      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')
@@ -187,9 +203,12 @@ describe('test ERC20', function () {
 
   describe('test approve/allowance/transferFrom', function () {
     let inst;
-    before(() => {
-      inst = new ERC20(config.MOCK_NODE, true)
-      inst.init(config.MOAC_ERC20_ADDRESS);
+    let moac;
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      inst = new ERC20()
+      inst.init(config.MOAC_ERC20_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -197,23 +216,23 @@ describe('test ERC20', function () {
     });
 
     it('approve successfully', async function () {
-      let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
-      stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
-      stub = sandbox.stub(inst._chain3.currentProvider, "sendAsync");
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
       stub.yields(null, {
         jsonrpc: '2.0',
         id: 1536822829875,
         result: {}
       })
-      stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       stub = sandbox.stub(inst._instance.transfer, "getData");
       stub.returns("0xaa")
       stub = sandbox.stub(inst._instance, "decimals");
       stub.returns(18);
-      let spy = sandbox.spy(inst, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOCK_DEPOSIT_VALUE);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_APPROVE_HASH);
       expect(hash).to.equal(config.MOCK_HASH)
@@ -228,7 +247,7 @@ describe('test ERC20', function () {
     })
 
     it('approve in error', function (done) {
-      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')
@@ -245,30 +264,30 @@ describe('test ERC20', function () {
     })
 
     it('transferFrom successfully', async function () {
-      let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
-      stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
-      stub = sandbox.stub(inst._chain3.currentProvider, "sendAsync");
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
       stub.yields(null, {
         jsonrpc: '2.0',
         id: 1536822829875,
         result: {}
       })
-      stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       stub = sandbox.stub(inst._instance.transferFrom, "getData");
       stub.returns("0xaa")
       stub = sandbox.stub(inst._instance, "decimals");
       stub.returns(18);
-      let spy = sandbox.spy(inst, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TRANSFERFROM_HASH);
       expect(hash).to.equal(config.MOCK_HASH)
     })
 
     it('transferFrom in error', function (done) {
-      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')

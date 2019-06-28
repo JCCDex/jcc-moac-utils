@@ -1,6 +1,6 @@
 "use strict";
 
-const moacFingateABI = [{
+const fingateABI = [{
     constant: false,
     inputs: [{
         name: "_jthash",
@@ -286,4 +286,4 @@ const moacFingateABI = [{
     type: "event"
 }];
 
-export default moacFingateABI;
+export default fingateABI;

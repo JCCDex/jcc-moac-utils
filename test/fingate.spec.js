@@ -1,6 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const Fingate = require('../lib').Fingate;
+const Moac = require('../lib').Moac;
 const sinon = require('sinon');
 const sandbox = sinon.createSandbox();
 const BigNumber = require('bignumber.js');
@@ -9,69 +10,75 @@ describe('test Fingate', function () {
 
   describe("test constructor", function () {
     it("create successfully", function () {
-      let inst = new Fingate(config.MOCK_NODE, true)
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      let moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      expect(moac._node).to.equal(config.MOCK_NODE);
+      let inst = new Fingate()
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       expect(inst._address).to.equal(config.MOAC_SMART_CONTRACT_ADDRESS);
-      expect(inst.gasLimit).to.equal(config.MOCK_GAS_LIMIT);
-      inst.gasLimit = config.MOCK_GAS;
-      expect(inst.gasLimit).to.equal(config.MOCK_GAS);
     })
   })
 
   describe('test initMoacContract', function () {
     let inst;
-    before(() => {
-      inst = new Fingate(config.MOCK_NODE, true)
+    let moac;
+    beforeEach(() => {
+      moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      inst = new Fingate()
     })
     afterEach(() => {
+      moac.clearChain3();
       inst.close();
     })
 
     it("instance of moac contract had been not initialied", function () {
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       let instance = inst.instance;
       expect(instance).to.not.null;
-      expect(inst._chain3).to.not.null;
-      inst.initMoacContract(config.SNRC_CONTRACT_ADDRESS);
+      inst.initMoacContract(config.SNRC_CONTRACT_ADDRESS, moac);
       expect(inst.instance).to.not.null;
       expect(instance).to.not.deep.equal(inst.instance);
     })
 
     it("instance of moac contract had been initialied", function () {
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       let instance = inst.instance;
       expect(instance).to.not.null;
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       expect(inst.instance).to.not.null;
       expect(instance).to.deep.equal(inst.instance);
     })
 
     it("if the address of moac fingate is invalid", function () {
-      expect(() => inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS.substring(1))).throw(`${config.MOAC_SMART_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
+      expect(() => inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS.substring(1), moac)).throw(`${config.MOAC_SMART_CONTRACT_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
     it('throws error if init error', function () {
-      let stub = sandbox.stub(inst, "contract");
+      let stub = sandbox.stub(moac, "contract");
       stub.throws(new Error("create moac fingate instance in error"));
-      expect(() => inst.initMoacContract(config.SNRC_CONTRACT_ADDRESS)).throw("create moac fingate instance in error");
+      expect(() => inst.initMoacContract(config.SNRC_CONTRACT_ADDRESS, moac)).throw("create moac fingate instance in error");
     })
   })
 
   describe("test close", function () {
     it("close", function () {
-      let inst = new Fingate(config.MOCK_NODE, true)
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      let moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      let inst = new Fingate()
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
       inst.close();
       expect(inst._instance).to.null;
-      expect(inst._chain3).to.null;
     })
   })
 
   describe('test depositState', function () {
     let inst;
     before(function () {
-      inst = new Fingate(config.MOCK_NODE, true)
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      let moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      inst = new Fingate()
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -114,7 +121,9 @@ describe('test Fingate', function () {
   describe('test isPending', function () {
     let inst;
     before(function () {
-      inst = new Fingate(config.MOCK_NODE, true)
+      let moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      inst = new Fingate()
     })
 
     it('return true if the deposit state is pending', function () {
@@ -131,9 +140,12 @@ describe('test Fingate', function () {
 
   describe('test deposit', function () {
     let inst;
+    let moac;
     before(function () {
-      inst = new Fingate(config.MOCK_NODE, true)
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      inst = new Fingate()
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -141,21 +153,21 @@ describe('test Fingate', function () {
     })
 
     it('deposit successfully', async function () {
-      let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
-      stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
-      stub = sandbox.stub(inst._chain3.currentProvider, "sendAsync");
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
       stub.yields(null, {
         jsonrpc: '2.0',
         id: 1536822829875,
         result: {}
       })
-      stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       stub = sandbox.stub(inst._instance.deposit, "getData");
       stub.returns("0xaa")
-      let spy = sandbox.spy(inst, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.deposit(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOAC_SECRET);
       expect(spy.args[0][0]).to.equal(config.MOCK_TX_SIGN);
       expect(hash).to.equal(config.MOCK_HASH)
@@ -174,7 +186,7 @@ describe('test Fingate', function () {
     })
 
     it('deposit in error', function (done) {
-      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.deposit(config.JINGTUM_ADDRESS, config.MOCK_DEPOSIT_VALUE, config.MOAC_SECRET).catch(error => {
         expect(error.message).to.equal('request nonce in error')
@@ -185,9 +197,12 @@ describe('test Fingate', function () {
 
   describe('test depositToken', function () {
     let inst;
+    let moac;
     before(function () {
-      inst = new Fingate(config.MOCK_NODE, true)
-      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS);
+      moac = new Moac(config.MOCK_NODE, true)
+      moac.initChain3();
+      inst = new Fingate()
+      inst.initMoacContract(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
     })
 
     afterEach(() => {
@@ -195,21 +210,21 @@ describe('test Fingate', function () {
     })
 
     it('deposit successfully', async function () {
-      let stub = sandbox.stub(inst._chain3.mc, "getGasPrice");
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
-      stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(null, config.MOCK_NONCE);
-      stub = sandbox.stub(inst._chain3.currentProvider, "sendAsync");
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
       stub.yields(null, {
         jsonrpc: '2.0',
         id: 1536822829875,
         result: {}
       })
-      stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       stub = sandbox.stub(inst._instance.deposit, "getData");
       stub.returns("0xaa")
-      let spy = sandbox.spy(inst, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN1);
       expect(hash).to.equal(config.MOCK_HASH)
@@ -232,7 +247,7 @@ describe('test Fingate', function () {
     })
 
     it('deposit in error', function (done) {
-      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
       inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET).catch(error => {
         expect(error.message).to.equal('request nonce in error')

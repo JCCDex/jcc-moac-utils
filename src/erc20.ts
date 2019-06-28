@@ -5,12 +5,11 @@ import Moac from "./moac";
 import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**
- * toolkit of erc20 fingate
+ * toolkit of erc20
  *
  * @class ERC20
- * @extends {Moac}
  */
-class ERC20 extends Moac {
+class ERC20 {
 
     /**
      * instance of erc20 contract
@@ -20,6 +19,15 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     private _instance: chain3.mc.contract;
+
+    /**
+     * instance of moac
+     *
+     * @private
+     * @type {Moac}
+     * @memberof Fingate
+     */
+    private _moac: Moac;
 
     /**
      * contract address of erc20 token
@@ -32,16 +40,14 @@ class ERC20 extends Moac {
 
     /**
      * Creates an instance of ERC20
-     * @param {string} node moac node
-     * @param {boolean} mainnet main net or test net
      * @memberof ERC20
      */
-    constructor(node: string, mainnet: boolean) {
+    constructor() {
         /* istanbul ignore next  */
 
-        super(node, mainnet);
         this._instance = null;
         this._address = null;
+        this._moac = null;
     }
 
     /**
@@ -51,12 +57,12 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     @validate
-    public init(@isValidMoacAddress tokenContractAddress: string) {
+    public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac) {
         try {
-            super.initChain3();
-            if (!super.contractInitialied(this._instance, tokenContractAddress)) {
+            if (!moac.contractInitialied(this._instance, tokenContractAddress)) {
                 this._address = tokenContractAddress;
-                this._instance = this.contract(erc20ABI).at(this._address);
+                this._moac = moac;
+                this._instance = this._moac.contract(erc20ABI).at(this._address);
             }
         } catch (e) {
             throw e;
@@ -69,7 +75,6 @@ class ERC20 extends Moac {
      * @memberof ERC20
      */
     public close() {
-        super.clearChain3();
         this._instance = null;
     }
 
@@ -136,14 +141,14 @@ class ERC20 extends Moac {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this.gasLimit;
-                const gasPrice = await this.getGasPrice(this.minGasPrice);
-                const nonce = await this.getNonce(sender);
+                const gasLimit = this._moac.gasLimit;
+                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
+                const nonce = await this._moac.getNonce(sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
                 const calldata = this._instance.transfer.getData(to, value.toString(10));
-                const tx = this.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                const signedTransaction = this._chain3.signTransaction(tx, secret);
-                const hash = await this.sendRawSignedTransaction(signedTransaction);
+                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const signedTransaction = this._moac.signTransaction(tx, secret);
+                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -165,14 +170,14 @@ class ERC20 extends Moac {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this.gasLimit;
-                const gasPrice = await this.getGasPrice(this.minGasPrice);
-                const nonce = await this.getNonce(sender);
+                const gasLimit = this._moac.gasLimit;
+                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
+                const nonce = await this._moac.getNonce(sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
                 const calldata = this._instance.approve.getData(spender, value.toString(10));
-                const tx = this.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                const signedTransaction = this._chain3.signTransaction(tx, secret);
-                const hash = await this.sendRawSignedTransaction(signedTransaction);
+                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const signedTransaction = this._moac.signTransaction(tx, secret);
+                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -209,14 +214,14 @@ class ERC20 extends Moac {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this.gasLimit;
-                const gasPrice = await this.getGasPrice(this.minGasPrice);
-                const nonce = await this.getNonce(sender);
+                const gasLimit = this._moac.gasLimit;
+                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
+                const nonce = await this._moac.getNonce(sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
                 const calldata = this._instance.transferFrom.getData(from, to, value.toString(10));
-                const tx = this.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
-                const signedTransaction = this._chain3.signTransaction(tx, secret);
-                const hash = await this.sendRawSignedTransaction(signedTransaction);
+                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const signedTransaction = this._moac.signTransaction(tx, secret);
+                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
