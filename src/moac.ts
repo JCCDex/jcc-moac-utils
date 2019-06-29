@@ -228,7 +228,7 @@ export default class Moac {
         let balance: string;
         try {
             const bnBalance = await this._chain3.mc.getBalance(address);
-            balance = this._chain3.fromSha(bnBalance).toFormat(18);
+            balance = this._chain3.fromSha(bnBalance).toString(10);
         } catch (error) {
             balance = "0";
         }
