@@ -111,7 +111,7 @@
 */
 ```
 
-### clearChain3
+### destroyChain3
 
 ```javascript
 /**
@@ -252,7 +252,7 @@
 */
 ```
 
-### initMoacContract
+### init
 
 ```javascript
 /**
@@ -263,11 +263,11 @@
 */
 ```
 
-### close
+### destroy
 
 ```javascript
 /**
- * close chain3 & destroy instance of contract
+ * destroy chain3 & destroy instance of contract
  *
  * @memberof Fingate
 */

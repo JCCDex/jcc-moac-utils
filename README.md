@@ -40,9 +40,11 @@ npm i jcc-moac-utils
 
 ## Usage
 
+Breaking change since 0.1.8, if you used 0.1.7 see [this demo](https://github.com/JCCDex/jcc-moac-utils/blob/master/docs/demo_below_0.1.7.md).
+
 ```javascript
 // demo
-import { Fingate } from "jcc-moac-utils";
+import { Fingate, Moac, ERC20 } from "jcc-moac-utils";
 
 // Moac node
 const node = 'https://moac1ma17f1.jccdex.cn';
@@ -67,18 +69,21 @@ const scAddress = '0x66c9b619215db959ec137ede6b96f3fa6fd35a8a';
 
 try {
     // deposit 1 MOAC
-    const inst = new Fingate(node, production);
-    inst.initMoacContract(scAddress);
+    const moac = new Moac(node, production);
+    moac.initChain3();
+
+    const fingateInstance = new Fingate();
+    fingateInstance.init(scAddress, moac);
 
     // Check if has pending order, if has don't call the next deposit api
-    const state = await inst.depositState(moacAddress);
+    const state = await fingateInstance.depositState(moacAddress);
 
-    if (inst.isPending(state)) {
+    if (fingateInstance.isPending(state)) {
         return;
     }
 
     // start to transfer 1 MOAC to fingate address
-    const hash = await inst.deposit(swtcAddress, amount, moacSecret);
+    const hash = await fingateInstance.deposit(swtcAddress, amount, moacSecret);
     console.log(hash);
 } catch (error) {
     console.log(error);
@@ -92,22 +97,27 @@ try {
     // CKM contract address
     const ckmContractAddress = "0x4d206d18fd036423aa74815511904a2a40e25fb1";
 
-    const inst = new Fingate(node, production);
+    const moac = new Moac(node, production);
+    moac.initChain3();
 
-    inst.initMoacContract(scAddress);
+    const fingateInstance = new Fingate();
+    fingateInstance.init(scAddress, moac);
+
+    const erc20Instance = new ERC20();
+    erc20Instance.init(ckmContractAddress, moac);
 
     // Check if has pending order, if has don't call transfer api
-    const state = await inst.depositState(moacAddress, ckmContractAddress);
+    const state = await fingateInstance.depositState(moacAddress, ckmContractAddress);
 
     if (inst.isPending(state)) {
         return;
     }
 
     // The first step to transfer 1 CKM to fingate address.
-    const transferHash = await inst.transfer(amount, moacSecret);
+    const transferHash = await erc20Instance.transfer(moacSecret, scAddress, amount);
 
     // The next step to submit previous transfer hash.
-    const depositHash = await inst.depositToken(swtcAddress, ckmContractAddress, 18, amount, transferHash, moacSecret);
+    const depositHash = await fingateInstance.depositToken(swtcAddress, ckmContractAddress, erc20Instance.decimals(), amount, transferHash, moacSecret);
     console.log(depositHash);
 
     // Warning:
@@ -119,3 +129,7 @@ try {
 }
 
 ```
+
+## API
+
+see [API.md](https://github.com/JCCDex/jcc-moac-utils/blob/master/docs/API.md)

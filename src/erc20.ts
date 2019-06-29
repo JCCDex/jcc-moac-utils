@@ -74,7 +74,7 @@ class ERC20 {
      *
      * @memberof ERC20
      */
-    public close() {
+    public destroy() {
         this._instance = null;
     }
 
@@ -120,7 +120,7 @@ class ERC20 {
         try {
             const bnBalance = await this._instance.balanceOf(address);
             const decimals = this._instance.decimals();
-            balance = bnBalance.dividedBy(10 ** decimals).toFormat(decimals);
+            balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
             balance = "0";
         }

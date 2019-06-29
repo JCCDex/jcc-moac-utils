@@ -198,7 +198,7 @@ export default class Moac {
      *
      * @memberof Moac
      */
-    public clearChain3() {
+    public destroyChain3() {
         try {
             this._chain3.setProvider(null);
         } catch (error) {

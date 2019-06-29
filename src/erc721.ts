@@ -78,7 +78,7 @@ class ERC721 {
      *
      * @memberof ERC721
      */
-    public close() {
+    public destroy() {
         this._instance = null;
     }
 

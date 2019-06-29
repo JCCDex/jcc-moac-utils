@@ -68,7 +68,7 @@ class Fingate {
      * @memberof Fingate
      */
     @validate
-    public initMoacContract(@isValidMoacAddress fingateAddress: string, moac: Moac) {
+    public init(@isValidMoacAddress fingateAddress: string, moac: Moac) {
         try {
             if (!moac.contractInitialied(this._instance, fingateAddress)) {
                 this._address = fingateAddress;
@@ -85,7 +85,7 @@ class Fingate {
      *
      * @memberof Fingate
      */
-    public close() {
+    public destroy() {
         this._instance = null;
     }
 
