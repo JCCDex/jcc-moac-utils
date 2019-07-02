@@ -61,6 +61,15 @@ describe('test moac', function() {
     })
   })
 
+  describe("test prefix0x", function() {
+    it("return itself", function() {
+      expect(Moac.prefix0x("0x")).to.equal("0x");
+    })
+    it("return ''", function() {
+      expect(Moac.prefix0x("")).to.equal("");
+    })
+  })
+
   describe('test getAddress', function() {
 
     it('return right address if the moac secret is valid', function() {

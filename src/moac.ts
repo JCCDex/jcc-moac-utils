@@ -262,6 +262,7 @@ export default class Moac {
                     if (pendings) {
                         const keys = Object.keys(pendings);
                         for (const index in keys) {
+                            /* istanbul ignore else  */
                             if (keys.hasOwnProperty(index)) {
                                 const key = keys[index];
                                 if (key.toLowerCase() === address.toLowerCase()) {
