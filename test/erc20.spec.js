@@ -34,20 +34,20 @@ describe('test ERC20', function() {
 
     it("instance of erc20 contract had been not initialied", function() {
       inst.init(config.MOAC_ERC20_ADDRESS, moac);
-      let instance = inst._instance;
+      let instance = inst._contract;
       expect(instance).to.not.null;
       inst.init(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
-      expect(inst._instance).to.not.null;
-      expect(inst._instance).to.not.deep.equal(instance);
+      expect(inst._contract).to.not.null;
+      expect(inst._contract).to.not.deep.equal(instance);
     })
 
     it("instance of erc20 contract had been initialied", function() {
       inst.init(config.MOAC_ERC20_ADDRESS, moac);
-      let instance = inst._instance;
+      let instance = inst._contract;
       expect(instance).to.not.null;
       inst.init(config.MOAC_ERC20_ADDRESS, moac);
-      expect(inst._instance).to.not.null;
-      expect(inst._instance).to.deep.equal(instance);
+      expect(inst._contract).to.not.null;
+      expect(inst._contract).to.deep.equal(instance);
     })
 
     it("if the address of moac fingate is invalid", function() {
@@ -73,7 +73,7 @@ describe('test ERC20', function() {
       inst.init(config.MOAC_ERC20_ADDRESS, moac);
       moac.destroyChain3();
       inst.destroy();
-      expect(inst._instance).to.null;
+      expect(inst._contract).to.null;
       expect(moac._chain3).to.null;
     })
   })
@@ -95,17 +95,17 @@ describe('test ERC20', function() {
     })
 
     it("Basic infomation", function() {
-      let stub = sandbox.stub(inst._instance, "name");
+      let stub = sandbox.stub(inst._contract, "name");
       stub.returns("JC Coin")
       let name = inst.name();
       expect(name).to.equal('JC Coin');
 
-      stub = sandbox.stub(inst._instance, "symbol");
+      stub = sandbox.stub(inst._contract, "symbol");
       stub.returns("JCC")
       let symbol = inst.symbol();
       expect(symbol).to.equal('JCC');
 
-      stub = sandbox.stub(inst._instance, "decimals");
+      stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18)
       let decimals = inst.decimals();
       expect(decimals).to.equal(18);
@@ -127,9 +127,9 @@ describe('test ERC20', function() {
     })
 
     it('get balance successfully', async function() {
-      let stub = sandbox.stub(inst._instance, "balanceOf");
+      let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.resolves(new BigNumber(1e19));
-      let s = sandbox.stub(inst._instance, "decimals");
+      let s = sandbox.stub(inst._contract, "decimals");
       s.returns(18);
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
       let args = stub.getCall(0).args;
@@ -139,7 +139,7 @@ describe('test ERC20', function() {
     })
 
     it('get balance in error', async function() {
-      let stub = sandbox.stub(inst._instance, "balanceOf");
+      let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.rejects(new Error('address is invalid'));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
       expect(balance).to.equal('0');
@@ -173,9 +173,9 @@ describe('test ERC20', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.transfer, "getData");
+      stub = sandbox.stub(inst._contract.transfer, "getData");
       stub.returns("0xaa")
-      stub = sandbox.stub(inst._instance, "decimals");
+      stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOCK_DEPOSIT_VALUE);
@@ -228,9 +228,9 @@ describe('test ERC20', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.transfer, "getData");
+      stub = sandbox.stub(inst._contract.transfer, "getData");
       stub.returns("0xaa")
-      stub = sandbox.stub(inst._instance, "decimals");
+      stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOCK_DEPOSIT_VALUE);
@@ -256,7 +256,7 @@ describe('test ERC20', function() {
     })
 
     it('get allowance', function() {
-      let stub = sandbox.stub(inst._instance, "allowance");
+      let stub = sandbox.stub(inst._contract, "allowance");
       stub.returns(new BigNumber(config.MOCK_DEPOSIT_VALUE));
 
       let amount = inst.allowance(config.MOAC_ADDRESS, config.MOAC_SPENDER_ADDRESS);
@@ -276,9 +276,9 @@ describe('test ERC20', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.transferFrom, "getData");
+      stub = sandbox.stub(inst._contract.transferFrom, "getData");
       stub.returns("0xaa")
-      stub = sandbox.stub(inst._instance, "decimals");
+      stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE);

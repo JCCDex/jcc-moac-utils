@@ -18,7 +18,7 @@ class ERC20 {
      * @type {chain3.mc.contract}
      * @memberof ERC20
      */
-    private _instance: chain3.mc.contract;
+    private _contract: chain3.mc.contract;
 
     /**
      * instance of moac
@@ -45,7 +45,7 @@ class ERC20 {
     constructor() {
         /* istanbul ignore next  */
 
-        this._instance = null;
+        this._contract = null;
         this._address = null;
         this._moac = null;
     }
@@ -59,10 +59,10 @@ class ERC20 {
     @validate
     public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac) {
         try {
-            if (!moac.contractInitialied(this._instance, tokenContractAddress)) {
+            if (!moac.contractInitialied(this._contract, tokenContractAddress)) {
                 this._address = tokenContractAddress;
                 this._moac = moac;
-                this._instance = this._moac.contract(erc20ABI).at(this._address);
+                this._contract = this._moac.contract(erc20ABI).at(this._address);
             }
         } catch (e) {
             throw e;
@@ -75,7 +75,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public destroy() {
-        this._instance = null;
+        this._contract = null;
     }
 
     /**
@@ -85,7 +85,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public name(): string {
-        return this._instance.name();
+        return this._contract.name();
     }
 
     /**
@@ -95,7 +95,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public symbol(): string {
-        return this._instance.symbol();
+        return this._contract.symbol();
     }
 
     /**
@@ -105,7 +105,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public decimals(): number {
-        return this._instance.decimals();
+        return this._contract.decimals();
     }
 
     /**
@@ -118,8 +118,8 @@ class ERC20 {
     public async balanceOf(address: string): Promise<string> {
         let balance: string;
         try {
-            const bnBalance = await this._instance.balanceOf(address);
-            const decimals = this._instance.decimals();
+            const bnBalance = await this._contract.balanceOf(address);
+            const decimals = this._contract.decimals();
             balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
             balance = "0";
@@ -144,9 +144,9 @@ class ERC20 {
                 const gasLimit = this._moac.gasLimit;
                 const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
                 const nonce = await this._moac.getNonce(sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
-                const calldata = this._instance.transfer.getData(to, value.toString(10));
-                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const calldata = this._contract.transfer.getData(to, value.toString(10));
+                const tx = this._moac.getTx(sender, this._contract.address, nonce, gasLimit, gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
@@ -173,9 +173,9 @@ class ERC20 {
                 const gasLimit = this._moac.gasLimit;
                 const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
                 const nonce = await this._moac.getNonce(sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
-                const calldata = this._instance.approve.getData(spender, value.toString(10));
-                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const calldata = this._contract.approve.getData(spender, value.toString(10));
+                const tx = this._moac.getTx(sender, this._contract.address, nonce, gasLimit, gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
@@ -196,7 +196,7 @@ class ERC20 {
      */
     @validate
     public allowance(@isValidMoacAddress owner: string, @isValidMoacAddress spender: string): string {
-        return this._instance.allowance(owner, spender);
+        return this._contract.allowance(owner, spender);
     }
 
     /**
@@ -217,9 +217,9 @@ class ERC20 {
                 const gasLimit = this._moac.gasLimit;
                 const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
                 const nonce = await this._moac.getNonce(sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._instance.decimals());
-                const calldata = this._instance.transferFrom.getData(from, to, value.toString(10));
-                const tx = this._moac.getTx(sender, this._instance.address, nonce, gasLimit, gasPrice, "0", calldata);
+                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const calldata = this._contract.transferFrom.getData(from, to, value.toString(10));
+                const tx = this._moac.getTx(sender, this._contract.address, nonce, gasLimit, gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);

@@ -39,20 +39,20 @@ describe('test ERC721', function() {
 
     it("instance of erc721 contract had been not initialied", function() {
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
-      let instance = inst._instance;
+      let instance = inst._contract;
       expect(instance).to.not.null;
       inst.init(config.MOAC_SMART_CONTRACT_ADDRESS, moac);
-      expect(inst._instance).to.not.null;
-      expect(inst._instance).to.not.deep.equal(instance);
+      expect(inst._contract).to.not.null;
+      expect(inst._contract).to.not.deep.equal(instance);
     })
 
     it("instance of erc721 contract had been initialied", function() {
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
-      let instance = inst._instance;
+      let instance = inst._contract;
       expect(instance).to.not.null;
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
-      expect(inst._instance).to.not.null;
-      expect(inst._instance).to.deep.equal(instance);
+      expect(inst._contract).to.not.null;
+      expect(inst._contract).to.deep.equal(instance);
     })
 
     it("if the address of erc721 contract is invalid", function() {
@@ -74,7 +74,7 @@ describe('test ERC721', function() {
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
       inst.destroy();
       moac.destroyChain3();
-      expect(inst._instance).to.null;
+      expect(inst._contract).to.null;
       expect(moac._chain3).to.null;
     })
   })
@@ -95,17 +95,17 @@ describe('test ERC721', function() {
     });
 
     it("Basic infomation", function() {
-      let stub = sandbox.stub(inst._instance, "name");
+      let stub = sandbox.stub(inst._contract, "name");
       stub.returns("Golden Coin Token")
       let name = inst.name();
       expect(name).to.equal(config.MOAC_ERC721_NAME);
 
-      stub = sandbox.stub(inst._instance, "symbol");
+      stub = sandbox.stub(inst._contract, "symbol");
       stub.returns("GCT")
       let symbol = inst.symbol();
       expect(symbol).to.equal(config.MOAC_ERC721_SYMBOL);
 
-      stub = sandbox.stub(inst._instance, "tokenURI");
+      stub = sandbox.stub(inst._contract, "tokenURI");
       stub.returns("https://jccdex.cn/")
       let tokenUri = inst.tokenURI();
       expect(tokenUri).to.equal(config.MOAC_ERC721_TOKENURI);
@@ -140,7 +140,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.mint, "getData");
+      stub = sandbox.stub(inst._contract.mint, "getData");
       stub.returns(config.MOCK_ERC721_TX_MINT_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
@@ -161,7 +161,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.burn, "getData");
+      stub = sandbox.stub(inst._contract.burn, "getData");
       stub.returns(config.MOCK_ERC721_TX_BURN_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.burn(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
@@ -170,7 +170,7 @@ describe('test ERC721', function() {
     })
 
     it('get balance successfully', async function() {
-      let stub = sandbox.stub(inst._instance, "balanceOf");
+      let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.resolves(new BigNumber(3));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
       let args = stub.getCall(0).args;
@@ -198,7 +198,7 @@ describe('test ERC721', function() {
     })
 
     it('throws error if balance error', async function() {
-      let stub = sandbox.stub(inst._instance, "balanceOf");
+      let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.throws(new Error("balance error"));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
       let args = stub.getCall(0).args;
@@ -236,7 +236,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.mint, "getData");
+      stub = sandbox.stub(inst._contract.mint, "getData");
       stub.returns(config.MOCK_ERC721_TX_MINT_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
@@ -245,7 +245,7 @@ describe('test ERC721', function() {
     })
 
     it('get ownerOf successfully', async function() {
-      let stub = sandbox.stub(inst._instance, "ownerOf");
+      let stub = sandbox.stub(inst._contract, "ownerOf");
       stub.resolves(config.MOAC_TO_ADDRESS);
       let owner = await inst.ownerOf(config.MOAC_ERC721_TOKEN1_ID);
       let args = stub.getCall(0).args;
@@ -283,7 +283,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.mint, "getData");
+      stub = sandbox.stub(inst._contract.mint, "getData");
       stub.returns(config.MOCK_ERC721_TX_MINT_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
@@ -304,7 +304,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.safeTransferFrom, "getData");
+      stub = sandbox.stub(inst._contract.safeTransferFrom, "getData");
       stub.returns(config.MOCK_ERC721_TX_SAFETRANSFERFROM_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.safeTransferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
@@ -325,7 +325,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.safeTransferFrom, "getData");
+      stub = sandbox.stub(inst._contract.safeTransferFrom, "getData");
       stub.returns(config.MOCK_ERC721_TX_SAFETRANSFERFROM_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.safeTransferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, "0xaa");
@@ -355,7 +355,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      stub = sandbox.stub(inst._instance.transferFrom, "getData");
+      stub = sandbox.stub(inst._contract.transferFrom, "getData");
       stub.returns(config.MOCK_ERC721_TX_SAFETRANSFERFROM_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
@@ -401,7 +401,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      // stub = sandbox.stub(inst._instance.approve, "getData");
+      // stub = sandbox.stub(inst._contract.approve, "getData");
       // stub.returns(config.MOCK_ERC721_TX_APPROVED_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.approve(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
@@ -431,7 +431,7 @@ describe('test ERC721', function() {
       })
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      // stub = sandbox.stub(inst._instance.approve, "getData");
+      // stub = sandbox.stub(inst._contract.approve, "getData");
       // stub.returns(config.MOCK_ERC721_TX_APPROVED_CALLDATA);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
       let hash = await inst.setApprovalForAll(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, true);
@@ -449,7 +449,7 @@ describe('test ERC721', function() {
     })
 
     it('get getApproved successfully', async function() {
-      let stub = sandbox.stub(inst._instance, "getApproved");
+      let stub = sandbox.stub(inst._contract, "getApproved");
       stub.resolves(config.MOAC_TO_ADDRESS);
       let approved = await inst.getApproved(config.MOAC_ERC721_TOKEN1_ID);
       let args = stub.getCall(0).args;
@@ -459,7 +459,7 @@ describe('test ERC721', function() {
     })
 
     it('get isApprovedForAll successfully', async function() {
-      let stub = sandbox.stub(inst._instance, "isApprovedForAll");
+      let stub = sandbox.stub(inst._contract, "isApprovedForAll");
       stub.resolves(false);
       let ret = await inst.isApprovedForAll(config.MOAC_ADDRESS, config.MOAC_TO_ADDRESS);
       let args = stub.getCall(0).args;
@@ -485,7 +485,7 @@ describe('test ERC721', function() {
     });
 
     it('test totalSupply', async function() {
-      let stub = sandbox.stub(inst._instance, "totalSupply");
+      let stub = sandbox.stub(inst._contract, "totalSupply");
       stub.resolves(new BigNumber(3));
       let total = await inst.totalSupply();
       let args = stub.getCall(0).args;
@@ -494,7 +494,7 @@ describe('test ERC721', function() {
     })
 
     it('test tokenByIndex', async function() {
-      let stub = sandbox.stub(inst._instance, "tokenByIndex");
+      let stub = sandbox.stub(inst._contract, "tokenByIndex");
       stub.resolves(new BigNumber(config.MOAC_ERC721_TOKEN1_ID));
       let tokenId = await inst.tokenByIndex('2');
       let args = stub.getCall(0).args;
@@ -503,7 +503,7 @@ describe('test ERC721', function() {
     })
 
     it('test tokenOfOwnerByIndex', async function() {
-      let stub = sandbox.stub(inst._instance, "tokenOfOwnerByIndex");
+      let stub = sandbox.stub(inst._contract, "tokenOfOwnerByIndex");
       stub.resolves(new BigNumber(config.MOAC_ERC721_TOKEN2_ID));
       let tokenId = await inst.tokenOfOwnerByIndex(config.MOAC_ADDRESS, "2");
       let args = stub.getCall(0).args;

@@ -40,7 +40,7 @@ npm i jcc-moac-utils
 
 ## Usage
 
-Breaking change since 0.1.8, if you used 0.1.7 see [this demo](https://github.com/JCCDex/jcc-moac-utils/blob/master/docs/demo_below_0.1.7.md).
+Breaking changes since 0.1.8, if you used 0.1.7 see [this demo](https://github.com/JCCDex/jcc-moac-utils/blob/master/docs/demo_below_0.1.8.md).
 
 ```javascript
 // demo

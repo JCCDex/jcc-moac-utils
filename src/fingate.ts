@@ -20,7 +20,7 @@ class Fingate {
      * @type {chain3.mc.contract}
      * @memberof Fingate
      */
-    private _instance: chain3.mc.contract;
+    private _contract: chain3.mc.contract;
 
     /**
      * instance of moac
@@ -45,20 +45,20 @@ class Fingate {
      * @memberof Fingate
      */
     constructor() {
-        this._instance = null;
+        this._contract = null;
         this._address = null;
         this._moac = null;
     }
 
     /**
-     * get _instance
+     * get _contract
      *
      * @readonly
      * @type {chain3.mc.contract}
      * @memberof Fingate
      */
     public get instance(): chain3.mc.contract {
-        return this._instance;
+        return this._contract;
     }
 
     /**
@@ -70,10 +70,10 @@ class Fingate {
     @validate
     public init(@isValidMoacAddress fingateAddress: string, moac: Moac) {
         try {
-            if (!moac.contractInitialied(this._instance, fingateAddress)) {
+            if (!moac.contractInitialied(this._contract, fingateAddress)) {
                 this._address = fingateAddress;
                 this._moac = moac;
-                this._instance = this._moac.contract(fingateABI).at(this._address);
+                this._contract = this._moac.contract(fingateABI).at(this._address);
             }
         } catch (e) {
             throw e;
@@ -86,7 +86,7 @@ class Fingate {
      * @memberof Fingate
      */
     public destroy() {
-        this._instance = null;
+        this._contract = null;
     }
 
     /**
@@ -102,7 +102,7 @@ class Fingate {
         return new Promise((resolve, reject) => {
             try {
                 address = Moac.prefix0x(address);
-                const state = this._instance.depositState(contractAddress, address);
+                const state = this._contract.depositState(contractAddress, address);
                 return resolve(state);
             } catch (error) {
                 return reject(error);
