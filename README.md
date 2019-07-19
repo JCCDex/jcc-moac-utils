@@ -6,7 +6,6 @@ Toolkit of crossing chain from [MOAC chain](https://www.moac.io/)  to [SWTC chai
 [![Build Status](https://travis-ci.com/JCCDex/jcc-moac-utils.svg?branch=master)](https://travis-ci.com/JCCDex/jcc-moac-utils)
 [![Coverage Status](https://coveralls.io/repos/github/JCCDex/jcc-moac-utils/badge.svg?branch=master)](https://coveralls.io/github/JCCDex/jcc-moac-utils?branch=master)
 [![Dependencies](https://img.shields.io/david/JCCDex/jcc-moac-utils.svg?style=flat-square)](https://david-dm.org/JCCDex/jcc-moac-utils)
-[![DevDependencies](https://img.shields.io/david/dev/JCCDex/jcc-moac-utils.svg?style=flat-square)](https://david-dm.org/JCCDex/jcc-moac-utils?type=dev)
 [![npm downloads](https://img.shields.io/npm/dm/jcc-moac-utils.svg)](http://npm-stat.com/charts.html?package=jcc-moac-utils)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
