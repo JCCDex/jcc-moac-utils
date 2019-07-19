@@ -20,6 +20,12 @@ describe('test ERC721', function() {
       inst = new ERC721()
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
       expect(inst._address).to.equal(config.MOAC_ERC20_ADDRESS);
+      expect(inst._burnGasLimit).to.equal(config.MOCK_GAS_LIMIT);
+      expect(inst._mintGasLimit).to.equal(config.MOCK_GAS_LIMIT);
+      inst.burnGasLimit = 1;
+      inst.mintGasLimit = 2;
+      expect(inst._burnGasLimit).to.equal(1);
+      expect(inst._mintGasLimit).to.equal(2);
     })
   })
 

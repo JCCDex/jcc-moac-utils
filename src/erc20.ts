@@ -43,8 +43,6 @@ class ERC20 {
      * @memberof ERC20
      */
     constructor() {
-        /* istanbul ignore next  */
-
         this._contract = null;
         this._address = null;
         this._moac = null;
@@ -112,7 +110,7 @@ class ERC20 {
      * request balance of erc20 token
      *
      * @param {string} address moac address
-     * @returns {Promise<string>} resolve '' if request failed, the precision rely on decimal function
+     * @returns {Promise<string>} resolve '0' if request failed, the precision rely on decimal function
      * @memberof ERC20
      */
     public async balanceOf(address: string): Promise<string> {
@@ -157,7 +155,7 @@ class ERC20 {
     }
 
     /**
-     * transfer erc20 token
+     * approve erc20 token
      *
      * @param {string} secret moac secret of sender address
      * @param {string} spender address of spender
