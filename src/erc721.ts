@@ -49,24 +49,6 @@ class ERC721 {
     }
 
     /**
-     * set _burnGasLimit
-     *
-     * @memberof ERC721
-     */
-    public set burnGasLimit(v: number) {
-        this._burnGasLimit = v;
-    }
-
-    /**
-     * set _mintGasLimit
-     *
-     * @memberof ERC721
-     */
-    public set mintGasLimit(v: number) {
-        this._mintGasLimit = v;
-    }
-
-    /**
      * init instance of erc721 contract
      *
      * @param {string} tokenContractAddress contract address of erc721 token
