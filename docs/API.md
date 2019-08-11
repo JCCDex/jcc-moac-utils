@@ -186,6 +186,42 @@
 */
 ```
 
+### getBlock
+
+```javascript
+/**
+ * request info of block
+ *
+ * @param {number|string} block number or string latest
+ * @returns {Promise<any>} resolve null if request failed, return block info
+ * @memberof Moac
+ */
+```
+
+### getTransaction
+
+```javascript
+/**
+ * get transaction
+ *
+ * @param {string} hash transaction hash
+ * @returns {any} null or transaction object
+ * @memberof Moac
+ */
+```
+
+### getTransactionReceipt
+
+```javascript
+/**
+ * get transaction receipt
+ *
+ * @param {string} hash transaction hash
+ * @returns {any} null or transaction receipt object
+ * @memberof Moac
+ */
+```
+
 ### signTransaction
 
 ```javascript

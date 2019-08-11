@@ -218,6 +218,23 @@ export default class Moac {
     }
 
     /**
+     * request info of block
+     *
+     * @param {number|string} block number or string latest
+     * @returns {Promise<any>} resolve null if request failed, return block info
+     * @memberof Moac
+     */
+    public async getBlock(block: number | string): Promise<any> {
+        let block_info;
+        try {
+            block_info = await this._chain3.mc.getBlock(block);
+        } catch (error) {
+            block_info = null;
+        }
+        return block_info;
+    }
+
+    /**
      * request balance of moac
      *
      * @param {string} address moac address
@@ -316,7 +333,7 @@ export default class Moac {
         if (!calldata) {
             calldata = "0x00";
         }
-        const tx = {
+        var tx = {
             chainId: "0x" + this._network.toString(16),
             data: calldata,
             from,
@@ -329,6 +346,9 @@ export default class Moac {
             value: this._chain3.intToHex(this._chain3.toSha(value)),
             via: "0x"
         };
+        if (!to) {
+            delete tx.to;
+        }
         return tx;
     }
 

@@ -3,7 +3,7 @@ export interface IMoacTransaction {
     nonce: string;
     gasPrice: string;
     gasLimit: string;
-    to: string;
+    to?: string;
     value: string;
     data: string;
     chainId: string;
