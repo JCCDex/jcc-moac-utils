@@ -420,4 +420,27 @@ export default class Moac {
     public contractInitialied(contract: chain3.mc.contract, address: string): boolean {
         return contract && contract.address === address;
     }
+
+    /**
+     * check and set transaction options
+     *
+     * @public
+     * @param {any} options
+     * @param {number} gasLimit
+     * @param {string} gasPrice
+     * @param {number} nonce
+     * @returns {any} options
+     * @memberof Moac
+     */
+    public async getOptions(options: any, sender: string): Promise<any> {
+        const gasLimit = this.gasLimit;
+        const gasPrice = await this.getGasPrice(this.minGasPrice);
+        const nonce = await this.getNonce(sender);
+
+        options.gasLimit = options.gasLimit || gasLimit;
+        options.gasPrice = options.gasPrice || gasPrice;
+        options.nonce = options.nonce || nonce;
+
+        return options;
+    }
 }

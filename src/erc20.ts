@@ -142,14 +142,7 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.transfer.getData(to, value.toString(10));
@@ -179,14 +172,7 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.approve.getData(spender, value.toString(10));
@@ -230,14 +216,7 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.transferFrom.getData(from, to, value.toString(10));

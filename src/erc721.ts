@@ -126,14 +126,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = this._contract.mint.getData(to, (new BigNumber(tokenId)), uri);
                 // console.log("calldata:", calldata);
@@ -163,14 +156,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = this._contract.burn.getData(owner, (new BigNumber(tokenId)));
                 // console.log("calldata:", calldata);
@@ -230,14 +216,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
 
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = !data ? this._contract.safeTransferFrom.getData(sender, to, tokenId) : this._contract.safeTransferFrom.getData(sender, to, tokenId, data);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
@@ -265,14 +244,8 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
 
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = this._contract.transferFrom.getData(sender, to, tokenId);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
@@ -300,14 +273,8 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
 
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = this._contract.approve.getData(approved, tokenId);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
@@ -335,14 +302,8 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(sender);
 
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, sender);
 
                 const calldata = this._contract.setApprovalForAll.getData(operator, approved);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);

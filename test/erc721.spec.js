@@ -6,10 +6,10 @@ const sinon = require('sinon');
 const sandbox = sinon.createSandbox();
 const BigNumber = require('bignumber.js');
 const config = require("./config");
-describe('test ERC721', function() {
+describe('test ERC721', function () {
 
-  describe("test constructor", function() {
-    it("create successfully", function() {
+  describe("test constructor", function () {
+    it("create successfully", function () {
       let moac = new Moac(config.MOCK_NODE, true);
       moac.initChain3();
       let inst = new ERC721();
@@ -20,16 +20,10 @@ describe('test ERC721', function() {
       inst = new ERC721()
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
       expect(inst._address).to.equal(config.MOAC_ERC20_ADDRESS);
-      expect(inst._burnGasLimit).to.equal(config.MOCK_GAS_LIMIT);
-      expect(inst._mintGasLimit).to.equal(config.MOCK_GAS_LIMIT);
-      inst.burnGasLimit = 1;
-      inst.mintGasLimit = 2;
-      expect(inst._burnGasLimit).to.equal(1);
-      expect(inst._mintGasLimit).to.equal(2);
     })
   })
 
-  describe('test init ERC721 Contract', function() {
+  describe('test init ERC721 Contract', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -43,7 +37,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it("instance of erc721 contract had been not initialied", function() {
+    it("instance of erc721 contract had been not initialied", function () {
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
       let instance = inst._contract;
       expect(instance).to.not.null;
@@ -52,7 +46,7 @@ describe('test ERC721', function() {
       expect(inst._contract).to.not.deep.equal(instance);
     })
 
-    it("instance of erc721 contract had been initialied", function() {
+    it("instance of erc721 contract had been initialied", function () {
       inst.init(config.MOAC_ERC721_ADDRESS, moac);
       let instance = inst._contract;
       expect(instance).to.not.null;
@@ -61,19 +55,19 @@ describe('test ERC721', function() {
       expect(inst._contract).to.deep.equal(instance);
     })
 
-    it("if the address of erc721 contract is invalid", function() {
+    it("if the address of erc721 contract is invalid", function () {
       expect(() => inst.init(config.MOAC_ERC721_ADDRESS.substring(1), moac)).throw(`${config.MOAC_ERC721_ADDRESS.substring(1)} is invalid moac address.`)
     })
 
-    it('throws error if init error', function() {
+    it('throws error if init error', function () {
       let stub = sandbox.stub(moac, "contractInitialied");
       stub.throws(new Error("create moac instance in error"));
       expect(() => inst.init(config.MOAC_ERC721_ADDRESS, moac)).throw("create moac instance in error");
     })
   })
 
-  describe("test close", function() {
-    it("close", function() {
+  describe("test close", function () {
+    it("close", function () {
       let moac = new Moac(config.MOCK_NODE, true);
       moac.initChain3();
       let inst = new ERC721()
@@ -85,7 +79,7 @@ describe('test ERC721', function() {
     })
   })
 
-  describe("ERC721 basic info test", function() {
+  describe("ERC721 basic info test", function () {
     let inst
     let moac
     beforeEach(() => {
@@ -100,7 +94,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it("Basic infomation", function() {
+    it("Basic infomation", function () {
       let stub = sandbox.stub(inst._contract, "name");
       stub.returns("Golden Coin Token")
       let name = inst.name();
@@ -118,7 +112,7 @@ describe('test ERC721', function() {
     })
   })
 
-  describe('test balanceOf', function() {
+  describe('test balanceOf', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -133,7 +127,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it('mint successfully', async function() {
+    it('mint successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -154,7 +148,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
     })
 
-    it('burn successfully', async function() {
+    it('burn successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -175,7 +169,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_BURN)).to.true;
     })
 
-    it('get balance successfully', async function() {
+    it('get balance successfully', async function () {
       let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.resolves(new BigNumber(3));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
@@ -185,7 +179,7 @@ describe('test ERC721', function() {
       expect(balance.toString()).to.equal('3');
     })
 
-    it('throws error if mint error', function(done) {
+    it('throws error if mint error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("mint error"));
       inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI).catch(err => {
@@ -194,7 +188,7 @@ describe('test ERC721', function() {
       });
     })
 
-    it('throws error if burn error', function(done) {
+    it('throws error if burn error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("burn error"));
       inst.burn(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID).catch(err => {
@@ -203,7 +197,7 @@ describe('test ERC721', function() {
       });
     })
 
-    it('throws error if balance error', async function() {
+    it('throws error if balance error', async function () {
       let stub = sandbox.stub(inst._contract, "balanceOf");
       stub.throws(new Error("balance error"));
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
@@ -214,7 +208,7 @@ describe('test ERC721', function() {
     })
   });
 
-  describe('test ownerOf', function() {
+  describe('test ownerOf', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -229,7 +223,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it('mint successfully', async function() {
+    it('mint successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -250,7 +244,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
     })
 
-    it('get ownerOf successfully', async function() {
+    it('get ownerOf successfully', async function () {
       let stub = sandbox.stub(inst._contract, "ownerOf");
       stub.resolves(config.MOAC_TO_ADDRESS);
       let owner = await inst.ownerOf(config.MOAC_ERC721_TOKEN1_ID);
@@ -261,7 +255,7 @@ describe('test ERC721', function() {
     })
   });
 
-  describe('test safeTransferFrom', function() {
+  describe('test safeTransferFrom', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -276,7 +270,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it('mint successfully', async function() {
+    it('mint successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -297,7 +291,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
     })
 
-    it('get safeTransferFrom successfully', async function() {
+    it('get safeTransferFrom successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -318,7 +312,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_SAFETRANSFERFROM)).to.true;
     })
 
-    it('get safeTransferFrom with data successfully', async function() {
+    it('get safeTransferFrom with data successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -339,7 +333,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_SAFETRANSFERFROM)).to.true;
     })
 
-    it('throws error if safeTransferFrom error', function(done) {
+    it('throws error if safeTransferFrom error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("safeTransferFrom error"));
       inst.safeTransferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID).catch(err => {
@@ -348,7 +342,7 @@ describe('test ERC721', function() {
       });
     })
 
-    it('get transferFrom successfully', async function() {
+    it('get transferFrom successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -369,7 +363,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_SAFETRANSFERFROM)).to.true;
     })
 
-    it('throws error if transferFrom error', function(done) {
+    it('throws error if transferFrom error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("transferFrom error"));
       inst.transferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID).catch(err => {
@@ -379,7 +373,7 @@ describe('test ERC721', function() {
     })
   });
 
-  describe('test approve related', function() {
+  describe('test approve related', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -394,7 +388,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it('approve successfully', async function() {
+    it('approve successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -415,7 +409,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_APPROVED)).to.true;
     })
 
-    it('throws error if approve error', function(done) {
+    it('throws error if approve error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("approve error"));
       inst.approve(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID).catch(err => {
@@ -424,7 +418,7 @@ describe('test ERC721', function() {
       });
     })
 
-    it('setApprovalForAll successfully', async function() {
+    it('setApprovalForAll successfully', async function () {
       let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
       stub.yields(null, config.MOCK_GAS);
       stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
@@ -445,7 +439,7 @@ describe('test ERC721', function() {
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_SETAPPROVEDALL)).to.true;
     })
 
-    it('throws error if setApprovalForAll error', function(done) {
+    it('throws error if setApprovalForAll error', function (done) {
       let stub = sandbox.stub(moac, "getNonce");
       stub.throws(new Error("setApprovalForAll error"));
       inst.setApprovalForAll(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, true).catch(err => {
@@ -454,7 +448,7 @@ describe('test ERC721', function() {
       });
     })
 
-    it('get getApproved successfully', async function() {
+    it('get getApproved successfully', async function () {
       let stub = sandbox.stub(inst._contract, "getApproved");
       stub.resolves(config.MOAC_TO_ADDRESS);
       let approved = await inst.getApproved(config.MOAC_ERC721_TOKEN1_ID);
@@ -464,7 +458,7 @@ describe('test ERC721', function() {
       expect(approved).to.equal(config.MOAC_TO_ADDRESS);
     })
 
-    it('get isApprovedForAll successfully', async function() {
+    it('get isApprovedForAll successfully', async function () {
       let stub = sandbox.stub(inst._contract, "isApprovedForAll");
       stub.resolves(false);
       let ret = await inst.isApprovedForAll(config.MOAC_ADDRESS, config.MOAC_TO_ADDRESS);
@@ -475,7 +469,7 @@ describe('test ERC721', function() {
     })
   });
 
-  describe('test enumeration related', function() {
+  describe('test enumeration related', function () {
     let inst
     let moac
     beforeEach(() => {
@@ -490,7 +484,7 @@ describe('test ERC721', function() {
       inst.destroy();
     });
 
-    it('test totalSupply', async function() {
+    it('test totalSupply', async function () {
       let stub = sandbox.stub(inst._contract, "totalSupply");
       stub.resolves(new BigNumber(3));
       let total = await inst.totalSupply();
@@ -499,7 +493,7 @@ describe('test ERC721', function() {
       expect(total.toString()).to.equal('3');
     })
 
-    it('test tokenByIndex', async function() {
+    it('test tokenByIndex', async function () {
       let stub = sandbox.stub(inst._contract, "tokenByIndex");
       stub.resolves(new BigNumber(config.MOAC_ERC721_TOKEN1_ID));
       let tokenId = await inst.tokenByIndex('2');
@@ -508,7 +502,7 @@ describe('test ERC721', function() {
       expect(tokenId.toString()).to.equal(config.MOAC_ERC721_TOKEN1_ID);
     })
 
-    it('test tokenOfOwnerByIndex', async function() {
+    it('test tokenOfOwnerByIndex', async function () {
       let stub = sandbox.stub(inst._contract, "tokenOfOwnerByIndex");
       stub.resolves(new BigNumber(config.MOAC_ERC721_TOKEN2_ID));
       let tokenId = await inst.tokenOfOwnerByIndex(config.MOAC_ADDRESS, "2");
