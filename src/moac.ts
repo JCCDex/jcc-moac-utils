@@ -397,7 +397,7 @@ export default class Moac {
     }
 
     /**
-     * get instance of moac or erc20 contract
+     * get instance of moac contract(ERC20,ERC721, Fingate etc)
      *
      * @public
      * @param {object} abi definition of moac abi or erc20 abi

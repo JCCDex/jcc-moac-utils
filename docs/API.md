@@ -214,7 +214,7 @@
 
 ```javascript
 /**
- * get instance of moac or erc20 contract
+ * get instance of moac contract(ERC20,ERC721, Fingate etc)
  *
  * @protected
  * @param {object} abi definition of moac abi or erc20 abi
@@ -234,6 +234,402 @@
  * @param {string} address
  * @returns {boolean}
  * @memberof Moac
+*/
+```
+
+## API of ERC20
+
+### constructor
+
+```javascript
+/**
+ * Creates an instance of ERC20
+ * @memberof ERC20
+ */
+```
+
+### init
+
+```javascript
+/**
+ * init instance of erc20 contract
+ *
+ * @param {string} tokenContractAddress contract address of erc20 token
+ * @param {Moac} moac instance
+ * @memberof ERC20
+ */
+```
+
+### destroy
+
+```javascript
+/**
+ * destroy instance of erc20 contract
+ *
+ * @memberof ERC20
+ */
+```
+
+### name
+
+```javascript
+/**
+ * request name of erc20 token
+ *
+ * @returns {string} name of erc20 token
+ * @memberof ERC20
+ */
+```
+
+### symbol
+
+```javascript
+/**
+ * request symbol of erc20 token
+ *
+ * @returns {string} symbol of erc20 token
+ * @memberof ERC20
+ */
+```
+
+### decimals
+
+```javascript
+/**
+ * request decimals of erc20 token
+ *
+ * @returns {number} decimals of erc20 token
+ * @memberof ERC20
+ */
+```
+
+### balanceOf
+
+```javascript
+/**
+ * request balance of erc20 token
+ *
+ * @param {string} address moac address
+ * @returns {Promise<string>} resolve '' if request failed, the precision rely on decimal function
+ * @memberof ERC20
+ */
+```
+
+### transfer
+
+```javascript
+/**
+ * transfer erc20 token
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} to address of destination
+ * @param {string} amount amount
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC20
+ */
+```
+
+### approve
+
+```javascript
+/**
+ * Token owner can approve for `spender` to transferFrom(...) `tokens` from the token owner's account
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} spender address of spender
+ * @param {string} amount amount
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC20
+ */
+```
+
+### allowance
+
+```javascript
+/**
+ * Returns the amount of tokens approved by the owner that can be transferred to the spender's account     *
+ * @param {string} secret moac secret of sender address
+ * @param {string} to address of destination
+ * @param {string} amount amount
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC20
+ */
+```
+
+### transferFrom
+
+```javascript
+/**
+ * Transfer `tokens` from the `from` account to the `to` account
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} from address of from
+ * @param {string} to address of destination
+ * @param {string} amount amount
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC20
+ */
+```
+
+## API of ERC721
+
+### constructor
+
+```javascript
+/**
+ * Creates an instance of ERC721
+ * @param {string} node moac node
+ * @param {boolean} mainnet main net or test net
+ * @memberof ERC721
+ */
+```
+
+### init
+
+```javascript
+/**
+ * init instance of erc721 contract
+ *
+ * @param {string} tokenContractAddress contract address of erc721 token
+ * @param {Moac} moac instance
+ * @memberof ERC721
+ */
+```
+
+### destroy
+
+```javascript
+/**
+ * destroy instance of erc721 contract
+ *
+ * @memberof ERC721
+ */
+```
+
+### name
+
+```javascript
+/**
+ * request name of erc721 token
+ *
+ * @returns {string} name of erc721 token
+ * @memberof ERC721
+ */
+```
+
+### symbol
+
+```javascript
+/**
+ * request symbol of erc721 token
+ *
+ * @returns {string} symbol of erc721 token
+ * @memberof ERC721
+ */
+```
+
+### tokenURI
+
+```javascript
+/**
+ * A distinct Uniform Resource Identifier (URI) for a given asset
+ *
+ * @param {string} tokenid of erc721 token
+ * @returns {string} uri of erc721 token
+ * @memberof ERC721
+ */
+```
+
+### mint
+
+```javascript
+/**
+ * mint erc721 token
+ *
+ * @param {string} secret of sender
+ * @param {string} to address of send to
+ * @param {string} tokenId asset id
+ * @param {string} uri token uri
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} return hash, reject error if something wrong.
+ * @memberof ERC721
+ */
+```
+
+### burn
+
+```javascript
+/**
+ * burn erc721 token
+ *
+ * @param {string} secret of sender
+ * @param {string} to address of send to
+ * @param {string} tokenId asset id
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} return hash, reject error if something wrong.
+ * @memberof ERC721
+ */
+```
+
+### balanceOf
+
+```javascript
+/**
+ * request balance of erc721 token
+ *
+ * @param {string} address moac address
+ * @returns {Promise<string>} resolve '' if request failed, the precision rely on decimal function
+ * @memberof ERC721
+ */
+```
+
+### ownerOf
+
+```javascript
+/**
+ * request owner of erc721 token
+ *
+ * @param {string} tokenId token id
+ * @returns {Promise<string>} return address of owner
+ * @memberof ERC721
+ */
+```
+
+### safeTransferFrom
+
+```javascript
+/**
+ * transfer erc721 token
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} to address of destination
+ * @param {string} tokenId asset id
+ * @param {string} data data bytes string
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC721
+ */
+```
+
+### transferFrom
+
+```javascript
+/**
+ * transfer erc721 token
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} to address of destination
+ * @param {string} tokenId asset id
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC721
+ */
+```
+
+### approve
+
+```javascript
+/**
+ * Set or reaffirm the approved address for an NFT.
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} approved Address to be approved for the given NFT ID.
+ * @param {string} tokenId ID of the token to be approved.
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC721
+ */
+```
+
+### setApprovalForAll
+
+```javascript
+/**
+ * Enables or disables approval for a third party ("operator") to manage all of `msg.sender`'s assets. It also emits the ApprovalForAll event
+ *
+ * @param {string} secret moac secret of sender address
+ * @param {string} operator Address to add to the set of authorized operators.
+ * @param {string} approved True if the operators is approved, false to revoke approval
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
+ * @returns {Promise<string>} resolve hash if successful
+ * @memberof ERC721
+ */
+```
+
+### getApproved
+
+```javascript
+/**
+ * Get the approved address for a single NFT.
+ *
+ * @param {string} tokenId ID of the NFT to query the approval of.
+ * @returns {Promise<string>} return address of approval
+ * @memberof ERC721
+ */
+```
+
+### isApprovedForAll
+
+```javascript
+/**
+ * Checks if `operator` is an approved operator for `owner`.
+ *
+ * @param {string} owner The address that owns the NFTs.
+ * @param {string} operator The address that acts on behalf of the owner.
+ * @returns {Promise<boolean>} return true or false
+ * @memberof ERC721
+ */
+```
+
+### totalSupply
+
+```javascript
+/**
+ * Returns the count of all existing NFTokens.
+ *
+ * @returns {string} count of all existing NFTokens.
+ * @memberof ERC721
+ */
+```
+
+### tokenByIndex
+
+```javascript
+/**
+ * Returns NFT ID by its index.
+ *
+ * @param {string} index A counter less than `totalSupply()`.
+ * @returns {string} token id
+ * @memberof ERC721
+ */
+```
+
+### tokenOfOwnerByIndex
+
+```javascript
+/**
+ * returns the n-th NFT ID from a list of owner's tokens.
+ *
+ * @param {string} owner Token owner's address.
+ * @param {string} index Index number representing n-th token in owner's list of tokens.
+ * @returns {string} token id
+ * @memberof ERC721
+ */
+```
+
+### constructor
+
+```javascript
+/**
+ * Creates an instance of Fingate
+ *
+ * @extends {Moac}
+ * @param {string} node moac node
+ * @param {boolean} mainnet main net or test net
+ * @memberof Fingate
 */
 ```
 
@@ -259,6 +655,7 @@
  * init instance of moac contract
  *
  * @param {string} fingateAddress contract address of moac fingate
+ * @param {Moac} moac instance
  * @memberof Fingate
 */
 ```
@@ -305,11 +702,12 @@
  * deposit moac
  *
  * @param {string} jtAddress jingtum address
- * @param {number} amount amount of deposit
+ * @param {string} amount amount of deposit
  * @param {string} moacSecret moac secret
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
  * @returns {Promise<string>} resolve hash if successful
  * @memberof Fingate
-*/
+ */
 ```
 
 ### depositToken
@@ -319,10 +717,13 @@
  * deposit erc20 token
  *
  * @param {string} jtAddress jingtum address
- * @param {number} amount amount of deposit
- * @param {string} hash generated by `transfer` api of Fingate
+ * @param {string} tokenAddress erc20 contract address
+ * @param {number} decimals token decimals
+ * @param {string} amount amount of deposit
+ * @param {string} hash generated by `transfer` api of ERC20
  * @param {string} moacSecret moac secret
+ * @param {any} options specify gasPrice, nonce, gasLimit etc.
  * @returns {Promise<string>} reslove hash of transaction if successful
  * @memberof Fingate
-*/
+ */
 ```
