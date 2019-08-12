@@ -339,6 +339,17 @@
  */
 ```
 
+### totalSupply
+
+```javascript
+/**
+ * request totalSupply of erc20 token
+ *
+ * @returns {number} decimals of erc20 token
+ * @memberof ERC20
+ */
+```
+
 ### balanceOf
 
 ```javascript

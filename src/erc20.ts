@@ -108,6 +108,16 @@ class ERC20 {
     }
 
     /**
+     * request totalSupply of erc20 token
+     *
+     * @returns {number} decimals of erc20 token
+     * @memberof ERC20
+     */
+    public totalSupply(): number {
+        return this._contract.totalSupply();
+    }
+
+    /**
      * request balance of erc20 token
      *
      * @param {string} address moac address
@@ -118,7 +128,7 @@ class ERC20 {
         let balance: string;
         try {
             const bnBalance = await this._contract.balanceOf(address);
-            const decimals = this._contract.decimals();
+            const decimals = await this._contract.decimals();
             balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
             balance = "0";
