@@ -328,7 +328,7 @@ export default class Moac {
      * @returns {IMoacTransaction} return transaction object
      * @memberof Moac
      */
-    public getTx(from: string, to: string, nonce: number, gasLimit: number, gasPrice: string, value: string, calldata: string): IMoacTransaction {
+    public getTx(from: string, to: string, nonce: number, gasLimit: number | string, gasPrice: number | string, value: string, calldata: string): IMoacTransaction {
         if (!calldata) {
             calldata = "0x00";
         }

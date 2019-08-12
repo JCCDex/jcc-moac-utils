@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import chain3 = require("chain3");
 import erc20ABI from "./abi/erc20ABI";
 import Moac from "./moac";
+import { ITransactionOption } from "./model/transaction";
 import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**
@@ -142,12 +143,12 @@ class ERC20 {
      * @param {string} secret moac secret of sender address
      * @param {string} to address of destination
      * @param {string} amount amount
-     * @param {any} options specify gasPrice, nonce, gasLimit etc.
+     * @param {ITransactionOption} options specify gasPrice, nonce, gasLimit etc.
      * @returns {Promise<string>} resolve hash if successful
      * @memberof ERC20
      */
     @validate
-    public transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: any): Promise<string> {
+    public transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
@@ -172,12 +173,12 @@ class ERC20 {
      * @param {string} secret moac secret of sender address
      * @param {string} spender address of spender
      * @param {string} amount amount
-     * @param {any} options specify gasPrice, nonce, gasLimit etc.
+     * @param {ITransactionOption} options specify gasPrice, nonce, gasLimit etc.
      * @returns {Promise<string>} resolve hash if successful
      * @memberof ERC20
      */
     @validate
-    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: string, options?: any): Promise<string> {
+    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
@@ -216,12 +217,12 @@ class ERC20 {
      * @param {string} from address of from
      * @param {string} to address of destination
      * @param {string} amount amount
-     * @param {any} options specify gasPrice, nonce, gasLimit etc.
+     * @param {ITransactionOption} options specify gasPrice, nonce, gasLimit etc.
      * @returns {Promise<string>} resolve hash if successful
      * @memberof ERC20
      */
     @validate
-    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: any): Promise<string> {
+    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
