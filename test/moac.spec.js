@@ -318,6 +318,18 @@ describe('test moac', function() {
       let tx = inst.getTx(from, to, nonce, gasLimit, gasPrice, value);
       expect(tx).to.deep.equal(config.MOCK_TX);
     })
+
+    it('if to is empty', function() {
+      let from = config.MOAC_ADDRESS;
+      let nonce = config.MOCK_NONCE;
+      let gasLimit = config.MOCK_GAS_LIMIT;
+      let gasPrice = config.MOCK_GAS_PRICE;
+      let value = config.MOCK_DEPOSIT_VALUE_STR;
+      let tx = inst.getTx(from, null, nonce, gasLimit, gasPrice, value);
+      const data = Object.assign({}, config.MOCK_TX);
+      delete data.to;
+      expect(tx).to.deep.equal(data);
+    })
   })
 
   describe('test sendRawSignedTransaction', function() {
@@ -412,6 +424,75 @@ describe('test moac', function() {
       inst.getTransactionReceipt(config.MOCK_HASH).catch(err => {
         expect(err.message).to.equal('connect net in error');
         done();
+      })
+    })
+  })
+
+  describe('test getBlock', function() {
+    let inst;
+    before(() => {
+      inst = new Moac(config.MOCK_NODE, true)
+      inst.initChain3();
+    })
+
+    afterEach(() => {
+      sandbox.restore();
+    })
+
+    it('request block info success', async function() {
+      let stub = sandbox.stub(inst._chain3.mc, "getBlock");
+      stub.resolves({});
+      const blockInfo = await inst.getBlock("1");
+      expect(stub.calledOnceWith("1")).to.true
+      expect(blockInfo).to.deep.equal({})
+    })
+
+    it('request block info failed return null', async function() {
+      let stub = sandbox.stub(inst._chain3.mc, "getBlock");
+      stub.rejects();
+      const blockInfo = await inst.getBlock("1");
+      expect(blockInfo).to.equal(null)
+    })
+  })
+
+  describe('test getOptions', function() {
+    let inst;
+    before(() => {
+      inst = new Moac(config.MOCK_NODE, true)
+      inst.initChain3();
+    })
+
+    afterEach(() => {
+      sandbox.restore();
+    })
+
+    it('if options if empty', async function() {
+      let stub = sandbox.stub(inst, "getGasPrice");
+      stub.resolves(config.MOCK_GAS);
+      stub = sandbox.stub(inst, "getNonce");
+      stub.resolves(config.MOCK_NONCE);
+      const options = await inst.getOptions({}, config.MOAC_ADDRESS);
+      expect(options).to.deep.equal({
+        nonce: config.MOCK_NONCE,
+        gasPrice: config.MOCK_GAS,
+        gasLimit: 200000
+      })
+    })
+
+    it('if options if not', async function() {
+      let stub = sandbox.stub(inst, "getGasPrice");
+      stub.resolves(config.MOCK_GAS);
+      stub = sandbox.stub(inst, "getNonce");
+      stub.resolves(config.MOCK_NONCE);
+      const options = await inst.getOptions({
+        gasLimit: 1,
+        gasPrice: 2,
+        nonce: 3
+      }, config.MOAC_ADDRESS);
+      expect(options).to.deep.equal({
+        nonce: 3,
+        gasPrice: 2,
+        gasLimit: 1
       })
     })
   })

@@ -1,9 +1,8 @@
 "use strict";
-
 import chain3 = require("chain3");
 import * as moacWallet from "jcc_wallet/lib/moac";
 import { IWalletModel } from "jcc_wallet/lib/model";
-import { IMoacTransaction } from "./model/transaction";
+import { IMoacTransaction, ITransactionOption } from "./model/transaction";
 
 /**
  * toolkit of moac
@@ -225,13 +224,13 @@ export default class Moac {
      * @memberof Moac
      */
     public async getBlock(block: number | string): Promise<any> {
-        let block_info;
+        let blockInfo;
         try {
-            block_info = await this._chain3.mc.getBlock(block);
+            blockInfo = await this._chain3.mc.getBlock(block);
         } catch (error) {
-            block_info = null;
+            blockInfo = null;
         }
-        return block_info;
+        return blockInfo;
     }
 
     /**
@@ -333,7 +332,7 @@ export default class Moac {
         if (!calldata) {
             calldata = "0x00";
         }
-        var tx = {
+        const tx: IMoacTransaction = {
             chainId: "0x" + this._network.toString(16),
             data: calldata,
             from,
@@ -342,12 +341,11 @@ export default class Moac {
             nonce: this._chain3.intToHex(nonce),
             shardingFlag: "0x0",
             systemContract: "0x0",
-            to,
             value: this._chain3.intToHex(this._chain3.toSha(value)),
             via: "0x"
         };
-        if (!to) {
-            delete tx.to;
+        if (to) {
+            tx.to = to;
         }
         return tx;
     }
@@ -444,23 +442,16 @@ export default class Moac {
     /**
      * check and set transaction options
      *
-     * @public
-     * @param {any} options
-     * @param {number} gasLimit
-     * @param {string} gasPrice
-     * @param {number} nonce
-     * @returns {any} options
+     * @param {ITransactionOption} options
+     * @param {string} sender moac address
+     * @returns {Promise<ITransactionOption>}
      * @memberof Moac
      */
-    public async getOptions(options: any, sender: string): Promise<any> {
+    public async getOptions(options: ITransactionOption, sender: string): Promise<ITransactionOption> {
         const gasLimit = this.gasLimit;
-        const gasPrice = await this.getGasPrice(this.minGasPrice);
-        const nonce = await this.getNonce(sender);
-
         options.gasLimit = options.gasLimit || gasLimit;
-        options.gasPrice = options.gasPrice || gasPrice;
-        options.nonce = options.nonce || nonce;
-
+        options.gasPrice = options.gasPrice || await this.getGasPrice(this.minGasPrice);
+        options.nonce = options.nonce || await this.getNonce(sender);
         return options;
     }
 }

@@ -11,3 +11,9 @@ export interface IMoacTransaction {
     systemContract: string;
     via: string;
 }
+
+export interface ITransactionOption {
+    gasLimit?: number | string;
+    gasPrice?: number | string;
+    nonce?: number;
+}
