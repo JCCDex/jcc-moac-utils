@@ -152,9 +152,7 @@ class ERC20 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-
                 options = await this._moac.getOptions(options || {}, sender);
-
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.transfer.getData(to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
@@ -182,9 +180,7 @@ class ERC20 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-
                 options = await this._moac.getOptions(options || {}, sender);
-
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.approve.getData(spender, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
@@ -226,9 +222,7 @@ class ERC20 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-
                 options = await this._moac.getOptions(options || {}, sender);
-
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
                 const calldata = this._contract.transferFrom.getData(from, to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
