@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import chain3 = require("chain3");
+import MoacABI from "jcc-moac-abi";
 import erc721ABI from "./abi/erc721ABI";
 import Moac from "./moac";
 import { ITransactionOption } from "./model/transaction";
@@ -40,6 +41,15 @@ class ERC721 {
     private _address: string;
 
     /**
+     * MoacABI instance
+     *
+     * @private
+     * @type {MoacABI}
+     * @memberof ERC721
+     */
+    private _moacABI: MoacABI;
+
+    /**
      * Creates an instance of ERC721
      * @memberof ERC721
      */
@@ -63,6 +73,7 @@ class ERC721 {
                 this._address = tokenContractAddress;
                 this._moac = moac;
                 this._contract = this._moac.contract(erc721ABI).at(this._address);
+                this._moacABI = new MoacABI(this._contract);
                 // TODO: check the contract interface is up to standard or not
             }
         } catch (e) {
@@ -77,6 +88,9 @@ class ERC721 {
      */
     public destroy() {
         this._contract = null;
+        if (this._moacABI) {
+            this._moacABI.destroy();
+        }
     }
 
     /**
@@ -127,7 +141,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._contract.mint.getData(to, (new BigNumber(tokenId)), uri);
+                const calldata = this._moacABI.encode("mint", to, tokenId, uri);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -154,7 +168,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._contract.burn.getData(owner, (new BigNumber(tokenId)));
+                const calldata = this._moacABI.encode("burn", owner, tokenId);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -211,7 +225,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = !data ? this._contract.safeTransferFrom["address,address,uint256"].getData(sender, to, tokenId) : this._contract.safeTransferFrom["address,address,uint256,bytes"].getData(sender, to, tokenId, data);
+                const calldata = !data ? this._moacABI.encode("safeTransferFrom", sender, to, tokenId) : this._moacABI.encode("safeTransferFrom", sender, to, tokenId, data);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -238,7 +252,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._contract.transferFrom.getData(sender, to, tokenId);
+                const calldata = this._moacABI.encode("transferFrom", sender, to, tokenId);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -265,7 +279,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._contract.approve.getData(approved, tokenId);
+                const calldata = this._moacABI.encode("approve", approved, tokenId);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -292,7 +306,7 @@ class ERC721 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._contract.setApprovalForAll.getData(operator, approved);
+                const calldata = this._moacABI.encode("setApprovalForAll", operator, approved);
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);

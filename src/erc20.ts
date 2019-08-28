@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import chain3 = require("chain3");
+import MoacABI from "jcc-moac-abi";
 import erc20ABI from "./abi/erc20ABI";
 import Moac from "./moac";
 import { ITransactionOption } from "./model/transaction";
@@ -40,6 +41,15 @@ class ERC20 {
     private _address: string;
 
     /**
+     * MoacABI instance
+     *
+     * @private
+     * @type {MoacABI}
+     * @memberof ERC721
+     */
+    private _moacABI: MoacABI;
+
+    /**
      * Creates an instance of ERC20
      * @memberof ERC20
      */
@@ -63,6 +73,7 @@ class ERC20 {
                 this._address = tokenContractAddress;
                 this._moac = moac;
                 this._contract = this._moac.contract(erc20ABI).at(this._address);
+                this._moacABI = new MoacABI(this._contract);
             }
         } catch (e) {
             throw e;
@@ -76,6 +87,9 @@ class ERC20 {
      */
     public destroy() {
         this._contract = null;
+        if (this._moacABI) {
+            this._moacABI.destroy();
+        }
     }
 
     /**
@@ -154,7 +168,7 @@ class ERC20 {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
-                const calldata = this._contract.transfer.getData(to, value.toString(10));
+                const calldata = this._moacABI.encode("transfer", to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -182,7 +196,7 @@ class ERC20 {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
-                const calldata = this._contract.approve.getData(spender, value.toString(10));
+                const calldata = this._moacABI.encode("approve", spender, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
@@ -224,7 +238,7 @@ class ERC20 {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
                 const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
-                const calldata = this._contract.transferFrom.getData(from, to, value.toString(10));
+                const calldata = this._moacABI.encode("transferFrom", from, to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
                 const hash = await this._moac.sendRawSignedTransaction(signedTransaction);

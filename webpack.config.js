@@ -17,7 +17,9 @@ const config = {
     alias: {
       "bn.js": path.resolve(__dirname, "node_modules/bn.js"),
       "bignumber.js": path.resolve(__dirname, "node_modules/bignumber.js"),
-      "base-x": path.resolve(__dirname, "node_modules/base-x")
+      "base-x": path.resolve(__dirname, "node_modules/base-x"),
+      "safe-buffer": path.resolve(__dirname, "node_modules/string_decoder/node_modules/safe-buffer"),
+      "utf8": path.resolve(__dirname, "node_modules/web3-utils/node_modules/utf8")
     }
   },
   mode: process.env.MODE === "dev" ? 'development' : "production",

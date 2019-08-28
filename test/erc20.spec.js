@@ -280,7 +280,7 @@ describe('test ERC20', function() {
       stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18);
       let spy = sandbox.spy(moac, "sendRawSignedTransaction");
-      let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE);
+      let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, '0x' + config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TRANSFERFROM_HASH);
       expect(hash).to.equal(config.MOCK_HASH)
     })
