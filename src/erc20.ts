@@ -99,7 +99,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public name(): string {
-        return this._contract.name();
+        return this.callByName("name");
     }
 
     /**
@@ -109,7 +109,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public symbol(): string {
-        return this._contract.symbol();
+        return this.callByName("symbol");
     }
 
     /**
@@ -119,7 +119,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public decimals(): number {
-        return this._contract.decimals();
+        return this.callByName("decimals");
     }
 
     /**
@@ -129,7 +129,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public totalSupply(): number {
-        return this._contract.totalSupply();
+        return this.callByName("totalSupply");
     }
 
     /**
@@ -142,7 +142,8 @@ class ERC20 {
     public async balanceOf(address: string): Promise<string> {
         let balance: string;
         try {
-            const bnBalance = await this._contract.balanceOf(address);
+            // const bnBalance = await this._contract.balanceOf(address);
+            const bnBalance = await this.callByName("balanceOf", address);
             const decimals = await this._contract.decimals();
             balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
@@ -217,7 +218,7 @@ class ERC20 {
      */
     @validate
     public allowance(@isValidMoacAddress owner: string, @isValidMoacAddress spender: string): string {
-        return this._contract.allowance(owner, spender);
+        return this.callByName("allowance", owner, spender);
     }
 
     /**
@@ -248,6 +249,11 @@ class ERC20 {
             }
         });
     }
+
+    private callByName(name: string, ...args): any {
+        return this._contract[name](args);
+    }
+
 }
 
 export default ERC20;
