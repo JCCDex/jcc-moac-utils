@@ -100,7 +100,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public name(): string {
-        return this._contract.name();
+        return this.callByName("name");
     }
 
     /**
@@ -110,7 +110,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public symbol(): string {
-        return this._contract.symbol();
+        return this.callByName("symbol");
     }
 
     /**
@@ -121,7 +121,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public tokenURI(tokenId: string): string {
-        return this._contract.tokenURI(new BigNumber(tokenId));
+        return this.callByName("tokenURI", (new BigNumber(tokenId)));
     }
 
     /**
@@ -190,7 +190,7 @@ class ERC721 {
     public async balanceOf(@isValidMoacAddress owner: string): Promise<string> {
         let balance: string;
         try {
-            balance = this._contract.balanceOf(owner);
+            balance = this.callByName("balanceOf", owner);
         } catch (error) {
             balance = "0";
         }
@@ -205,7 +205,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async ownerOf(tokenId: string): Promise<string> {
-        return this._contract.ownerOf(tokenId);
+        return this.callByName("ownerOf", tokenId);
     }
 
     /**
@@ -325,7 +325,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async getApproved(tokenId: string): Promise<string> {
-        return this._contract.getApproved(tokenId);
+        return this.callByName("getApproved", tokenId);
     }
 
     /**
@@ -338,7 +338,7 @@ class ERC721 {
      */
     @validate
     public async isApprovedForAll(@isValidMoacAddress owner: string, @isValidMoacAddress operator: string): Promise<boolean> {
-        return this._contract.isApprovedForAll(owner, operator);
+        return this.callByName("isApprovedForAll", owner, operator);
     }
 
     // The enumeration extension is OPTIONAL for ERC-721
@@ -350,7 +350,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public totalSupply(): string {
-        return this._contract.totalSupply();
+        return this.callByName("totalSupply");
     }
 
     /**
@@ -361,7 +361,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public tokenByIndex(index: string): string {
-        return this._contract.tokenByIndex(new BigNumber(index));
+        return this.callByName("tokenByIndex", (new BigNumber(index)));
     }
 
     /**
@@ -374,7 +374,11 @@ class ERC721 {
      */
     @validate
     public tokenOfOwnerByIndex(@isValidMoacAddress owner: string, index: string): string {
-        return this._contract.tokenOfOwnerByIndex(owner, new BigNumber(index));
+        return this.callByName("tokenOfOwnerByIndex", owner, new BigNumber(index));
+    }
+
+    private callByName(name: string, ...args): any {
+        return this._contract[name](args);
     }
 }
 
