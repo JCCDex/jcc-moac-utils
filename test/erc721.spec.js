@@ -94,20 +94,20 @@ describe('test ERC721', function () {
       inst.destroy();
     });
 
-    it("Basic infomation", function () {
+    it("Basic infomation", async function () {
       let stub = sandbox.stub(inst._contract, "name");
       stub.returns("Golden Coin Token")
-      let name = inst.name();
+      let name = await inst.name();
       expect(name).to.equal(config.MOAC_ERC721_NAME);
 
       stub = sandbox.stub(inst._contract, "symbol");
       stub.returns("GCT")
-      let symbol = inst.symbol();
+      let symbol = await inst.symbol();
       expect(symbol).to.equal(config.MOAC_ERC721_SYMBOL);
 
       stub = sandbox.stub(inst._contract, "tokenURI");
       stub.returns("https://jccdex.cn/")
-      let tokenUri = inst.tokenURI();
+      let tokenUri = await inst.tokenURI();
       expect(tokenUri).to.equal(config.MOAC_ERC721_TOKENURI);
     })
   })

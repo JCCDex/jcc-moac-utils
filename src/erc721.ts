@@ -96,32 +96,32 @@ class ERC721 {
     /**
      * request name of erc721 token
      *
-     * @returns {string} name of erc721 token
+     * @returns {Promise<string>} name of erc721 token
      * @memberof ERC721
      */
-    public name(): string {
-        return this.callByName("name");
+    public async name(): Promise<string> {
+        return this._moac.callByName(this._contract, "name");
     }
 
     /**
      * request symbol of erc721 token
      *
-     * @returns {string} symbol of erc721 token
+     * @returns {Promise<string>} symbol of erc721 token
      * @memberof ERC721
      */
-    public symbol(): string {
-        return this.callByName("symbol");
+    public async symbol(): Promise<string> {
+        return this._moac.callByName(this._contract, "symbol");
     }
 
     /**
      * A distinct Uniform Resource Identifier (URI) for a given asset
      *
      * @param {string} tokenid of erc721 token
-     * @returns {string} uri of erc721 token
+     * @returns {Promise<string>} uri of erc721 token
      * @memberof ERC721
      */
-    public tokenURI(tokenId: string): string {
-        return this.callByName("tokenURI", (new BigNumber(tokenId)));
+    public async tokenURI(tokenId: string): Promise<string> {
+        return this._moac.callByName(this._contract, "tokenURI", (new BigNumber(tokenId)));
     }
 
     /**
@@ -190,7 +190,7 @@ class ERC721 {
     public async balanceOf(@isValidMoacAddress owner: string): Promise<string> {
         let balance: string;
         try {
-            balance = this.callByName("balanceOf", owner);
+            balance = this._moac.callByName(this._contract, "balanceOf", owner);
         } catch (error) {
             balance = "0";
         }
@@ -205,7 +205,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async ownerOf(tokenId: string): Promise<string> {
-        return this.callByName("ownerOf", tokenId);
+        return this._moac.callByName(this._contract, "ownerOf", tokenId);
     }
 
     /**
@@ -325,7 +325,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async getApproved(tokenId: string): Promise<string> {
-        return this.callByName("getApproved", tokenId);
+        return this._moac.callByName(this._contract, "getApproved", tokenId);
     }
 
     /**
@@ -338,7 +338,7 @@ class ERC721 {
      */
     @validate
     public async isApprovedForAll(@isValidMoacAddress owner: string, @isValidMoacAddress operator: string): Promise<boolean> {
-        return this.callByName("isApprovedForAll", owner, operator);
+        return this._moac.callByName(this._contract, "isApprovedForAll", owner, operator);
     }
 
     // The enumeration extension is OPTIONAL for ERC-721
@@ -346,22 +346,22 @@ class ERC721 {
     /**
      * Returns the count of all existing NFTokens.
      *
-     * @returns {string} count of all existing NFTokens.
+     * @returns {Promise<string>} count of all existing NFTokens.
      * @memberof ERC721
      */
-    public totalSupply(): string {
-        return this.callByName("totalSupply");
+    public async totalSupply(): Promise<string> {
+        return this._moac.callByName(this._contract, "totalSupply");
     }
 
     /**
      * Returns NFT ID by its index.
      *
      * @param {string} index A counter less than `totalSupply()`.
-     * @returns {string} token id
+     * @returns {Promise<string>} token id
      * @memberof ERC721
      */
-    public tokenByIndex(index: string): string {
-        return this.callByName("tokenByIndex", (new BigNumber(index)));
+    public async tokenByIndex(index: string): Promise<string> {
+        return this._moac.callByName(this._contract, "tokenByIndex", (new BigNumber(index)));
     }
 
     /**
@@ -369,16 +369,12 @@ class ERC721 {
      *
      * @param {string} owner Token owner's address.
      * @param {string} index Index number representing n-th token in owner's list of tokens.
-     * @returns {string} token id
+     * @returns {Promise<string>} token id
      * @memberof ERC721
      */
     @validate
-    public tokenOfOwnerByIndex(@isValidMoacAddress owner: string, index: string): string {
-        return this.callByName("tokenOfOwnerByIndex", owner, new BigNumber(index));
-    }
-
-    private callByName(name: string, ...args): any {
-        return this._contract[name](args);
+    public async tokenOfOwnerByIndex(@isValidMoacAddress owner: string, index: string): Promise<string> {
+        return this._moac.callByName(this._contract, "tokenOfOwnerByIndex", owner, new BigNumber(index));
     }
 }
 

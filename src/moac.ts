@@ -440,6 +440,18 @@ export default class Moac {
     }
 
     /**
+     * call contract function by name
+     *
+     * @param {chain3.mc.contract} contract
+     * @param {string} name
+     * @returns {any}
+     * @memberof Moac
+     */
+    public callByName(contract: chain3.mc.contract, name: string, ...args): any {
+        return contract[name](args);
+    }
+
+    /**
      * check and set transaction options
      *
      * @param {ITransactionOption} options

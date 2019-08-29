@@ -94,25 +94,25 @@ describe('test ERC20', function () {
       inst.destroy();
     })
 
-    it("Basic infomation", function () {
+    it("Basic infomation", async function () {
       let stub = sandbox.stub(inst._contract, "name");
       stub.returns("JC Coin")
-      let name = inst.name();
+      let name = await inst.name();
       expect(name).to.equal('JC Coin');
 
       stub = sandbox.stub(inst._contract, "symbol");
       stub.returns("JCC")
-      let symbol = inst.symbol();
+      let symbol = await inst.symbol();
       expect(symbol).to.equal('JCC');
 
       stub = sandbox.stub(inst._contract, "decimals");
       stub.returns(18)
-      let decimals = inst.decimals();
+      let decimals = await inst.decimals();
       expect(decimals).to.equal(18);
 
       stub = sandbox.stub(inst._contract, "totalSupply");
       stub.returns(1000000000)
-      let totalSupply = inst.totalSupply();
+      let totalSupply = await inst.totalSupply();
       expect(totalSupply).to.equal(1000000000);
     })
   })
@@ -256,11 +256,11 @@ describe('test ERC20', function () {
       })
     })
 
-    it('get allowance', function () {
+    it('get allowance', async function () {
       let stub = sandbox.stub(inst._contract, "allowance");
       stub.returns(new BigNumber(config.MOCK_DEPOSIT_VALUE));
 
-      let amount = inst.allowance(config.MOAC_ADDRESS, config.MOAC_SPENDER_ADDRESS);
+      let amount = await inst.allowance(config.MOAC_ADDRESS, config.MOAC_SPENDER_ADDRESS);
       expect(amount.toNumber()).to.equal(config.MOCK_DEPOSIT_VALUE)
     })
 

@@ -95,41 +95,41 @@ class ERC20 {
     /**
      * request name of erc20 token
      *
-     * @returns {string} name of erc20 token
+     * @returns {Promise<string>} name of erc20 token
      * @memberof ERC20
      */
-    public name(): string {
-        return this.callByName("name");
+    public async name(): Promise<string> {
+        return this._moac.callByName(this._contract, "name");
     }
 
     /**
      * request symbol of erc20 token
      *
-     * @returns {string} symbol of erc20 token
+     * @returns {Promise<string>} symbol of erc20 token
      * @memberof ERC20
      */
-    public symbol(): string {
-        return this.callByName("symbol");
+    public async symbol(): Promise<string> {
+        return this._moac.callByName(this._contract, "symbol");
     }
 
     /**
      * request decimals of erc20 token
      *
-     * @returns {number} decimals of erc20 token
+     * @returns {Promise<number>} decimals of erc20 token
      * @memberof ERC20
      */
-    public decimals(): number {
-        return this.callByName("decimals");
+    public async decimals(): Promise<number> {
+        return this._moac.callByName(this._contract, "decimals");
     }
 
     /**
      * request totalSupply of erc20 token
      *
-     * @returns {number} decimals of erc20 token
+     * @returns {Promise<number>} decimals of erc20 token
      * @memberof ERC20
      */
-    public totalSupply(): number {
-        return this.callByName("totalSupply");
+    public async totalSupply(): Promise<number> {
+        return this._moac.callByName(this._contract, "totalSupply");
     }
 
     /**
@@ -143,7 +143,7 @@ class ERC20 {
         let balance: string;
         try {
             // const bnBalance = await this._contract.balanceOf(address);
-            const bnBalance = await this.callByName("balanceOf", address);
+            const bnBalance = await this._moac.callByName(this._contract, "balanceOf", address);
             const decimals = await this._contract.decimals();
             balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
@@ -217,8 +217,8 @@ class ERC20 {
      * @memberof ERC20
      */
     @validate
-    public allowance(@isValidMoacAddress owner: string, @isValidMoacAddress spender: string): string {
-        return this.callByName("allowance", owner, spender);
+    public async allowance(@isValidMoacAddress owner: string, @isValidMoacAddress spender: string): Promise<string> {
+        return this._moac.callByName(this._contract, "allowance", owner, spender);
     }
 
     /**
@@ -249,11 +249,6 @@ class ERC20 {
             }
         });
     }
-
-    private callByName(name: string, ...args): any {
-        return this._contract[name](args);
-    }
-
 }
 
 export default ERC20;
