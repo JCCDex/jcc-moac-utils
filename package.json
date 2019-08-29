@@ -1,6 +1,6 @@
 {
   "name": "jcc-moac-utils",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Toolkit of crossing chain from MOAC chain to SWTC chain",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
@@ -22,7 +22,7 @@
     "@types/node": "^12.7.2",
     "bignumber.js": "^9.0.0",
     "chain3": "^0.1.19",
-    "jcc-moac-abi": "^0.1.1",
+    "jcc-moac-abi": "^0.1.2",
     "jcc_wallet": "^1.0.0"
   },
   "devDependencies": {

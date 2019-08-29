@@ -139,14 +139,7 @@ class Fingate {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).toString(10);
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(moacAddress);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, moacAddress);
 
                 const calldata = this.instance.deposit.getData(jtAddress);
                 const rawTx = this._moac.getTx(moacAddress, this.instance.address, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
@@ -178,14 +171,7 @@ class Fingate {
             try {
                 const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const gasLimit = this._moac.gasLimit;
-                const gasPrice = await this._moac.getGasPrice(this._moac.minGasPrice);
-                const nonce = await this._moac.getNonce(moacAddress);
-
-                options = options || {};
-                options.gasLimit = options.gasLimit || gasLimit;
-                options.gasPrice = options.gasPrice || gasPrice;
-                options.nonce = options.nonce || nonce;
+                options = await this._moac.getOptions(options || {}, moacAddress);
 
                 const calldata = this.instance.depositToken.getData(jtAddress, tokenAddress, value.toString(10), hash);
                 const tx = this._moac.getTx(moacAddress, this.instance.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
