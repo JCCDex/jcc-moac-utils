@@ -91,6 +91,262 @@ const MOCK_ERC721_TX_APPROVED_CALLDATA = "0x095ea7b30000000000000000000000005332
 const MOCK_ERC721_TX_SETAPPROVEDALL = "0xf8ae0c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa680b844a22cb465000000000000000000000000533243557dfdc87ae5bda885e22db00f874999710000000000000000000000000000000000000000000000000000000000000001808081eaa0279a0ad9222fe204ed78b161d50a0954353679296ad5dd09a9a637fc934abe5ea052fa270b28a33250b1d994f104d8fcd0e7cf3fbbcd3dcfd8c24636d7d6885183"
 const MOCK_ERC721_TX_SETAPPROVEDALL_CALLDATA = "0xa22cb465000000000000000000000000533243557dfdc87ae5bda885e22db00f874999710000000000000000000000000000000000000000000000000000000000000001";
 const MOCK_ERC721_TX_TRANSFERFROM = "0xf8ce0c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa680b86423b872dd000000000000000000000000ae832592b6d697cd6b3d053866bfe5f334e7c667000000000000000000000000533243557dfdc87ae5bda885e22db00f874999710000000000000000000000000000000000000000000000000000000000000001808081eaa0c37e639f1beb670be4e456d3919fbba60ad339643684e57e0745b1f3a34e9a0ea059a23d43fe995340b3efed11721ddffd28d669c2fa9cd41b818db64143c81aaa"
+const MOAC_ERC20_ABI = [
+  {
+    constant: true,
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        name: "",
+        type: "string"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        name: "",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        name: "",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "founder",
+    outputs: [
+      {
+        name: "",
+        type: "address"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        name: "",
+        type: "string"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        name: "founderInput",
+        type: "address"
+      }
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "constructor"
+  },
+  {
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "fallback"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: "_from",
+        type: "address"
+      },
+      {
+        indexed: true,
+        name: "_to",
+        type: "address"
+      },
+      {
+        indexed: false,
+        name: "_value",
+        type: "uint256"
+      }
+    ],
+    name: "Transfer",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: "_owner",
+        type: "address"
+      },
+      {
+        indexed: true,
+        name: "_spender",
+        type: "address"
+      },
+      {
+        indexed: false,
+        name: "_value",
+        type: "uint256"
+      }
+    ],
+    name: "Approval",
+    type: "event"
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "_owner",
+        type: "address"
+      }
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        name: "balance",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_spender",
+        type: "address"
+      },
+      {
+        name: "_value",
+        type: "uint256"
+      }
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "success",
+        type: "bool"
+      }
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "_owner",
+        type: "address"
+      },
+      {
+        name: "_spender",
+        type: "address"
+      }
+    ],
+    name: "allowance",
+    outputs: [
+      {
+        name: "remaining",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_to",
+        type: "address"
+      },
+      {
+        name: "_value",
+        type: "uint256"
+      }
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        name: "success",
+        type: "bool"
+      }
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_from",
+        type: "address"
+      },
+      {
+        name: "_to",
+        type: "address"
+      },
+      {
+        name: "_value",
+        type: "uint256"
+      }
+    ],
+    name: "transferFrom",
+    outputs: [
+      {
+        name: "success",
+        type: "bool"
+      }
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    constant: false,
+    inputs: [],
+    name: "kill",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function"
+  }
+];
 
 module.exports = {
   MOAC_ADDRESS,
@@ -140,5 +396,6 @@ module.exports = {
   MOCK_ERC721_TX_APPROVED_CALLDATA,
   MOCK_ERC721_TX_SETAPPROVEDALL,
   MOCK_ERC721_TX_SETAPPROVEDALL_CALLDATA,
-  MOCK_ERC721_TX_TRANSFERFROM
+  MOCK_ERC721_TX_TRANSFERFROM,
+  MOAC_ERC20_ABI
 }
