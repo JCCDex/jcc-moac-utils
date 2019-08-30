@@ -99,7 +99,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public async name(): Promise<string> {
-        return this._moac.callByName(this._contract, "name");
+        return await this._moac.callByName(this._contract, "name");
     }
 
     /**
@@ -109,7 +109,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public async symbol(): Promise<string> {
-        return this._moac.callByName(this._contract, "symbol");
+        return await this._moac.callByName(this._contract, "symbol");
     }
 
     /**
@@ -119,7 +119,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public async decimals(): Promise<number> {
-        return this._moac.callByName(this._contract, "decimals");
+        return await this._moac.callByName(this._contract, "decimals");
     }
 
     /**
@@ -129,7 +129,7 @@ class ERC20 {
      * @memberof ERC20
      */
     public async totalSupply(): Promise<number> {
-        return this._moac.callByName(this._contract, "totalSupply");
+        return await this._moac.callByName(this._contract, "totalSupply");
     }
 
     /**
@@ -142,9 +142,8 @@ class ERC20 {
     public async balanceOf(address: string): Promise<string> {
         let balance: string;
         try {
-            // const bnBalance = await this._contract.balanceOf(address);
             const bnBalance = await this._moac.callByName(this._contract, "balanceOf", address);
-            const decimals = await this._contract.decimals();
+            const decimals = await this._moac.callByName(this._contract, "decimals");
             balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         } catch (error) {
             balance = "0";
@@ -168,7 +167,8 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const decimals = await this.decimals();
+                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
                 const calldata = this._moacABI.encode("transfer", to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
@@ -196,7 +196,8 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const decimals = await this.decimals();
+                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
                 const calldata = this._moacABI.encode("approve", spender, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);
@@ -218,7 +219,7 @@ class ERC20 {
      */
     @validate
     public async allowance(@isValidMoacAddress owner: string, @isValidMoacAddress spender: string): Promise<string> {
-        return this._moac.callByName(this._contract, "allowance", owner, spender);
+        return await this._moac.callByName(this._contract, "allowance", owner, spender);
     }
 
     /**
@@ -238,7 +239,8 @@ class ERC20 {
             try {
                 const sender = Moac.getAddress(secret);
                 options = await this._moac.getOptions(options || {}, sender);
-                const value = new BigNumber(amount).multipliedBy(10 ** this._contract.decimals());
+                const decimals = await this.decimals();
+                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
                 const calldata = this._moacABI.encode("transferFrom", from, to, value.toString(10));
                 const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
                 const signedTransaction = this._moac.signTransaction(tx, secret);

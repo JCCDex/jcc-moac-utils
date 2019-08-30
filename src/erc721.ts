@@ -100,7 +100,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async name(): Promise<string> {
-        return this._moac.callByName(this._contract, "name");
+        return await this._moac.callByName(this._contract, "name");
     }
 
     /**
@@ -110,7 +110,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async symbol(): Promise<string> {
-        return this._moac.callByName(this._contract, "symbol");
+        return await this._moac.callByName(this._contract, "symbol");
     }
 
     /**
@@ -121,7 +121,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async tokenURI(tokenId: string): Promise<string> {
-        return this._moac.callByName(this._contract, "tokenURI", (new BigNumber(tokenId)));
+        return await this._moac.callByName(this._contract, "tokenURI", new BigNumber(tokenId));
     }
 
     /**
@@ -190,7 +190,7 @@ class ERC721 {
     public async balanceOf(@isValidMoacAddress owner: string): Promise<string> {
         let balance: string;
         try {
-            balance = this._moac.callByName(this._contract, "balanceOf", owner);
+            balance = await this._moac.callByName(this._contract, "balanceOf", owner);
         } catch (error) {
             balance = "0";
         }
@@ -205,7 +205,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async ownerOf(tokenId: string): Promise<string> {
-        return this._moac.callByName(this._contract, "ownerOf", tokenId);
+        return await this._moac.callByName(this._contract, "ownerOf", tokenId);
     }
 
     /**
@@ -325,7 +325,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async getApproved(tokenId: string): Promise<string> {
-        return this._moac.callByName(this._contract, "getApproved", tokenId);
+        return await this._moac.callByName(this._contract, "getApproved", tokenId);
     }
 
     /**
@@ -338,7 +338,7 @@ class ERC721 {
      */
     @validate
     public async isApprovedForAll(@isValidMoacAddress owner: string, @isValidMoacAddress operator: string): Promise<boolean> {
-        return this._moac.callByName(this._contract, "isApprovedForAll", owner, operator);
+        return await this._moac.callByName(this._contract, "isApprovedForAll", owner, operator);
     }
 
     // The enumeration extension is OPTIONAL for ERC-721
@@ -350,7 +350,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async totalSupply(): Promise<string> {
-        return this._moac.callByName(this._contract, "totalSupply");
+        return await this._moac.callByName(this._contract, "totalSupply");
     }
 
     /**
@@ -361,7 +361,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async tokenByIndex(index: string): Promise<string> {
-        return this._moac.callByName(this._contract, "tokenByIndex", (new BigNumber(index)));
+        return await this._moac.callByName(this._contract, "tokenByIndex", new BigNumber(index));
     }
 
     /**
@@ -374,7 +374,7 @@ class ERC721 {
      */
     @validate
     public async tokenOfOwnerByIndex(@isValidMoacAddress owner: string, index: string): Promise<string> {
-        return this._moac.callByName(this._contract, "tokenOfOwnerByIndex", owner, new BigNumber(index));
+        return await this._moac.callByName(this._contract, "tokenOfOwnerByIndex", owner, new BigNumber(index));
     }
 }
 

@@ -447,8 +447,8 @@ export default class Moac {
      * @returns {any}
      * @memberof Moac
      */
-    public callByName(contract: chain3.mc.contract, name: string, ...args): any {
-        return contract[name](args);
+    public async callByName(contract: chain3.mc.contract, name: string, ...args): Promise<any> {
+        return await contract[name].apply(null, args);
     }
 
     /**

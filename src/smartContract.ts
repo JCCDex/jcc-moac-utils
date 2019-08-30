@@ -65,7 +65,7 @@ class SmartContract {
      *
      * @param {string} tokenContractAddress contract address of smart contract
      * @param {Moac} moac instance
-     * @param {any} abi 
+     * @param {any} abi
      * @memberof SmartContract
      */
     @validate
