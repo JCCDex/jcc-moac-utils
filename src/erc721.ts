@@ -1,9 +1,8 @@
 import BigNumber from "bignumber.js";
-import chain3 = require("chain3");
-import MoacABI from "jcc-moac-abi";
 import erc721ABI from "./abi/erc721ABI";
 import Moac from "./moac";
 import { ITransactionOption } from "./model/transaction";
+import SmartContract from "./smartContract";
 import { isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**
@@ -11,52 +10,14 @@ import { isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
  *
  * @class ERC721
  */
-class ERC721 {
-
-    /**
-     * instance of erc721 contract
-     *
-     * @private
-     * @type {chain3.mc.contract}
-     * @memberof ERC721
-     */
-    private _contract: chain3.mc.contract;
-
-    /**
-     * instance of moac
-     *
-     * @private
-     * @type {Moac}
-     * @memberof Fingate
-     */
-    private _moac: Moac;
-
-    /**
-     * contract address of erc721 token
-     *
-     * @private
-     * @type {string}
-     * @memberof ERC721
-     */
-    private _address: string;
-
-    /**
-     * MoacABI instance
-     *
-     * @private
-     * @type {MoacABI}
-     * @memberof ERC721
-     */
-    private _moacABI: MoacABI;
+class ERC721 extends SmartContract {
 
     /**
      * Creates an instance of ERC721
      * @memberof ERC721
      */
     constructor() {
-        this._contract = null;
-        this._address = null;
-        this._moac = null;
+        super();
     }
 
     /**
@@ -69,13 +30,7 @@ class ERC721 {
     @validate
     public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac) {
         try {
-            if (!moac.contractInitialied(this._contract, tokenContractAddress)) {
-                this._address = tokenContractAddress;
-                this._moac = moac;
-                this._contract = this._moac.contract(erc721ABI).at(this._address);
-                this._moacABI = new MoacABI(this._contract);
-                // TODO: check the contract interface is up to standard or not
-            }
+            super.init(tokenContractAddress, moac, erc721ABI);
         } catch (e) {
             throw e;
         }
@@ -87,10 +42,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public destroy() {
-        this._contract = null;
-        if (this._moacABI) {
-            this._moacABI.destroy();
-        }
+        super.destroy();
     }
 
     /**
@@ -100,7 +52,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async name(): Promise<string> {
-        return await this._moac.callByName(this._contract, "name");
+        return await super.callABI("name");
     }
 
     /**
@@ -110,7 +62,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async symbol(): Promise<string> {
-        return await this._moac.callByName(this._contract, "symbol");
+        return await super.callABI("symbol");
     }
 
     /**
@@ -121,7 +73,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async tokenURI(tokenId: string): Promise<string> {
-        return await this._moac.callByName(this._contract, "tokenURI", new BigNumber(tokenId));
+        return await super.callABI("tokenURI", new BigNumber(tokenId));
     }
 
     /**
@@ -140,11 +92,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._moacABI.encode("mint", to, tokenId, uri);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = await super.callABI("mint", to, tokenId, uri);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -167,11 +119,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._moacABI.encode("burn", owner, tokenId);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = await super.callABI("burn", owner, tokenId);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -190,7 +142,7 @@ class ERC721 {
     public async balanceOf(@isValidMoacAddress owner: string): Promise<string> {
         let balance: string;
         try {
-            balance = await this._moac.callByName(this._contract, "balanceOf", owner);
+            balance = await super.callABI("balanceOf", owner);
         } catch (error) {
             balance = "0";
         }
@@ -205,7 +157,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async ownerOf(tokenId: string): Promise<string> {
-        return await this._moac.callByName(this._contract, "ownerOf", tokenId);
+        return await super.callABI("ownerOf", tokenId);
     }
 
     /**
@@ -224,11 +176,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = !data ? this._moacABI.encode("safeTransferFrom", sender, to, tokenId) : this._moacABI.encode("safeTransferFrom", sender, to, tokenId, data);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = !data ? await super.callABI("safeTransferFrom", sender, to, tokenId) : await super.callABI("safeTransferFrom", sender, to, tokenId, data);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -251,11 +203,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._moacABI.encode("transferFrom", sender, to, tokenId);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = await super.callABI("transferFrom", sender, to, tokenId);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -278,11 +230,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._moacABI.encode("approve", approved, tokenId);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = await super.callABI("approve", approved, tokenId);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -305,11 +257,11 @@ class ERC721 {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this._moac.getOptions(options || {}, sender);
-                const calldata = this._moacABI.encode("setApprovalForAll", operator, approved);
-                const tx = this._moac.getTx(sender, this._contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this._moac.signTransaction(tx, secret);
-                const hash = await this._moac.sendRawSignedTransaction(signedTransaction);
+                options = await this.moac.getOptions(options || {}, sender);
+                const calldata = await super.callABI("setApprovalForAll", operator, approved);
+                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
+                const signedTransaction = this.moac.signTransaction(tx, secret);
+                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -325,7 +277,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async getApproved(tokenId: string): Promise<string> {
-        return await this._moac.callByName(this._contract, "getApproved", tokenId);
+        return await super.callABI("getApproved", tokenId);
     }
 
     /**
@@ -338,7 +290,7 @@ class ERC721 {
      */
     @validate
     public async isApprovedForAll(@isValidMoacAddress owner: string, @isValidMoacAddress operator: string): Promise<boolean> {
-        return await this._moac.callByName(this._contract, "isApprovedForAll", owner, operator);
+        return await super.callABI("isApprovedForAll", owner, operator);
     }
 
     // The enumeration extension is OPTIONAL for ERC-721
@@ -350,7 +302,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async totalSupply(): Promise<string> {
-        return await this._moac.callByName(this._contract, "totalSupply");
+        return await super.callABI("totalSupply");
     }
 
     /**
@@ -361,7 +313,7 @@ class ERC721 {
      * @memberof ERC721
      */
     public async tokenByIndex(index: string): Promise<string> {
-        return await this._moac.callByName(this._contract, "tokenByIndex", new BigNumber(index));
+        return await super.callABI("tokenByIndex", new BigNumber(index));
     }
 
     /**
@@ -374,7 +326,7 @@ class ERC721 {
      */
     @validate
     public async tokenOfOwnerByIndex(@isValidMoacAddress owner: string, index: string): Promise<string> {
-        return await this._moac.callByName(this._contract, "tokenOfOwnerByIndex", owner, new BigNumber(index));
+        return await super.callABI("tokenOfOwnerByIndex", owner, new BigNumber(index));
     }
 }
 

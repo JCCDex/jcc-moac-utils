@@ -440,18 +440,6 @@ export default class Moac {
     }
 
     /**
-     * call contract function by name
-     *
-     * @param {chain3.mc.contract} contract
-     * @param {string} name
-     * @returns {any}
-     * @memberof Moac
-     */
-    public async callByName(contract: chain3.mc.contract, name: string, ...args): Promise<any> {
-        return await contract[name].apply(null, args);
-    }
-
-    /**
      * check and set transaction options
      *
      * @param {ITransactionOption} options

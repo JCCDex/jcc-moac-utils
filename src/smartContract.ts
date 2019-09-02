@@ -1,12 +1,6 @@
-// import BigNumber from "bignumber.js";
 import chain3 = require("chain3");
 import MoacABI from "jcc-moac-abi";
-// import erc20ABI from "./abi/erc20ABI";
 import Moac from "./moac";
-// import { ITransactionOption } from "./model/transaction";
-// import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
-import { isValidMoacAddress, validate } from "./validator";
-
 /**
  * toolkit of smart contract
  *
@@ -61,6 +55,28 @@ class SmartContract {
     }
 
     /**
+     * return moac instance
+     *
+     * @readonly
+     * @type {Moac}
+     * @memberof SmartContract
+     */
+    public get moac(): Moac {
+        return this._moac;
+    }
+
+    /**
+     * return contract instance
+     *
+     * @readonly
+     * @type {chain3.mc.contract}
+     * @memberof SmartContract
+     */
+    public get contract(): chain3.mc.contract {
+        return this._contract;
+    }
+
+    /**
      * init instance of smart contract
      *
      * @param {string} tokenContractAddress contract address of smart contract
@@ -68,8 +84,7 @@ class SmartContract {
      * @param {any} abi
      * @memberof SmartContract
      */
-    @validate
-    public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac, abi: any) {
+    public init(tokenContractAddress: string, moac: Moac, abi: any) {
         try {
             if (!moac.contractInitialied(this._contract, tokenContractAddress)) {
                 this._address = tokenContractAddress;
@@ -92,6 +107,19 @@ class SmartContract {
         if (this._moacABI) {
             this._moacABI.destroy();
         }
+    }
+
+    /**
+     * call defined function in the abi
+     *
+     */
+    public async callABI(name, ...args) {
+        const abiItem = this._moacABI.getAbiItem.apply(this._moacABI, [name, ...args]);
+        const { stateMutability } = abiItem;
+        if (stateMutability === "view" || stateMutability === "pure") {
+            return await this._contract[name].apply(null, [...args]);
+        }
+        return this._moacABI.encode.apply(this._moacABI, [name, ...args]);
     }
 }
 

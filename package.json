@@ -19,11 +19,11 @@
   "author": "JCCDex",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.3",
     "bignumber.js": "^9.0.0",
     "chain3": "^0.1.19",
     "jcc-moac-abi": "^0.1.4",
-    "jcc_wallet": "^1.0.0"
+    "jcc_wallet": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -33,11 +33,11 @@
     "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.6",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "gulp": "^4.0.2",
     "gulp-shell": "^0.7.1",
-    "karma": "^4.2.0",
+    "karma": "^4.3.0",
     "karma-browserify": "^6.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-detect-browsers": "^2.3.3",
@@ -50,9 +50,9 @@
     "sinon": "^7.4.1",
     "ts-loader": "^6.0.4",
     "tslint": "^5.19.0",
-    "typescript": "^3.5.3",
+    "typescript": "^3.6.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.39.2",
+    "webpack": "^4.39.3",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7"
   },
