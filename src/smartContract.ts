@@ -114,12 +114,12 @@ class SmartContract {
      *
      */
     public async callABI(name, ...args) {
-        const abiItem = this._moacABI.getAbiItem.apply(this._moacABI, [name, ...args]);
+        const abiItem = this._moacABI.getAbiItem.apply(null, [name, ...args]);
         const { stateMutability } = abiItem;
         if (stateMutability === "view" || stateMutability === "pure") {
-            return await this._contract[name].apply(null, [...args]);
+            return await this._contract[name].apply(null, args);
         }
-        return this._moacABI.encode.apply(this._moacABI, [name, ...args]);
+        return this._moacABI.encode.apply(null, [name, ...args]);
     }
 }
 

@@ -22,7 +22,7 @@
     "@types/node": "^12.7.3",
     "bignumber.js": "^9.0.0",
     "chain3": "^0.1.19",
-    "jcc-moac-abi": "^0.1.4",
+    "jcc-moac-abi": "^0.1.5",
     "jcc_wallet": "^1.0.1"
   },
   "devDependencies": {
