@@ -63,7 +63,7 @@ export const validate = (target: any, name: string, descriptor: PropertyDescript
                         break;
                     case checkAmountKey:
                         const bn = new BigNumber(value);
-                        if (!BigNumber.isBigNumber(bn) || !bn.isGreaterThan(0)) {
+                        if (!BigNumber.isBigNumber(bn) || !bn.isGreaterThanOrEqualTo(0)) {
                             throw new Error(`${value} is invalid amount.`);
                         }
                         break;

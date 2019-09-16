@@ -18,11 +18,20 @@ class SmartContract {
     private _contract: chain3.mc.contract;
 
     /**
+     * instance of abi
+     *
+     * @private
+     * @type {any}
+     * @memberof SmartContract
+     */
+    private _abi: any;
+
+    /**
      * instance of moac
      *
      * @private
      * @type {Moac}
-     * @memberof Fingate
+     * @memberof SmartContract
      */
     private _moac: Moac;
 
@@ -40,7 +49,7 @@ class SmartContract {
      *
      * @private
      * @type {MoacABI}
-     * @memberof ERC721
+     * @memberof SmartContract
      */
     private _moacABI: MoacABI;
 
@@ -89,7 +98,8 @@ class SmartContract {
             if (!moac.contractInitialied(this._contract, tokenContractAddress)) {
                 this._address = tokenContractAddress;
                 this._moac = moac;
-                this._contract = this._moac.contract(abi).at(this._address);
+                this._abi = abi;
+                this._contract = this._moac.contract(this._abi).at(this._address);
                 this._moacABI = new MoacABI(this._contract);
             }
         } catch (e) {
@@ -104,9 +114,6 @@ class SmartContract {
      */
     public destroy() {
         this._contract = null;
-        if (this._moacABI) {
-            this._moacABI.destroy();
-        }
     }
 
     /**

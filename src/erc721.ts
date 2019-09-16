@@ -91,12 +91,8 @@ class ERC721 extends SmartContract {
     public async mint(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, uri: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = await super.callABI("mint", to, tokenId, uri);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -118,12 +114,8 @@ class ERC721 extends SmartContract {
     public async burn(@isValidMoacSecret secret: string, @isValidMoacAddress owner: string, tokenId: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = await super.callABI("burn", owner, tokenId);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -176,11 +168,8 @@ class ERC721 extends SmartContract {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = !data ? await super.callABI("safeTransferFrom", sender, to, tokenId) : await super.callABI("safeTransferFrom", sender, to, tokenId, data);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -203,11 +192,8 @@ class ERC721 extends SmartContract {
         return new Promise(async (resolve, reject) => {
             try {
                 const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = await super.callABI("transferFrom", sender, to, tokenId);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -229,12 +215,8 @@ class ERC721 extends SmartContract {
     public approve(@isValidMoacSecret secret: string, @isValidMoacAddress approved: string, tokenId: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = await super.callABI("approve", approved, tokenId);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -256,12 +238,8 @@ class ERC721 extends SmartContract {
     public setApprovalForAll(@isValidMoacSecret secret: string, @isValidMoacAddress operator: string, approved: boolean, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const sender = Moac.getAddress(secret);
-                options = await this.moac.getOptions(options || {}, sender);
                 const calldata = await super.callABI("setApprovalForAll", operator, approved);
-                const tx = this.moac.getTx(sender, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, secret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);

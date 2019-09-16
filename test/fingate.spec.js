@@ -178,7 +178,7 @@ describe('test Fingate', function() {
     })
 
     it('amount is invalid', function() {
-      expect(() => inst.deposit(config.JINGTUM_ADDRESS, 0, config.MOAC_SECRET).throw(error.message).to.equal(`0 is invalid amount.`))
+      expect(() => inst.deposit(config.JINGTUM_ADDRESS, -1, config.MOAC_SECRET).throw(error.message).to.equal(`-1 is invalid amount.`))
     })
 
     it('moac secret is invalid', function() {
@@ -235,7 +235,7 @@ describe('test Fingate', function() {
     })
 
     it('amount is invalid', function done() {
-      expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, 0, config.MOCK_HASH, config.MOAC_SECRET)).throw(`0 is invalid amount.`)
+      expect(() => inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, -1, config.MOCK_HASH, config.MOAC_SECRET)).throw(`-1 is invalid amount.`)
     })
 
     it('hash is invalid', function() {

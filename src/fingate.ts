@@ -93,13 +93,9 @@ class Fingate extends SmartContract {
     public deposit(@isValidJingtumAddress jtAddress: string, @isValidAmount amount: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).toString(10);
-                options = await this.moac.getOptions(options || {}, moacAddress);
                 const calldata = await super.callABI("deposit", jtAddress);
-                const rawTx = this.moac.getTx(moacAddress, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
-                const signedTransaction = this.moac.signTransaction(rawTx, moacSecret);
-                const hash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const hash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, value, calldata, options);
                 return resolve(hash);
             } catch (error) {
                 return reject(error);
@@ -124,13 +120,9 @@ class Fingate extends SmartContract {
     public depositToken(@isValidJingtumAddress jtAddress: string, @isValidMoacAddress tokenAddress: string, decimals: number, @isValidAmount amount: string, @isValidHash hash: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
         return new Promise(async (resolve, reject) => {
             try {
-                const moacAddress = Moac.getAddress(moacSecret);
                 const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                options = await this.moac.getOptions(options || {}, moacAddress);
                 const calldata = await super.callABI("depositToken", jtAddress, tokenAddress, value.toString(10), hash);
-                const tx = this.moac.getTx(moacAddress, this.contract.address, options.nonce, options.gasLimit, options.gasPrice, "0", calldata);
-                const signedTransaction = this.moac.signTransaction(tx, moacSecret);
-                const txHash = await this.moac.sendRawSignedTransaction(signedTransaction);
+                const txHash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, "0", calldata, options);
                 return resolve(txHash);
             } catch (error) {
                 return reject(error);

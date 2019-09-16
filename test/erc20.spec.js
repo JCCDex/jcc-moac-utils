@@ -185,7 +185,7 @@ describe('test ERC20', function() {
     })
 
     it('amount is invalid', function() {
-      expect(() => inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, 0)).throw(`0 is invalid amount.`);
+      expect(() => inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, -1)).throw(`-1 is invalid amount.`);
     })
 
     it('moac secret is invalid', function() {
@@ -195,6 +195,8 @@ describe('test ERC20', function() {
     it('transfer in error', function(done) {
       let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
+      stub = sandbox.stub(inst._contract, "decimals");
+      stub.returns(18);
       inst.transfer(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')
         done()
@@ -238,7 +240,7 @@ describe('test ERC20', function() {
     })
 
     it('amount is invalid', function() {
-      expect(() => inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, 0)).throw(`0 is invalid amount.`);
+      expect(() => inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, -1)).throw(`-1 is invalid amount.`);
     })
 
     it('moac secret is invalid', function() {
@@ -248,6 +250,8 @@ describe('test ERC20', function() {
     it('approve in error', function(done) {
       let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
+      stub = sandbox.stub(inst._contract, "decimals");
+      stub.returns(18);
       inst.approve(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')
         done()
@@ -286,7 +290,9 @@ describe('test ERC20', function() {
     it('transferFrom in error', function(done) {
       let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
       stub.yields(new Error('request nonce in error'), null);
-      inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
+      stub = sandbox.stub(inst._contract, "decimals");
+      stub.returns(18);
+      inst.transferFrom(config.MOAC_SECRET, config.MOAC_SPENDER_ADDRESS, '0x' + config.MOAC_ADDRESS, config.MOCK_DEPOSIT_VALUE).catch(error => {
         expect(error.message).to.equal('request nonce in error')
         done()
       })

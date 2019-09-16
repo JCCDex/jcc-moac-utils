@@ -3,6 +3,7 @@ import chain3 = require("chain3");
 import * as moacWallet from "jcc_wallet/lib/moac";
 import { IWalletModel } from "jcc_wallet/lib/model";
 import { IMoacTransaction, ITransactionOption } from "./model/transaction";
+import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**
  * toolkit of moac
@@ -354,10 +355,12 @@ export default class Moac {
      * sign transaction
      *
      * @param {IMoacTransaction} tx object
+     * @param {string} secret moac account secret
      * @returns {string} signed string
      * @memberof Moac
      */
-    public signTransaction(tx: IMoacTransaction, secret: string): string {
+    @validate
+    public signTransaction(tx: IMoacTransaction, @isValidMoacSecret secret: string): string {
         return this._chain3.signTransaction(tx, secret);
     }
 
@@ -376,6 +379,33 @@ export default class Moac {
                 }
                 return resolve(hash);
             });
+        });
+    }
+
+    /**
+     * send raw signed transaction by calldata
+     *
+     * @param {string} secret moac account secret
+     * @param {string} contractAddr contract address
+     * @param {string} value amount of moac
+     * @param {any} calldata call data
+     * @param {ITransactionOption} options options of transaction
+     * @returns {Promise<string>} resolve hash if successful
+     * @memberof Moac
+     */
+    @validate
+    public sendTransactionWithCallData(@isValidMoacSecret secret: string, @isValidMoacAddress contractAddr: string, @isValidAmount value: string, calldata: any, options?: ITransactionOption): Promise<string> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const sender = Moac.getAddress(secret);
+                options = await this.getOptions(options || {}, sender);
+                const tx = this.getTx(sender, contractAddr, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
+                const signedTransaction = this.signTransaction(tx, secret);
+                const hash = await this.sendRawSignedTransaction(signedTransaction);
+                return resolve(hash);
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 
