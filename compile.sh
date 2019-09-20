@@ -1,6 +1,5 @@
 #!/bin/bash
 npm run build
-npx babel node_modules/base-x/index.js -o node_modules/base-x/index.js
 npx babel ./node_modules/swtc-factory --out-dir ./node_modules/swtc-factory
 npx babel ./node_modules/swtc-keypairs --out-dir ./node_modules/swtc-keypairs
 npx babel ./node_modules/swtc-chains --out-dir ./node_modules/swtc-chains
