@@ -317,10 +317,10 @@ export default class Moac {
     }
 
     /**
-     * Get the numbers of transactions sent from this address.
+     * get transaction count
      *
      * @param {string} address moac address
-     * @returns {Promise<number>} the numbers of transactions sent from this address
+     * @returns {Promise<number>} transaction count
      * @memberof Moac
      */
     public getTransactionCount(address: string): Promise<number> {

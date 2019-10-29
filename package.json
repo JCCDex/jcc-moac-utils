@@ -21,7 +21,7 @@
   "dependencies": {
     "@types/node": "^12.7.3",
     "bignumber.js": "^9.0.0",
-    "chain3": "^0.1.19",
+    "chain3": "^0.1.21",
     "jcc-moac-abi": "^0.1.7",
     "jcc_wallet": "^1.0.1"
   },
