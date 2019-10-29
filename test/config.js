@@ -99,10 +99,10 @@ const MOAC_ERC20_ABI = [
     name: "name",
     outputs: [
       {
-      name: "",
-      type: "string"
-    }
-  ],
+        name: "",
+        type: "string"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -113,10 +113,10 @@ const MOAC_ERC20_ABI = [
     name: "totalSupply",
     outputs: [
       {
-      name: "",
-      type: "uint256"
-    }
-  ],
+        name: "",
+        type: "uint256"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -127,10 +127,10 @@ const MOAC_ERC20_ABI = [
     name: "decimals",
     outputs: [
       {
-      name: "",
-      type: "uint256"
-    }
-  ],
+        name: "",
+        type: "uint256"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -141,10 +141,10 @@ const MOAC_ERC20_ABI = [
     name: "founder",
     outputs: [
       {
-      name: "",
-      type: "address"
-    }
-  ],
+        name: "",
+        type: "address"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -155,10 +155,10 @@ const MOAC_ERC20_ABI = [
     name: "symbol",
     outputs: [
       {
-      name: "",
-      type: "string"
-    }
-  ],
+        name: "",
+        type: "string"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -166,10 +166,10 @@ const MOAC_ERC20_ABI = [
   {
     inputs: [
       {
-      name: "founderInput",
-      type: "address"
-    }
-  ],
+        name: "founderInput",
+        type: "address"
+      }
+    ],
     payable: false,
     stateMutability: "nonpayable",
     type: "constructor"
@@ -227,17 +227,17 @@ const MOAC_ERC20_ABI = [
     constant: true,
     inputs: [
       {
-      name: "_owner",
-      type: "address"
-    }
-  ],
+        name: "_owner",
+        type: "address"
+      }
+    ],
     name: "balanceOf",
     outputs: [
       {
-      name: "balance",
-      type: "uint256"
-    }
-  ],
+        name: "balance",
+        type: "uint256"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -257,10 +257,10 @@ const MOAC_ERC20_ABI = [
     name: "approve",
     outputs: [
       {
-      name: "success",
-      type: "bool"
-    }
-  ],
+        name: "success",
+        type: "bool"
+      }
+    ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
@@ -280,10 +280,10 @@ const MOAC_ERC20_ABI = [
     name: "allowance",
     outputs: [
       {
-      name: "remaining",
-      type: "uint256"
-    }
-  ],
+        name: "remaining",
+        type: "uint256"
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -303,10 +303,10 @@ const MOAC_ERC20_ABI = [
     name: "transfer",
     outputs: [
       {
-      name: "success",
-      type: "bool"
-    }
-  ],
+        name: "success",
+        type: "bool"
+      }
+    ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
@@ -330,10 +330,10 @@ const MOAC_ERC20_ABI = [
     name: "transferFrom",
     outputs: [
       {
-      name: "success",
-      type: "bool"
-    }
-  ],
+        name: "success",
+        type: "bool"
+      }
+    ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
