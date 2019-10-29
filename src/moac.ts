@@ -317,6 +317,24 @@ export default class Moac {
     }
 
     /**
+     * Get the numbers of transactions sent from this address.
+     *
+     * @param {string} address moac address
+     * @returns {Promise<number>} the numbers of transactions sent from this address
+     * @memberof Moac
+     */
+    public getTransactionCount(address: string): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this._chain3.mc.getTransactionCount(address, (err: Error, count: number) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(count);
+            });
+        });
+    }
+
+    /**
      * structuring transaction data
      *
      * @param {string} from moac address

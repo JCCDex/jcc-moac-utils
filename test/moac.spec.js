@@ -185,6 +185,43 @@ describe('test moac', function() {
     })
   })
 
+  describe('test getTransactionCount', function() {
+    let inst;
+    before(() => {
+      inst = new Moac(config.MOCK_NODE, true)
+      inst.initChain3();
+    })
+    afterEach(() => {
+      sandbox.restore();
+    })
+    it('call getTransactionCount successfully', function(done) {
+      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub.yields(null, config.MOCK_TARANSNUM)
+      inst.getTransactionCount(config.MOAC_ADDRESS).then(count => {
+        expect(count).to.equal(config.MOCK_TARANSNUM);
+        done()
+      });
+    })
+
+    it('call getTransactionCount failed', function(done) {
+      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub.yields(new Error('moac address invalid'), null);
+      inst.getTransactionCount(config.MOAC_ADDRESS).catch(err => {
+        expect(err.message).to.equal('moac address invalid');
+        done()
+      });
+    })
+
+    it('call getTransactionCount failed when connect node error', function(done) {
+      let stub = sandbox.stub(inst._chain3.mc, "getTransactionCount");
+      stub.yields(new Error('connect node net in error'), null);
+      inst.getTransactionCount(config.MOAC_ADDRESS).catch(err => {
+        expect(err.message).to.equal('connect node net in error');
+        done()
+      });
+    })
+  })
+
   describe('test getNonce', function() {
     let inst;
     before(() => {
