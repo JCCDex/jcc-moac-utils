@@ -6,6 +6,7 @@ const SNRC_CONTRACT_ADDRESS = "0x1b9bae18532eeb8cd4316a20678a0c43f28f0ae2"
 const JINGTUM_ADDRESS = "jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH";
 
 const MOCK_NODE = "http://localhost";
+const MOCK_TARANSNUM = 0;
 const MOCK_NONCE = 12;
 const MOCK_GAS = 2000;
 const MOCK_GAS_LIMIT = 200000;
@@ -98,10 +99,10 @@ const MOAC_ERC20_ABI = [
     name: "name",
     outputs: [
       {
-        name: "",
-        type: "string"
-      }
-    ],
+      name: "",
+      type: "string"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -112,10 +113,10 @@ const MOAC_ERC20_ABI = [
     name: "totalSupply",
     outputs: [
       {
-        name: "",
-        type: "uint256"
-      }
-    ],
+      name: "",
+      type: "uint256"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -126,10 +127,10 @@ const MOAC_ERC20_ABI = [
     name: "decimals",
     outputs: [
       {
-        name: "",
-        type: "uint256"
-      }
-    ],
+      name: "",
+      type: "uint256"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -140,10 +141,10 @@ const MOAC_ERC20_ABI = [
     name: "founder",
     outputs: [
       {
-        name: "",
-        type: "address"
-      }
-    ],
+      name: "",
+      type: "address"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -154,10 +155,10 @@ const MOAC_ERC20_ABI = [
     name: "symbol",
     outputs: [
       {
-        name: "",
-        type: "string"
-      }
-    ],
+      name: "",
+      type: "string"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -165,10 +166,10 @@ const MOAC_ERC20_ABI = [
   {
     inputs: [
       {
-        name: "founderInput",
-        type: "address"
-      }
-    ],
+      name: "founderInput",
+      type: "address"
+    }
+  ],
     payable: false,
     stateMutability: "nonpayable",
     type: "constructor"
@@ -226,17 +227,17 @@ const MOAC_ERC20_ABI = [
     constant: true,
     inputs: [
       {
-        name: "_owner",
-        type: "address"
-      }
-    ],
+      name: "_owner",
+      type: "address"
+    }
+  ],
     name: "balanceOf",
     outputs: [
       {
-        name: "balance",
-        type: "uint256"
-      }
-    ],
+      name: "balance",
+      type: "uint256"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -256,10 +257,10 @@ const MOAC_ERC20_ABI = [
     name: "approve",
     outputs: [
       {
-        name: "success",
-        type: "bool"
-      }
-    ],
+      name: "success",
+      type: "bool"
+    }
+  ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
@@ -279,10 +280,10 @@ const MOAC_ERC20_ABI = [
     name: "allowance",
     outputs: [
       {
-        name: "remaining",
-        type: "uint256"
-      }
-    ],
+      name: "remaining",
+      type: "uint256"
+    }
+  ],
     payable: false,
     stateMutability: "view",
     type: "function"
@@ -302,10 +303,10 @@ const MOAC_ERC20_ABI = [
     name: "transfer",
     outputs: [
       {
-        name: "success",
-        type: "bool"
-      }
-    ],
+      name: "success",
+      type: "bool"
+    }
+  ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
@@ -329,10 +330,10 @@ const MOAC_ERC20_ABI = [
     name: "transferFrom",
     outputs: [
       {
-        name: "success",
-        type: "bool"
-      }
-    ],
+      name: "success",
+      type: "bool"
+    }
+  ],
     payable: false,
     stateMutability: "nonpayable",
     type: "function"
@@ -364,6 +365,7 @@ module.exports = {
   MOCK_ERC20_APPROVE_HASH,
   MOCK_ERC20_TRANSFERFROM_HASH,
   MOCK_NODE,
+  MOCK_TARANSNUM,
   MOCK_NONCE,
   MOCK_GAS,
   MOCK_GAS_LIMIT,
