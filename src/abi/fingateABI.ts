@@ -1,289 +1,378 @@
 "use strict";
 
-const fingateABI = [{
+const fingateABI = [
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jthash",
         type: "bytes32"
-    }, {
+      },
+      {
         name: "_dest",
         type: "address"
-    }, {
+      },
+      {
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         name: "_amount",
         type: "uint256"
-    }],
+      }
+    ],
     name: "withdrawToken",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: true,
     inputs: [],
     name: "depositTotal",
-    outputs: [{
+    outputs: [
+      {
         name: "total",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: true,
-    inputs: [{
+    inputs: [
+      {
         name: "",
         type: "bytes32"
-    }],
+      }
+    ],
     name: "withdrawHistory",
-    outputs: [{
+    outputs: [
+      {
         name: "",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: true,
-    inputs: [{
+    inputs: [
+      {
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         name: "_user",
         type: "address"
-    }],
+      }
+    ],
     name: "depositState",
-    outputs: [{
+    outputs: [
+      {
         name: "amount",
         type: "uint256"
-    }, {
+      },
+      {
         name: "jtaddress",
         type: "string"
-    }, {
+      },
+      {
         name: "state",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jthash",
         type: "bytes32"
-    }, {
+      },
+      {
         name: "_address",
         type: "address"
-    }, {
+      },
+      {
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         name: "_state",
         type: "uint256"
-    }],
+      }
+    ],
     name: "depositTokenDone",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jtaddress",
         type: "string"
-    }],
+      }
+    ],
     name: "deposit",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jthash",
         type: "bytes32"
-    }, {
+      },
+      {
         name: "_dest",
         type: "address"
-    }, {
+      },
+      {
         name: "_amount",
         type: "uint256"
-    }],
+      }
+    ],
     name: "withdraw",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: true,
-    inputs: [{
+    inputs: [
+      {
         name: "_token",
         type: "address"
-    }],
+      }
+    ],
     name: "depositTokenTotal",
-    outputs: [{
+    outputs: [
+      {
         name: "total",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jtaddress",
         type: "string"
-    }, {
+      },
+      {
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         name: "_amount",
         type: "uint256"
-    }, {
+      },
+      {
         name: "_hash",
         type: "bytes32"
-    }],
+      }
+    ],
     name: "depositToken",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: false,
-    inputs: [{
+    inputs: [
+      {
         name: "_jthash",
         type: "bytes32"
-    }, {
+      },
+      {
         name: "_address",
         type: "address"
-    }, {
+      },
+      {
         name: "_state",
         type: "uint256"
-    }],
+      }
+    ],
     name: "depositDone",
     outputs: [],
     payable: true,
     stateMutability: "payable",
     type: "function"
-}, {
+  },
+  {
     constant: true,
-    inputs: [{
+    inputs: [
+      {
         name: "",
         type: "address"
-    }, {
+      },
+      {
         name: "",
         type: "address"
-    }, {
+      },
+      {
         name: "",
         type: "uint256"
-    }],
+      }
+    ],
     name: "tokens",
-    outputs: [{
+    outputs: [
+      {
         name: "amount",
         type: "uint256"
-    }, {
+      },
+      {
         name: "jtaddress",
         type: "string"
-    }, {
+      },
+      {
         name: "progress",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: true,
     inputs: [],
     name: "admin",
-    outputs: [{
+    outputs: [
+      {
         name: "",
         type: "address"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
+  },
+  {
     constant: true,
-    inputs: [{
+    inputs: [
+      {
         name: "",
         type: "bytes32"
-    }],
+      }
+    ],
     name: "depositHistory",
-    outputs: [{
+    outputs: [
+      {
         name: "",
         type: "uint256"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "view",
     type: "function"
-}, {
-    inputs: [{
+  },
+  {
+    inputs: [
+      {
         name: "_admin",
         type: "address"
-    }],
+      }
+    ],
     payable: false,
     stateMutability: "nonpayable",
     type: "constructor"
-}, {
+  },
+  {
     anonymous: false,
-    inputs: [{
+    inputs: [
+      {
         indexed: true,
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         indexed: true,
         name: "_caller",
         type: "address"
-    }, {
+      },
+      {
         indexed: true,
         name: "_user",
         type: "address"
-    }, {
+      },
+      {
         indexed: false,
         name: "_jtaddress",
         type: "string"
-    }, {
+      },
+      {
         indexed: false,
         name: "_hash",
         type: "bytes32"
-    }, {
+      },
+      {
         indexed: false,
         name: "_amount",
         type: "uint256"
-    }, {
+      },
+      {
         indexed: false,
         name: "state",
         type: "uint256"
-    }],
+      }
+    ],
     name: "Deposit",
     type: "event"
-}, {
+  },
+  {
     anonymous: false,
-    inputs: [{
+    inputs: [
+      {
         indexed: true,
         name: "_token",
         type: "address"
-    }, {
+      },
+      {
         indexed: true,
         name: "_user",
         type: "address"
-    }, {
+      },
+      {
         indexed: false,
         name: "_jthash",
         type: "bytes32"
-    }, {
+      },
+      {
         indexed: false,
         name: "_amount",
         type: "uint256"
-    }, {
+      },
+      {
         indexed: false,
         name: "_balance",
         type: "uint256"
-    }],
+      }
+    ],
     name: "Withdraw",
     type: "event"
-}];
+  }
+];
 
 export default fingateABI;
