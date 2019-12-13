@@ -190,14 +190,6 @@ describe('test ERC721', function() {
         done()
       });
     })
-
-    it('throws error if balance error', async function() {
-      let stub = sandbox.stub(inst._contract, "balanceOf");
-      stub.throws(new Error("balance error"));
-      let balance = await inst.balanceOf(config.MOAC_ADDRESS);
-      expect(stub.calledOnceWithExactly(config.MOAC_ADDRESS)).to.true;
-      expect(balance.toString()).to.equal('0');
-    })
   });
 
   describe('test ownerOf', function() {

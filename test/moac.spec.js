@@ -146,12 +146,6 @@ describe('test moac', function() {
       expect(balance).to.equal('0.000000000000000001');
     })
 
-    it('get balance in error', async function() {
-      let stub = sandbox.stub(inst._chain3.mc, "getBalance");
-      stub.rejects(new Error('address is invalid'));
-      let balance = await inst.getBalance(config.MOAC_ADDRESS);
-      expect(balance).to.equal('0');
-    })
   })
 
   describe('test getGasPrice', function() {

@@ -56,16 +56,10 @@ class Fingate extends SmartContract {
      * @memberof Fingate
      */
     @validate
-    public depositState(@isValidMoacAddress address: string, @isValidMoacAddress contractAddress = "0x0000000000000000000000000000000000000000"): Promise<Array<BigNumber | string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                address = Moac.prefix0x(address);
-                const state = await super.callABI("depositState", contractAddress, address);
-                return resolve(state);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async depositState(@isValidMoacAddress address: string, @isValidMoacAddress contractAddress = "0x0000000000000000000000000000000000000000"): Promise<Array<BigNumber | string>> {
+        address = Moac.prefix0x(address);
+        const state = await super.callABI("depositState", contractAddress, address);
+        return state;
     }
 
     /**
@@ -90,17 +84,11 @@ class Fingate extends SmartContract {
      * @memberof Fingate
      */
     @validate
-    public deposit(@isValidJingtumAddress jtAddress: string, @isValidAmount amount: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const value = new BigNumber(amount).toString(10);
-                const calldata = await super.callABI("deposit", jtAddress);
-                const hash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, value, calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async deposit(@isValidJingtumAddress jtAddress: string, @isValidAmount amount: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
+        const value = new BigNumber(amount).toString(10);
+        const calldata = await super.callABI("deposit", jtAddress);
+        const hash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, value, calldata, options);
+        return hash;
     }
 
     /**
@@ -117,17 +105,11 @@ class Fingate extends SmartContract {
      * @memberof Fingate
      */
     @validate
-    public depositToken(@isValidJingtumAddress jtAddress: string, @isValidMoacAddress tokenAddress: string, decimals: number, @isValidAmount amount: string, @isValidHash hash: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const calldata = await super.callABI("depositToken", jtAddress, tokenAddress, value.toString(10), hash);
-                const txHash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, "0", calldata, options);
-                return resolve(txHash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async depositToken(@isValidJingtumAddress jtAddress: string, @isValidMoacAddress tokenAddress: string, decimals: number, @isValidAmount amount: string, @isValidHash hash: string, @isValidMoacSecret moacSecret: string, options?: ITransactionOption): Promise<string> {
+        const value = new BigNumber(amount).multipliedBy(10 ** decimals);
+        const calldata = await super.callABI("depositToken", jtAddress, tokenAddress, value.toString(10), hash);
+        const txHash = await this.moac.sendTransactionWithCallData(moacSecret, this.contract.address, "0", calldata, options);
+        return txHash;
     }
 }
 

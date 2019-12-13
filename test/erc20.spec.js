@@ -141,12 +141,6 @@ describe('test ERC20', function() {
       expect(balance).to.equal('10');
     })
 
-    it('get balance in error', async function() {
-      let stub = sandbox.stub(inst._contract, "balanceOf");
-      stub.rejects(new Error('address is invalid'));
-      let balance = await inst.balanceOf(config.MOAC_ADDRESS);
-      expect(balance).to.equal('0');
-    })
   })
 
   describe('test transfer', function() {

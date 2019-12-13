@@ -29,11 +29,7 @@ class ERC20 extends SmartContract {
      */
     @validate
     public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac) {
-        try {
-            super.init(tokenContractAddress, moac, erc20ABI);
-        } catch (e) {
-            throw e;
-        }
+        super.init(tokenContractAddress, moac, erc20ABI);
     }
 
     /**
@@ -93,14 +89,9 @@ class ERC20 extends SmartContract {
      * @memberof ERC20
      */
     public async balanceOf(address: string): Promise<string> {
-        let balance: string;
-        try {
-            const bnBalance = await super.callABI("balanceOf", address);
-            const decimals = await this.decimals();
-            balance = bnBalance.dividedBy(10 ** decimals).toString(10);
-        } catch (error) {
-            balance = "0";
-        }
+        const bnBalance = await super.callABI("balanceOf", address);
+        const decimals = await this.decimals();
+        const balance = bnBalance.dividedBy(10 ** decimals).toString(10);
         return balance;
     }
 
@@ -115,18 +106,12 @@ class ERC20 extends SmartContract {
      * @memberof ERC20
      */
     @validate
-    public transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const decimals = await this.decimals();
-                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const calldata = await super.callABI("transfer", to, value.toString(10));
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async transfer(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
+        const decimals = await this.decimals();
+        const value = new BigNumber(amount).multipliedBy(10 ** decimals);
+        const calldata = await super.callABI("transfer", to, value.toString(10));
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -140,18 +125,12 @@ class ERC20 extends SmartContract {
      * @memberof ERC20
      */
     @validate
-    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const decimals = await this.decimals();
-                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const calldata = await super.callABI("approve", spender, value.toString(10));
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async approve(@isValidMoacSecret secret: string, @isValidMoacAddress spender: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
+        const decimals = await this.decimals();
+        const value = new BigNumber(amount).multipliedBy(10 ** decimals);
+        const calldata = await super.callABI("approve", spender, value.toString(10));
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -179,18 +158,12 @@ class ERC20 extends SmartContract {
      * @memberof ERC20
      */
     @validate
-    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const decimals = await this.decimals();
-                const value = new BigNumber(amount).multipliedBy(10 ** decimals);
-                const calldata = await super.callABI("transferFrom", from, to, value.toString(10));
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress from: string, @isValidMoacAddress to: string, @isValidAmount amount: string, options?: ITransactionOption): Promise<string> {
+        const decimals = await this.decimals();
+        const value = new BigNumber(amount).multipliedBy(10 ** decimals);
+        const calldata = await super.callABI("transferFrom", from, to, value.toString(10));
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 }
 

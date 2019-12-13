@@ -29,11 +29,7 @@ class ERC721 extends SmartContract {
      */
     @validate
     public init(@isValidMoacAddress tokenContractAddress: string, moac: Moac) {
-        try {
-            super.init(tokenContractAddress, moac, erc721ABI);
-        } catch (e) {
-            throw e;
-        }
+        super.init(tokenContractAddress, moac, erc721ABI);
     }
 
     /**
@@ -89,15 +85,9 @@ class ERC721 extends SmartContract {
      */
     @validate
     public async mint(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, uri: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const calldata = await super.callABI("mint", to, tokenId, uri);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+        const calldata = await super.callABI("mint", to, tokenId, uri);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -112,15 +102,9 @@ class ERC721 extends SmartContract {
      */
     @validate
     public async burn(@isValidMoacSecret secret: string, @isValidMoacAddress owner: string, tokenId: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const calldata = await super.callABI("burn", owner, tokenId);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+        const calldata = await super.callABI("burn", owner, tokenId);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -132,12 +116,7 @@ class ERC721 extends SmartContract {
      */
     @validate
     public async balanceOf(@isValidMoacAddress owner: string): Promise<string> {
-        let balance: string;
-        try {
-            balance = await super.callABI("balanceOf", owner);
-        } catch (error) {
-            balance = "0";
-        }
+        const balance: string = await super.callABI("balanceOf", owner);
         return balance;
     }
 
@@ -164,17 +143,11 @@ class ERC721 extends SmartContract {
      * @memberof ERC721
      */
     @validate
-    public safeTransferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, data?: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const sender = Moac.getAddress(secret);
-                const calldata = !data ? await super.callABI("safeTransferFrom", sender, to, tokenId) : await super.callABI("safeTransferFrom", sender, to, tokenId, data);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async safeTransferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, data?: string, options?: ITransactionOption): Promise<string> {
+        const sender = Moac.getAddress(secret);
+        const calldata = !data ? await super.callABI("safeTransferFrom", sender, to, tokenId) : await super.callABI("safeTransferFrom", sender, to, tokenId, data);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -188,17 +161,11 @@ class ERC721 extends SmartContract {
      * @memberof ERC721
      */
     @validate
-    public transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const sender = Moac.getAddress(secret);
-                const calldata = await super.callABI("transferFrom", sender, to, tokenId);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async transferFrom(@isValidMoacSecret secret: string, @isValidMoacAddress to: string, tokenId: string, options?: ITransactionOption): Promise<string> {
+        const sender = Moac.getAddress(secret);
+        const calldata = await super.callABI("transferFrom", sender, to, tokenId);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -212,16 +179,10 @@ class ERC721 extends SmartContract {
      * @memberof ERC721
      */
     @validate
-    public approve(@isValidMoacSecret secret: string, @isValidMoacAddress approved: string, tokenId: string, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const calldata = await super.callABI("approve", approved, tokenId);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async approve(@isValidMoacSecret secret: string, @isValidMoacAddress approved: string, tokenId: string, options?: ITransactionOption): Promise<string> {
+        const calldata = await super.callABI("approve", approved, tokenId);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**
@@ -235,16 +196,10 @@ class ERC721 extends SmartContract {
      * @memberof ERC721
      */
     @validate
-    public setApprovalForAll(@isValidMoacSecret secret: string, @isValidMoacAddress operator: string, approved: boolean, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const calldata = await super.callABI("setApprovalForAll", operator, approved);
-                const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
-                return resolve(hash);
-            } catch (error) {
-                return reject(error);
-            }
-        });
+    public async setApprovalForAll(@isValidMoacSecret secret: string, @isValidMoacAddress operator: string, approved: boolean, options?: ITransactionOption): Promise<string> {
+        const calldata = await super.callABI("setApprovalForAll", operator, approved);
+        const hash = await this.moac.sendTransactionWithCallData(secret, this.contract.address, "0", calldata, options);
+        return hash;
     }
 
     /**

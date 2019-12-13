@@ -242,13 +242,8 @@ export default class Moac {
      * @memberof Moac
      */
     public async getBalance(address: string): Promise<string> {
-        let balance: string;
-        try {
-            const bnBalance = await this._chain3.mc.getBalance(address);
-            balance = this._chain3.fromSha(bnBalance).toString(10);
-        } catch (error) {
-            balance = "0";
-        }
+        const bnBalance = await this._chain3.mc.getBalance(address);
+        const balance: string = this._chain3.fromSha(bnBalance).toString(10);
         return balance;
     }
 
@@ -412,19 +407,13 @@ export default class Moac {
      * @memberof Moac
      */
     @validate
-    public sendTransactionWithCallData(@isValidMoacSecret secret: string, @isValidMoacAddress contractAddr: string, @isValidAmount value: string, calldata: any, options?: ITransactionOption): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const sender = Moac.getAddress(secret);
-                options = await this.getOptions(options || {}, sender);
-                const tx = this.getTx(sender, contractAddr, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
-                const signedTransaction = this.signTransaction(tx, secret);
-                const hash = await this.sendRawSignedTransaction(signedTransaction);
-                return resolve(hash);
-            } catch (error) {
-                reject(error);
-            }
-        });
+    public async sendTransactionWithCallData(@isValidMoacSecret secret: string, @isValidMoacAddress contractAddr: string, @isValidAmount value: string, calldata: any, options?: ITransactionOption): Promise<string> {
+        const sender = Moac.getAddress(secret);
+        options = await this.getOptions(options || {}, sender);
+        const tx = this.getTx(sender, contractAddr, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
+        const signedTransaction = this.signTransaction(tx, secret);
+        const hash = await this.sendRawSignedTransaction(signedTransaction);
+        return hash;
     }
 
     /**
