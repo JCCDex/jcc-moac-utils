@@ -131,13 +131,31 @@ describe("test ERC20", function() {
     });
 
     it("get balance successfully", async function() {
-      let stub = sandbox.stub(inst._contract, "balanceOf");
-      stub.resolves(new BigNumber(1e19));
+      const stub = sandbox.stub(moac.getChain3().mc, "call");
+      stub.yields(null, "0x00000000000000000000000000000000000000000000000053444835ec580000");
       let s = sandbox.stub(inst._contract, "decimals");
-      s.returns(18);
+      s.resolves(18);
       let balance = await inst.balanceOf(config.MOAC_ADDRESS);
-      expect(stub.calledOnceWithExactly(config.MOAC_ADDRESS)).to.true;
-      expect(balance).to.equal("10");
+      expect(balance).to.equal("6");
+      expect(
+        stub.calledOnceWith(
+          {
+            to: "0x9bd4810a407812042f938d2f69f673843301cfa6",
+            data: "0x70a082310000000000000000000000000000000000000000000000000000000000000NaN"
+          },
+          undefined
+        )
+      );
+    });
+
+    it("get balance error", async function() {
+      const stub = sandbox.stub(moac.getChain3().mc, "call");
+      stub.yields(new Error("test"), null);
+      try {
+        await inst.balanceOf(config.MOAC_ADDRESS);
+      } catch (error) {
+        expect(error.message).to.equal("test");
+      }
     });
   });
 
