@@ -7,11 +7,4 @@ import Fingate from "./fingate";
 import Moac from "./moac";
 import smartContract from "./smartContract";
 
-export {
-    Fingate,
-    Moac,
-    smartContract,
-    ERC20,
-    ERC721,
-    SolidityFunction
-};
+export { Fingate, Moac, smartContract, ERC20, ERC721, SolidityFunction };
