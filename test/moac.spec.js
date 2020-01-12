@@ -361,6 +361,42 @@ describe("test moac", function() {
     });
   });
 
+  describe("test sendSignedTransaction", function() {
+    let inst;
+    before(() => {
+      inst = new Moac(config.MOCK_NODE, true);
+      inst.initChain3();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it("send transaction successfully", function(done) {
+      let signedTransaction = "test";
+      let stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub.yields(null, config.MOCK_HASH);
+      inst.sendSignedTransaction(signedTransaction).then((hash) => {
+        expect(hash).to.equal(config.MOCK_HASH);
+        let args = stub.getCall(0).args;
+        expect(args.length).to.equal(2);
+        expect(args[0]).to.equal(signedTransaction);
+        expect(args[1]).to.be.a("function");
+        done();
+      });
+    });
+
+    it("send transaction in error", function(done) {
+      let signedTransaction = "test";
+      let stub = sandbox.stub(inst._chain3.mc, "sendRawTransaction");
+      stub.yields(new Error("connect net in error"), null);
+      inst.sendSignedTransaction(signedTransaction).catch((err) => {
+        expect(err.message).to.equal("connect net in error");
+        done();
+      });
+    });
+  });
+
   describe("test sendRawSignedTransaction", function() {
     let inst;
     before(() => {

@@ -139,7 +139,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
@@ -158,7 +158,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.burn(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_BURN)).to.true;
@@ -219,7 +219,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
@@ -264,7 +264,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.mint(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, config.MOAC_ERC721_TOKEN1_URI);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_MINT)).to.true;
@@ -283,7 +283,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.safeTransferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(
@@ -306,7 +306,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.safeTransferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID, "0xaa");
       expect(hash).to.equal(config.MOCK_HASH);
       expect(
@@ -338,7 +338,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.transferFrom(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_TRANSFERFROM)).to.true;
@@ -382,7 +382,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.approve(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, config.MOAC_ERC721_TOKEN1_ID);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_APPROVED)).to.true;
@@ -410,7 +410,7 @@ describe("test ERC721", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let spy = sandbox.spy(moac, "sendRawSignedTransaction");
+      let spy = sandbox.spy(moac, "sendSignedTransaction");
       let hash = await inst.setApprovalForAll(config.MOAC_SECRET, config.MOAC_TO_ADDRESS, true);
       expect(hash).to.equal(config.MOCK_HASH);
       expect(spy.calledOnceWith(config.MOCK_ERC721_TX_SETAPPROVEDALL)).to.true;

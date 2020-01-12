@@ -426,7 +426,7 @@ export default class Moac {
     options = await this.getOptions(options || {}, sender);
     const tx = this.getTx(sender, contractAddr, options.nonce, options.gasLimit, options.gasPrice, value, calldata);
     const signedTransaction = this.signTransaction(tx, secret);
-    const hash = await this.sendRawSignedTransaction(signedTransaction);
+    const hash = await this.sendSignedTransaction(signedTransaction);
     return hash;
   }
 
