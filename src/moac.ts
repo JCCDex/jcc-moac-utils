@@ -348,7 +348,7 @@ export default class Moac {
     options = await this.getOptions(options || {}, sender);
     const tx = this.getTx(sender, dest, options.nonce, options.gasLimit, options.gasPrice, amount, !memo ? "" : this.getChain3().toHex(memo));
     const signedTransaction = this.signTransaction(tx, moacSecret);
-    let hash = await this.sendSignedTransaction(signedTransaction);
+    const hash = await this.sendSignedTransaction(signedTransaction);
     return hash;
   }
 
