@@ -564,4 +564,73 @@ describe("test moac", function() {
       });
     });
   });
+
+  describe("test transferMoac", function() {
+    let moac;
+    before(function() {
+      moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it("transfer moac successfully with memo", async function() {
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
+      stub.yields(null, config.MOCK_GAS);
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
+      stub.yields(null, config.MOCK_NONCE);
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
+      stub.yields(null, {
+        jsonrpc: "2.0",
+        id: 1536822829875,
+        result: {}
+      });
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
+      stub.yields(null, config.MOCK_HASH);
+      let hash = await moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1", "test");
+      expect(stub.calledOnceWith("0xf8750c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a76400008474657374808081e9a08b39f2708c7f0dd6acb026708564cc8ab3cfe0dbf587e2fb76be3d7b37512068a078baff9ddb5affe41757e9bc13326e9bfb79e26dc9dac755242e86778b9cbe0d")).true;
+      expect(hash).to.equal(config.MOCK_HASH);
+    });
+
+    it("transfer moac successfully without memo", async function() {
+      let stub = sandbox.stub(moac._chain3.mc, "getGasPrice");
+      stub.yields(null, config.MOCK_GAS);
+      stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
+      stub.yields(null, config.MOCK_NONCE);
+      stub = sandbox.stub(moac._chain3.currentProvider, "sendAsync");
+      stub.yields(null, {
+        jsonrpc: "2.0",
+        id: 1536822829875,
+        result: {}
+      });
+      stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
+      stub.yields(null, config.MOCK_HASH);
+      let hash = await moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1");
+      expect(stub.calledOnceWith("0xf8710c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a764000000808081e9a06d2da1cf30a41b8b12150bee4b08ba5e7669596efa77cb5b697d104a2dd639eda0191c50367e31b5f8edf13faf822e09806965858209fa5f43b88a6ab04c9e2795")).true;
+      expect(hash).to.equal(config.MOCK_HASH);
+    });
+
+    it("amount is invalid", function() {
+      expect(() => moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "-1")).throw(`-1 is invalid amount.`);
+    });
+
+    it("moac secret is invalid", function() {
+      expect(() => moac.transferMoac(config.MOAC_SECRET.substring(1), config.MOAC_ERC20_ADDRESS, "1")).throw(`${config.MOAC_SECRET.substring(1)} is invalid moac secret.`);
+    });
+
+    it("destination address is invalid", function() {
+      expect(() => moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS.substring(1), "1")).throw(`${config.MOAC_ERC20_ADDRESS.substring(1)} is invalid moac address.`);
+    });
+
+    it("deposit in error", function(done) {
+      let stub = sandbox.stub(moac._chain3.mc, "getTransactionCount");
+      stub.yields(new Error("request nonce in error"), null);
+      moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1").catch((error) => {
+        expect(error.message).to.equal("request nonce in error");
+        done();
+      });
+    });
+  });
 });
