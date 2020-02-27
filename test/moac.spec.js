@@ -589,8 +589,8 @@ describe("test moac", function() {
       });
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
-      let hash = await moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1", "test");
-      expect(stub.calledOnceWith("0xf8750c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a76400008474657374808081e9a08b39f2708c7f0dd6acb026708564cc8ab3cfe0dbf587e2fb76be3d7b37512068a078baff9ddb5affe41757e9bc13326e9bfb79e26dc9dac755242e86778b9cbe0d")).true;
+      let hash = await moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1", "test测试");
+      expect(stub.calledOnceWith("0xf8870c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a76400009674657374254536254235253842254538254146253935808081eaa06b87446d73f4ad0d63dae5707b35b34efae1df0fdc5919e64090f5d28e95bd64a0406886445a194eeff334cce8bdb1640d7ada3fb806075ee387f24637a232ea4d")).true;
       expect(hash).to.equal(config.MOCK_HASH);
     });
 
