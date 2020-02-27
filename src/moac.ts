@@ -332,6 +332,27 @@ export default class Moac {
   }
 
   /**
+   * transfer moac
+   *
+   * @param {string} moacSecret
+   * @param {string} dest destination address
+   * @param {string} amount
+   * @param {string} [memo]
+   * @param {ITransactionOption} [options]
+   * @returns {Promise<string>}
+   * @memberof Moac
+   */
+  @validate
+  public async transferMoac(@isValidMoacSecret moacSecret: string, @isValidMoacAddress dest: string, @isValidAmount amount: string, memo?: string, options?: ITransactionOption): Promise<string> {
+    const sender = Moac.getAddress(moacSecret);
+    options = await this.getOptions(options || {}, sender);
+    const tx = this.getTx(sender, dest, options.nonce, options.gasLimit, options.gasPrice, amount, !memo ? "" : this.getChain3().toHex(memo));
+    const signedTransaction = this.signTransaction(tx, moacSecret);
+    let hash = await this.sendSignedTransaction(signedTransaction);
+    return hash;
+  }
+
+  /**
    * structuring transaction data
    *
    * @param {string} from moac address
