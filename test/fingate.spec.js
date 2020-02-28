@@ -229,7 +229,7 @@ describe("test Fingate", function() {
       stub = sandbox.stub(inst.contract.deposit, "getData");
       stub.returns("0xaa");
       let spy = sandbox.spy(moac, "sendSignedTransaction");
-      let hash = await inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH, config.MOAC_SECRET);
+      let hash = await inst.depositToken(config.JINGTUM_ADDRESS, config.SNRC_CONTRACT_ADDRESS, 18, config.MOCK_DEPOSIT_VALUE, config.MOCK_HASH.toLowerCase(), config.MOAC_SECRET);
       expect(spy.args[0][0]).to.equal(config.MOCK_ERC20_TX_SIGN1);
       expect(hash).to.equal(config.MOCK_HASH);
     });

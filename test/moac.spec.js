@@ -449,8 +449,16 @@ describe("test moac", function() {
       stub.yields(null, config.MOCK_HASH_TRANSACTION);
       inst.getTransaction(config.MOCK_HASH).then((data) => {
         expect(data).to.equal(config.MOCK_HASH_TRANSACTION);
+        expect(stub.calledOnceWith(config.MOCK_HASH.toLowerCase())).to.true;
         done();
       });
+    });
+
+    it("hash is invalid", function() {
+      expect(() => inst.getTransaction(config.MOCK_HASH.substring(2))).throw(`${config.MOCK_HASH.substring(2)} is invalid hash.`);
+      expect(() => inst.getTransaction(config.MOCK_HASH.replace("0x", "0X"))).throw(`${config.MOCK_HASH.replace("0x", "0X")} is invalid hash.`);
+      expect(() => inst.getTransaction(config.MOCK_HASH.substring(0, 64))).throw(`${config.MOCK_HASH.substring(0, 64)} is invalid hash.`);
+      expect(() => inst.getTransaction(config.MOCK_HASH + "0")).throw(`${config.MOCK_HASH + "0"} is invalid hash.`);
     });
 
     it("get transaction in error", function(done) {
@@ -479,8 +487,16 @@ describe("test moac", function() {
       stub.yields(null, config.MOCK_HASH_TRANSACTION_RECEIPT);
       inst.getTransactionReceipt(config.MOCK_HASH).then((data) => {
         expect(data).to.equal(config.MOCK_HASH_TRANSACTION_RECEIPT);
+        expect(stub.calledOnceWith(config.MOCK_HASH.toLowerCase())).to.true;
         done();
       });
+    });
+
+    it("hash is invalid", function() {
+      expect(() => inst.getTransactionReceipt(config.MOCK_HASH.substring(2))).throw(`${config.MOCK_HASH.substring(2)} is invalid hash.`);
+      expect(() => inst.getTransactionReceipt(config.MOCK_HASH.replace("0x", "0X"))).throw(`${config.MOCK_HASH.replace("0x", "0X")} is invalid hash.`);
+      expect(() => inst.getTransactionReceipt(config.MOCK_HASH.substring(0, 64))).throw(`${config.MOCK_HASH.substring(0, 64)} is invalid hash.`);
+      expect(() => inst.getTransactionReceipt(config.MOCK_HASH + "0")).throw(`${config.MOCK_HASH + "0"} is invalid hash.`);
     });
 
     it("get transaction receipt in error", function(done) {

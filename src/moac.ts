@@ -3,7 +3,7 @@ import chain3 = require("chain3");
 import * as moacWallet from "jcc_wallet/lib/moac";
 import { IWalletModel } from "jcc_wallet/lib/model";
 import { IMoacTransaction, ITransactionOption } from "./model/transaction";
-import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
+import { isValidAmount, isValidHash, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**
  * toolkit of moac
@@ -458,9 +458,10 @@ export default class Moac {
    * @returns {any} null or transaction object
    * @memberof Moac
    */
-  public getTransaction(hash: string): Promise<any> {
+  @validate
+  public getTransaction(@isValidHash hash: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._chain3.mc.getTransaction(hash, (err: Error, data: any) => {
+      this._chain3.mc.getTransaction(hash.toLowerCase(), (err: Error, data: any) => {
         if (err) {
           return reject(err);
         }
@@ -475,9 +476,10 @@ export default class Moac {
    * @returns {any} null or transaction receipt object
    * @memberof Moac
    */
-  public getTransactionReceipt(hash: string): Promise<any> {
+  @validate
+  public getTransactionReceipt(@isValidHash hash: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._chain3.mc.getTransactionReceipt(hash, (err: Error, data: any) => {
+      this._chain3.mc.getTransactionReceipt(hash.toLowerCase(), (err: Error, data: any) => {
         if (err) {
           return reject(err);
         }

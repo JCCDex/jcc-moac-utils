@@ -68,7 +68,8 @@ export const validate = (target: any, name: string, descriptor: PropertyDescript
             }
             break;
           case checkHashKey:
-            if (!/^0x([A-Fa-f0-9]{64})$/.test(value)) {
+            const reg = /^0x[0-9a-fA-F]{64}$/;
+            if (!reg.test(value)) {
               throw new Error(`${value} is invalid hash.`);
             }
             break;
