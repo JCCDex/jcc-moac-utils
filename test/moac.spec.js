@@ -88,6 +88,20 @@ describe("test moac", function() {
     });
   });
 
+  describe("test hex2utf8", function() {
+    it("test hex2utf8", function() {
+      let inst = new Moac(config.MOCK_NODE, true);
+      inst.initChain3();
+      const chain3 = inst.getChain3();
+      let hex = chain3.toHex("测试");
+      expect(Moac.hex2utf8(hex)).to.equal("测试");
+      hex = chain3.toHex(JSON.stringify({ a: 1, b: "test", c: "测试" }));
+      expect(Moac.hex2utf8(hex)).to.equal(JSON.stringify({ a: 1, b: "test", c: "测试" }));
+      hex = chain3.toHex("test");
+      expect(Moac.hex2utf8(hex)).to.equal("test");
+    });
+  });
+
   describe("test initChain3", function() {
     let inst;
     beforeEach(() => {
@@ -606,7 +620,7 @@ describe("test moac", function() {
       stub = sandbox.stub(moac._chain3.mc, "sendRawTransaction");
       stub.yields(null, config.MOCK_HASH);
       let hash = await moac.transferMoac(config.MOAC_SECRET, config.MOAC_ERC20_ADDRESS, "1", "test测试");
-      expect(stub.calledOnceWith("0xf8870c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a76400009674657374254536254235253842254538254146253935808081eaa06b87446d73f4ad0d63dae5707b35b34efae1df0fdc5919e64090f5d28e95bd64a0406886445a194eeff334cce8bdb1640d7ada3fb806075ee387f24637a232ea4d")).true;
+      expect(stub.calledOnceWith("0xf87b0c808504a817c80083030d40949bd4810a407812042f938d2f69f673843301cfa6880de0b6b3a76400008a74657374e6b58be8af95808081e9a08c50d913d37f07e2f54f746e696ce87c46d5b57b64c48d2c670c18d90243e6b8a00c0f3fcc361ca450c9a52395cdac904ad1b3155c6c1d0e8cf19fc7d4079758c2")).true;
       expect(hash).to.equal(config.MOCK_HASH);
     });
 
