@@ -181,23 +181,6 @@ export default class Moac {
   }
 
   /**
-   * convert hex to utf8
-   *
-   * @static
-   * @param {string} hex
-   * @returns {string}
-   * @memberof Moac
-   */
-  public static hex2utf8(hex: string): string {
-    hex = hex.replace(/^0x/, "");
-    let s = "";
-    for (var i = 0; i < hex.length; i += 2) {
-      s += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-    return decodeURIComponent(escape(s));
-  }
-
-  /**
    * init instance of chain3
    *
    * @memberof Moac
@@ -363,7 +346,7 @@ export default class Moac {
   public async transferMoac(@isValidMoacSecret moacSecret: string, @isValidMoacAddress dest: string, @isValidAmount amount: string, memo?: string, options?: ITransactionOption): Promise<string> {
     const sender = Moac.getAddress(moacSecret);
     options = await this.getOptions(options || {}, sender);
-    const tx = this.getTx(sender, dest, options.nonce, options.gasLimit, options.gasPrice, amount, !memo ? "" : this.getChain3().toHex(memo));
+    const tx = this.getTx(sender, dest, options.nonce, options.gasLimit, options.gasPrice, amount, !memo ? "" : this.getChain3().fromUtf8(memo));
     const signedTransaction = this.signTransaction(tx, moacSecret);
     const hash = await this.sendSignedTransaction(signedTransaction);
     return hash;

@@ -88,20 +88,6 @@ describe("test moac", function() {
     });
   });
 
-  describe("test hex2utf8", function() {
-    it("test hex2utf8", function() {
-      let inst = new Moac(config.MOCK_NODE, true);
-      inst.initChain3();
-      const chain3 = inst.getChain3();
-      let hex = chain3.toHex("测试");
-      expect(Moac.hex2utf8(hex)).to.equal("测试");
-      hex = chain3.toHex(JSON.stringify({ a: 1, b: "test", c: "测试" }));
-      expect(Moac.hex2utf8(hex)).to.equal(JSON.stringify({ a: 1, b: "test", c: "测试" }));
-      hex = chain3.toHex("test");
-      expect(Moac.hex2utf8(hex)).to.equal("test");
-    });
-  });
-
   describe("test initChain3", function() {
     let inst;
     beforeEach(() => {
