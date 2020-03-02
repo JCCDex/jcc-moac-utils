@@ -1,4 +1,4 @@
-export interface IMoacTransaction {
+declare interface IMoacTransaction {
   from: string;
   nonce: string;
   gasPrice: string;
@@ -12,7 +12,7 @@ export interface IMoacTransaction {
   via: string;
 }
 
-export interface ITransactionOption {
+declare interface ITransactionOption {
   gasLimit?: number | string;
   gasPrice?: number | string;
   nonce?: number;

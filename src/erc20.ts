@@ -1,7 +1,8 @@
+/// <reference path = "./types/transaction.ts" />
+
 import BigNumber from "bignumber.js";
 import erc20ABI from "./abi/erc20ABI";
 import Moac from "./moac";
-import { ITransactionOption } from "./types/transaction";
 import SmartContract from "./smartContract";
 import { isValidAmount, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
