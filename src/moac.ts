@@ -2,7 +2,7 @@
 import chain3 = require("chain3");
 import * as moacWallet from "jcc_wallet/lib/moac";
 import { IWalletModel } from "jcc_wallet/lib/types";
-import { IMoacTransaction, ITransactionOption } from "./model/transaction";
+import { IMoacTransaction, ITransactionOption } from "./types/transaction";
 import { isValidAmount, isValidHash, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
 /**

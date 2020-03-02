@@ -3,7 +3,7 @@
 import BigNumber from "bignumber.js";
 import fingateABI from "./abi/fingateABI";
 import Moac from "./moac";
-import { ITransactionOption } from "./model/transaction";
+import { ITransactionOption } from "./types/transaction";
 import SmartContract from "./smartContract";
 import { isValidAmount, isValidHash, isValidJingtumAddress, isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 

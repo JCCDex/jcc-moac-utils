@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import erc721ABI from "./abi/erc721ABI";
 import Moac from "./moac";
-import { ITransactionOption } from "./model/transaction";
+import { ITransactionOption } from "./types/transaction";
 import SmartContract from "./smartContract";
 import { isValidMoacAddress, isValidMoacSecret, validate } from "./validator";
 
