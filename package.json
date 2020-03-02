@@ -19,11 +19,11 @@
   "author": "JCCDex",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^13.7.6",
+    "@types/node": "^13.7.7",
     "bignumber.js": "^9.0.0",
     "chain3": "^0.1.22",
     "jcc-moac-abi": "^0.1.7",
-    "jcc_wallet": "^1.0.4"
+    "jcc_wallet": "^1.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -52,9 +52,9 @@
     "sinon": "^9.0.0",
     "ts-loader": "^6.2.1",
     "tslint": "^6.0.0",
-    "typescript": "^3.8.2",
+    "typescript": "^3.8.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.6",
+    "webpack": "^4.42.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.11"
   },
