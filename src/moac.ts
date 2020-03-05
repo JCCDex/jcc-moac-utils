@@ -190,6 +190,7 @@ export default class Moac {
     const initialied = this._chain3 instanceof chain3;
     if (!initialied || !this._chain3.currentProvider) {
       this._chain3 = new chain3(new chain3.providers.HttpProvider(this._node));
+      this._chain3.setScsProvider(this._chain3.currentProvider);
     }
   }
 
@@ -366,7 +367,7 @@ export default class Moac {
    * @returns {IMoacTransaction} return transaction object
    * @memberof Moac
    */
-  public getTx(from: string, to: string, nonce: number, gasLimit: number | string, gasPrice: number | string, value: string, calldata: string): IMoacTransaction {
+  public getTx(from: string, to: string, nonce: number, gasLimit: number | string, gasPrice: number | string, value: string, calldata: string, via?: string, shardingFlag?: string): IMoacTransaction {
     if (!calldata) {
       calldata = "0x00";
     }
@@ -377,10 +378,10 @@ export default class Moac {
       gasLimit: this._chain3.intToHex(gasLimit),
       gasPrice: this._chain3.intToHex(gasPrice),
       nonce: this._chain3.intToHex(nonce),
-      shardingFlag: "0x0",
+      shardingFlag: !shardingFlag ? "0x0" : shardingFlag,
       systemContract: "0x0",
       value: this._chain3.intToHex(this._chain3.toSha(value)),
-      via: "0x"
+      via: !via ? "0x" : via
     };
     if (to) {
       tx.to = to;

@@ -337,6 +337,23 @@ describe("test moac", function() {
       expect(tx).to.deep.equal(data);
     });
 
+    it("if via&shardingFlag is not empty", function() {
+      let from = config.MOAC_ADDRESS;
+      let to = config.MOAC_TO_ADDRESS;
+      let nonce = config.MOCK_NONCE;
+      let gasLimit = config.MOCK_GAS_LIMIT;
+      let gasPrice = config.MOCK_GAS_PRICE;
+      let value = config.MOCK_DEPOSIT_VALUE_STR;
+      let calldata = "0xaa";
+      let tx = inst.getTx(from, to, nonce, gasLimit, gasPrice, value, calldata, config.MOAC_TO_ADDRESS, "0x1");
+      let data = Object.assign({}, config.MOCK_TX, {
+        data: calldata
+      });
+      data.via = config.MOAC_TO_ADDRESS;
+      data.shardingFlag = "0x1";
+      expect(tx).to.deep.equal(data);
+    });
+
     it("if calldata is empty", function() {
       let from = config.MOAC_ADDRESS;
       let to = config.MOAC_TO_ADDRESS;
