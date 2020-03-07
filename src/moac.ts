@@ -190,7 +190,6 @@ export default class Moac {
     const initialied = this._chain3 instanceof chain3;
     if (!initialied || !this._chain3.currentProvider) {
       this._chain3 = new chain3(new chain3.providers.HttpProvider(this._node));
-      this._chain3.setScsProvider(this._chain3.currentProvider);
     }
   }
 
