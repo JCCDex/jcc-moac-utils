@@ -531,6 +531,7 @@ describe("test moac", function() {
     before(() => {
       inst = new Moac(config.MOCK_NODE, true);
       inst.initChain3();
+      inst.setScs(config.MOCK_NODE);
     });
 
     afterEach(() => {

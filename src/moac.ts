@@ -194,6 +194,10 @@ export default class Moac {
     }
   }
 
+  public setScs(scs: string) {
+    this._chain3.setScsProvider(new chain3.providers.HttpProvider(scs));
+  }
+
   /**
    * destroy instance of chain3
    *
