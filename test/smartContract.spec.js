@@ -56,6 +56,18 @@ describe("test smartContract", function() {
     });
   });
 
+  describe("test call abi get data", function() {
+    it("call abi", async function() {
+      let moac = new Moac(config.MOCK_NODE, true);
+      moac.initChain3();
+      let inst = new SmartContract();
+      inst.init(config.MOAC_ERC20_ADDRESS, moac, config.MOAC_ERC20_ABI);
+      let ret = await inst.getData("balanceOf", config.MOAC_ERC20_ADDRESS);
+      // console.log("balanceOf:", ret);
+      expect(ret).to.equal("0x70a082310000000000000000000000009bd4810a407812042f938d2f69f673843301cfa6");
+    });
+  });
+
   describe("test close", function() {
     it("close", function() {
       let moac = new Moac(config.MOCK_NODE, true);

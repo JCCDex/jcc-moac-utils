@@ -142,6 +142,14 @@ class SmartContract {
    * call defined function in the abi
    *
    */
+  public async getData(name, ...args) {
+    return await this._contract[name].getData.apply(null, args);
+  }
+
+  /**
+   * call defined function in the abi
+   *
+   */
   public async callABI(name, ...args) {
     const abiItem = this._moacABI.getAbiItem.apply(null, [name, ...args]);
     const { stateMutability } = abiItem;
